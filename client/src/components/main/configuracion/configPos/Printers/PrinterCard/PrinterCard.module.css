@@ -1,0 +1,40 @@
+@import "../../../../../../varCss/colors.module.css";
+
+
+.container{
+    background-color: rgba(240, 248, 255, 0.281);
+    border-radius: 16px;
+    display: flex;
+    padding: 16px;
+    flex-direction: column;
+    gap: 16px;
+
+   
+    >section{
+        display: flex;
+        >div:first-child{
+            flex: 2;
+            >h4{
+                font-size: 22px;
+               }
+        }
+        >div:last-child{
+            display: flex;
+            gap: 8px;
+    
+            >button{
+                width: 48px;
+                height: 48px;
+            }
+    
+            >button:last-child{
+                background-color: var(--color-accent-red-primary);
+            }
+            >button:first-child{
+                background-color: var(--color-green-button);
+            }
+        }
+
+    }
+  
+}

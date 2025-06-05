@@ -1,0 +1,73 @@
+@import "../../../varCss/fonts.module.css";
+@import "../../../varCss/colors.module.css";
+
+.container{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    .detailContainer{
+        height: 100%;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        > article{
+            display: flex;
+            width: 100%;
+            height: 270px;
+            gap: 32px;
+        }
+    }
+
+    section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+       
+    }
+    >section:first-child{
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        header{
+            display: flex;
+            align-items: center;
+            max-height: 48px;
+
+            >span{
+                background: var(--color-gradient);
+                border-radius: 16px;
+                padding: 16px;
+                margin-left: 16px;
+            }
+
+            * {
+            font-weight: 200;
+            }
+        }
+        
+    }
+
+    
+
+  
+}
+
+.loading{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+    background: var(--color-gradient);
+    padding: 32px;
+    border-radius: 16px;
+    position: relative
+}
+

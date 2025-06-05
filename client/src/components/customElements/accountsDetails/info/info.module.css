@@ -1,0 +1,33 @@
+@import "../../../../varCss/fonts.module.css";
+@import "../../../../varCss/colors.module.css";
+
+.container{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1;
+    background: var(--color-gradient);
+    padding: 32px;
+    border-radius: 16px;
+
+
+    ul{
+        list-style-type: none;
+        font-size: var(--font-size-small);
+        font-weight: 200;
+
+
+        li{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 32px;
+        }
+    }
+    h3{
+        font-weight: 200;
+        font-size: var(--font-size-medium);
+
+    }
+    
+}

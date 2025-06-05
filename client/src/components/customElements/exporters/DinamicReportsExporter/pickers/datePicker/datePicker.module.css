@@ -1,0 +1,9 @@
+@import "../../../../../../varCss/colors.module.css";
+@import "../../../../../../varCss/fonts.module.css";
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--color-gradient);
+}

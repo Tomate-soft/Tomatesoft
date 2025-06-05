@@ -1,0 +1,14 @@
+.container{
+    height: 100vh;
+    position: relative;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    >div{
+         display: flex;
+         height: 100%;
+         gap: 16px;
+    } 
+}

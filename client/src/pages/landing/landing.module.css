@@ -1,0 +1,106 @@
+.loginPage{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+
+    
+
+    & button{
+      
+      
+      width: 200px;
+    }
+   
+}
+
+  .centerContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5vw;
+    margin-bottom: 2vh;
+    color: #f9f9f9;
+    padding: 64px;
+
+
+    >img{
+      width: 800px;
+    }
+  }
+  
+  .btnBackLink:hover{
+    background: #75000B;
+  }
+ 
+  .btnBackLink{
+    padding: 16px;
+    width: 200px;
+    display: flex;
+    justify-content:center  ;
+    align-items: centyer;
+    background-color: rgb(10, 10, 10);
+    border-radius: 16px;
+    color: rgba(233, 226, 226, 0.747);
+    text-decoration: none;
+    transition: .25s ease;
+    border: 1px solid #d6d6d642;
+    box-shadow: -2px 2px 8px 0px rgba(0, 0, 0, 0.801);
+  }
+  .ws{
+    top:92%;
+    left: 1%;
+    position: absolute;
+    height: 60px;
+  }
+
+
+  .ws{
+ 
+    background-size: cover;
+    text-indent: -9999px; /* Oculta el texto del enlace */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el icono */
+    transition: transform 0.4s ease; /* Agrega una transición de escala */
+  }
+
+  .ws:hover {
+    transform: scale(1.1);
+    border-radius: 50%;
+}
+.buttonsContainer{
+  display: flex; 
+  gap: 16px;
+  padding: 0px 64px;
+
+}
+
+
+.loginPage::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../../src/assets/Vector.svg');
+  background-position: space;
+  opacity: 0.06;
+  z-index: -1;
+  animation: moveBackground 30s ease-in-out infinite
+}
+
+@keyframes moveBackground {
+  0% {
+      transform: translate(0, 0);
+  }
+  50% {
+      transform: translate(-100px, -100px); /* Movemos la imagen de fondo */
+  }
+  100% {
+      transform: translate(0, 0);
+  }
+}

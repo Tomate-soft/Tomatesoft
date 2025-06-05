@@ -1,0 +1,42 @@
+.tooltipContainer {
+    position: absolute;
+    display: inline-block;
+    transition: all 0.3s;
+
+    img{
+        transition: all 0.2s ease-in-out;
+    }
+
+    img:hover{
+        opacity: 0.3;
+    }
+  }
+  
+  .tooltipText {
+    visibility: hidden;
+    color: #fff;
+    background-color: rgba(19, 18, 18, 0.651);
+    text-align: center;
+    border-radius: 16px;
+    padding: 16px;
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.5s linear;
+    border: 3px solid rgba(197, 174, 174, 0.103);
+    width: max-content;
+    height: max-content;
+    top: 24px;
+    left: 24px;
+    backdrop-filter: blur(6px);
+    
+
+
+  }
+  
+  .tooltipContainer:hover .tooltipText {
+    visibility: visible;
+    opacity: 1;
+    
+  }
+  

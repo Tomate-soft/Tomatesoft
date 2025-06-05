@@ -1,0 +1,78 @@
+@import "../../../varCss/colors.module.css" ;
+
+.customTable{
+    width: 100%;
+    background: var(--color-gradient);  
+    padding: 16px;
+    display: flex;
+    flex-direction: column ;
+    gap: 16px;
+    border-radius: 16px;
+    overflow-y: auto;
+     max-height: calc(100vh - 232px);
+
+    h3{
+        font-weight: 200;
+    }
+
+    table{
+        background: none;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 1px;
+        background: #F9F9F980;
+        border-radius: 8px;
+        font-size: var(--font-size-small);
+        overflow: auto;
+        width: 100%;
+
+        >thead>tr>th{
+            text-align: left;
+            text-indent: 8px;
+            background-color: #F9F9F966;
+            width: 464px;
+            height:56px;
+            padding: 16px;
+            gap: 8px;
+            white-space: nowrap;
+          }
+         
+        
+          >thead>tr>th:first-child{
+            border-radius: 8px 0px 0px 0px;
+          }
+        
+          >thead>tr>th:last-child{
+            border-radius: 0px 8px 0px 0px;
+          }
+        
+        
+          >tbody>tr>td{
+            text-align: left;
+            text-indent: 8px;
+            height:56px;
+            padding: 16px;
+            border-top: 1px solid #f9f9f998;  
+            white-space: nowrap;
+          }
+        
+          >tbody>tr:last-child>td{
+            border-bottom: 1px solid #6e6d6db9;
+          }
+          >tbody>tr{
+            transition: 250ms;
+        
+          }
+        
+          >tbody>tr:hover{
+              background-color: var(--color-hover-row);
+          }
+         
+        
+          >tbody>tr>td:last-child{
+            border-radius: 0px 0px 8px 0px;
+          }
+        }
+      
+        
+}

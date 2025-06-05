@@ -1,0 +1,39 @@
+
+.asis{
+    padding: 16px 0px;
+
+}
+    .headerTable{
+        display: flex;
+        justify-content: space-between;
+
+        >div{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        >div:last-child{
+            border-radius: 8px;
+            padding: 0px 12px;
+            background: #F9F9F91A;
+
+
+
+            >input{
+                background: none;
+                outline: none;
+                border: none;
+                width: 400px;
+                color: rgba(245, 245, 245, 0.699);
+            }
+        }
+
+
+        
+    }
+
+    .content {
+        border: 2px solid purple;
+    }

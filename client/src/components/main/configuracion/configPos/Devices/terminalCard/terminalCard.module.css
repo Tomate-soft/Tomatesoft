@@ -1,0 +1,52 @@
+.card{
+    border-radius: 16px;
+    background-color: rgba(240, 255, 255, 0.205);
+    height:190px ;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: .25s ease;
+    box-shadow: 0px 0px 18px rgba(0, 0, 0, 0.281);
+
+    >header{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        >span:nth-child(2){
+            font-size: 16px;
+            font-weight: 400;
+            font-size: 32px;
+        }
+    }
+    >main {
+        font-size: 16px;
+
+        >h3{
+            font-weight: 400;
+        }
+    }
+
+    > footer {
+        display: flex;
+        gap: 16px;
+        >button:last-child{
+            background-color: rgb(168, 10, 10);
+            height: 48px;
+            width: 48px;
+        }
+
+        >button:nth-child(2){
+            background-color: rgb(80, 155, 10);
+            height: 48px;
+            width: 48px;
+        }
+    }
+
+}
+
+.card:hover{
+   filter: brightness(0.9);
+}

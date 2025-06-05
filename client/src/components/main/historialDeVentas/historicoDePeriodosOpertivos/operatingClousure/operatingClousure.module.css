@@ -1,0 +1,85 @@
+@import "../../../../../varCss/fonts.module.css";
+@import "../../../../../varCss/colors.module.css";
+
+.hidden{
+    display: none;
+  }
+
+.screen {
+ height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+    header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 32px;
+
+        div{
+            display: flex;
+            align-items: center
+        };
+
+        button:last-child{
+           background-color: var(--color-green-button);
+        }
+    }
+
+    section{
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(356px, 360px));
+        grid-template-rows: repeat(auto-fit, minmax(350px, 1fr));
+        overflow-y: auto;
+        gap: 16px;
+    }
+}
+
+.card{
+    background-color: var(--color-gray-medium);
+    width: 360px;
+    height: 350px;
+    border-radius: 16px;
+    border-left: 5px solid var(--color-gray-medium);
+    border-left: 8px solid var(--color-accent-red-primary);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 32px;
+    position: relative;
+
+    span{
+        border: 1px solid red;
+        width:100%;
+        height: 100%;
+    }
+    div{
+        width: 100%; 
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        gap: 8px;
+
+        p,
+        h3{
+            text-align: center;
+            text-wrap: pretty;
+        }
+
+       
+    }
+
+    button{
+        position: absolute;
+        bottom: 32px;
+       
+    }
+}
+  
+
+  
+  

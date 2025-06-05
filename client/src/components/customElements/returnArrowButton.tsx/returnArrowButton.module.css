@@ -1,0 +1,15 @@
+
+.returnButton {
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #cfcece;
+    font-weight: 900;
+    transition: .25s ease-in-out;
+
+    padding-left: 6px;
+  }
+  .returnButton:hover{
+    transform: translateX(-6px);
+
+  }

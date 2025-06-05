@@ -1,0 +1,143 @@
+.screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  transition: 1s;
+  background: rgba(0, 0, 0, 0.829)
+}
+.modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 608px;
+  gap: 16px;
+  border-radius: 32px;
+  background: var(--color-primary);
+  color: var(--color-white);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.541);
+  padding: 32px;
+
+  > h1{
+    font-size: 24px;
+    text-align: start;
+    width: 100%;
+    padding: 0px 8px;
+    font-weight: 200;
+  }
+
+  > footer {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #cfcece;
+font-weight: 900;
+}
+.containerInput{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 480px;
+  height: 182px;
+  border-radius: 16px;
+  gap: 16px;
+  background: linear-gradient(180deg, rgba(249, 249, 249, 0.15) 0%, rgba(249, 249, 249, 0.03) 100%);
+}
+
+/* Select styles */
+.customSelect{
+  position: relative;
+  width: 474px;
+  height: 56px;
+  background: rgba(249, 249, 249, 0.2);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 6px;
+
+ 
+}
+.selectTrigger {
+  cursor: pointer;
+  border-radius: 4px;
+  width: 95%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  font-size: var(--font-size-small);
+}
+.options {
+  position: absolute;
+  background-color: var(--color-gray-hover);
+  top: 120%;
+  left: 0;
+  width: 474px;
+  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  color: #333;
+  font-size: var(--font-size-small);
+}
+
+.customSelect:hover .options  {
+  display: block;
+  display: flex;
+  flex-direction: column;
+}
+.hidden{
+  display: none;
+}
+.option {
+  padding: 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #33333333;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+}
+.option:hover {
+  background-color: #6e717442;
+  
+}
+
+
+
+
+.form{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input{
+  width: 100%;
+  height: 56px;
+  padding: 10px;
+  background-color: #ffffff17;
+  border-radius: 6px;
+  color: #f9f9f9;
+}

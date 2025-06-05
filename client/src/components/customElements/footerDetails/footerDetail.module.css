@@ -1,0 +1,77 @@
+@import "../../../varCss/fonts.module.css";
+
+
+.footerDetails{
+    min-height: 138px;
+    background: var(--color-gradient);
+    border-radius: 32px;
+    display: flex;
+    padding: 32px;
+
+    >section:first-child{
+        flex:2;
+        display: flex;
+        flex-direction: column;
+
+        > div{
+            display: flex;
+            flex-direction: column;
+         justify-content: center;
+
+            gap: 8px;
+            height: 100%;
+
+            >span{
+                font-weight: 200;
+                font-size: var(--font-size-medium-lg);
+                text-align: left;
+            }
+
+            >strong{
+                font-weight: 400;
+                font-size: var(--font-size-large)
+            }
+        }   
+    }
+
+    > ul {
+        list-style-type: none;
+        display: flex;
+        justify-content: space-around;
+        gap: 16px;
+
+        li{
+            display: flex;
+            flex-direction: column;
+            min-width: 200px;
+
+        } 
+        li:first-child{
+            margin-top: 16px;
+            *{
+                text-align: end;
+                font-weight: 200;
+            }
+            strong{
+                font-size: var(--font-size-medium-lg);
+                margin: 8px 0;
+            }
+        } 
+
+        li:last-child{
+            *{
+                text-align: end;
+                font-weight: 300;
+            }
+            span{
+                font-size: var(--font-size-medium-lg) ;
+            }
+
+            strong{
+                font-size: var(--font-size-large);
+                margin: 8px 0;
+            }
+        } 
+    }
+}
+    

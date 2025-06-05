@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  database:
+    image: mongo:latest
+    container_name: database_
+    ports:
+      - "${MONGO_PORT}:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    volumes:
+      - mongodb_data:/data/db
+    command: ["mongod", "--bind_ip_all", "--auth"]
+    restart: on-failure
+
+  backend:
+    image: tomatesoft_server:latest
+    container_name: backend_
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - ${SERVER_PORTS}
+    depends_on:
+      - database
+
+  frontend:
+    image: tomatesoft_frontend:latest
+    container_name: frontend_
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - ${CLIENT_PORTS}
+    depends_on:
+      - backend
+
+volumes:
+  mongodb_data:
+    driver: local

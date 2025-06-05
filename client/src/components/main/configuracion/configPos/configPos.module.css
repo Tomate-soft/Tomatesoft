@@ -1,0 +1,62 @@
+.container {
+  height: 100%;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+
+  > h1 {
+    font-size: 40px;
+    font-weight: 400;
+  }
+
+  > div {
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 16px;
+    background: linear-gradient(
+      180deg,
+      rgba(249, 249, 249, 0.15) 0%,
+      rgba(249, 249, 249, 0.03) 100%
+    );
+    border-radius: 16px;
+    overflow: auto;
+  }
+}
+
+.cardAdminConfig {
+  background: #f9f9f933;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  height: 164px;
+  width: 350px;
+  transition: 300ms ease;
+
+  > h4 {
+    font-weight: 400;
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+}
+
+.cardAdminConfig:hover {
+  opacity: 0.7;
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: 4px 4px 20px 0px #00000026;
+  background: #f9f9f91a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

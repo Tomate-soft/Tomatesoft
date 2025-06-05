@@ -1,0 +1,120 @@
+@import "../../../../../varCss/colors.module.css";
+.screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: 1s;
+    background: rgba(0, 0, 0, 0.616);
+
+    >div{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 32px;
+        border-radius: 32px;
+        background: var(--color-primary);
+        color: var(--color-white);
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        gap: 32px;
+
+        header {
+            width: 100%;
+            font-size: 24px;
+
+            >h1 {
+                font-weight: 200;
+
+            }
+        }
+        main {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            transition: 0.2s ease-in-out;
+            >section {
+                background: var(--color-gradient);
+                display: flex;
+                gap: 32px;
+                padding: 32px;
+                border-radius: 16px;
+                
+                > div {
+                    flex: 1;
+                    width: 256px;
+                    height: 48px;
+
+                    >label {
+                        display: flex;
+                        gap: 8px;
+                        height: 100%;
+                        align-items: center;
+                        font-weight: 200;
+
+                        div {
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            background: #F9F9F91A;
+                            border-radius: 8px;
+                            align-items: center;
+                            padding: 0px 12px;
+
+                            > input {
+                                width: 100%;
+                                height: 100%;
+                                border: none;
+                                outline: none;
+                                background: none;
+                                color: rgba(240, 248, 255, 0.596);
+                            }
+
+                            > img {
+                                width: 24px;
+                                height: 24px;
+                                opacity: 0.699;
+                            }
+
+                            input[type="time"] {
+                                background-color: none; /* Fondo negro */
+                                border-radius: 5px; /* Esquinas redondeadas */
+                                padding: 5px 10px;
+                                font-size: 16px;
+                                appearance: none; /* Oculta el estilo predeterminado, incluido el icono */
+                                -webkit-appearance: none; /* Compatibilidad con WebKit (Chrome, Safari) */
+                                -moz-appearance: none; /* Compatibilidad con Firefox */
+                                transition: 0.2s ease-in-out;
+                              }
+                            
+                              /* Opcional: Asegurarte de que el icono desaparezca en navegadores específicos */
+                              input[type="time"]::-webkit-calendar-picker-indicator {
+                                display: none; /* Ocultar el icono en navegadores WebKit */
+                              }
+
+                        }
+
+                        
+                    }
+                   
+                }
+            }
+        }
+        
+        footer {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 16px;
+        }
+    }
+}
+
+  
+  
