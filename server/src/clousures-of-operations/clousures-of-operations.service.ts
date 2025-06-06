@@ -163,7 +163,8 @@ export class ClousuresOfOperationsService {
     const totalCredit = calculateTotalByType(requestCash, 'credit');
     const totalTransfer = calculateTotalByType(requestCash, 'transfer');
     const totalQr = calculateTotalByType(requestCash, 'qr');
-    const total = totalCash + totalDebit + totalCredit + totalTransfer + totalQr;
+    const total =
+      totalCash + totalDebit + totalCredit + totalTransfer + totalQr;
 
     // Summary totals
     // Summary cash    total de las ventas del efetivo -

@@ -1,4 +1,3 @@
-version: "3.8"
 
 services:
   database:
@@ -25,6 +24,18 @@ services:
       - ${SERVER_PORTS}
     depends_on:
       - database
+  
+  backend_alter:
+    image: tomatesoft_server_alter:latest
+    container_name: backend_alter
+    build:
+      context: ./server_alter
+      dockerfile: Dockerfile
+    ports:
+      - ${SERVER_PORTS_ALTER}
+    depends_on:
+      - database
+      - backend
 
   frontend:
     image: tomatesoft_frontend:latest
@@ -36,6 +47,20 @@ services:
       - ${CLIENT_PORTS}
     depends_on:
       - backend
+      - backend_alter
+
+  proxy:
+    image: proxy:latest
+    container_name: proxy
+    build:
+      context: ./proxy
+    ports: 
+      - ${PROXY_PORTS}
+    depends_on:
+      - backend
+      - backend_alter
+      - database
+      - frontend
 
 volumes:
   mongodb_data:

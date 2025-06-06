@@ -1,0 +1,10 @@
+import { Controller, Get, Res } from '@nestjs/common';
+import { Response } from 'express';
+
+@Controller()
+export class AppController {
+  @Get()
+  getHello(@Res() res: Response): void {
+    res.status(200).send(`<h1> OK DESDE EL SERVIDOR DOS</h1>`);
+  }
+}
