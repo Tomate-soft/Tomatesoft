@@ -32,8 +32,6 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    args:
-        VITE_API_URL_PATH: "{VITE_API_URL_PATH}" 
     ports:
       - ${CLIENT_PORTS}
     depends_on:
