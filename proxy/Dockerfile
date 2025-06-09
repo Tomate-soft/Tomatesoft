@@ -1,10 +1,3 @@
-# ./proxy/Dockerfile
-FROM nginx:alpine
+FROM nginx:1.21.6
 
-RUN rm /etc/nginx/conf.d/default.conf # Eliminar configuración predeterminada de Nginx
-
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80 443
-
-CMD ["nginx", "-g", "daemon off;"]
+COPY nginx.conf etc/nginx/nginx.conf
