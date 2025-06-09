@@ -13,6 +13,8 @@ services:
       - mongodb_data:/data/db
     command: ["mongod", "--bind_ip_all", "--auth"]
     restart: on-failure
+    networks:
+      - tomatesoft_network 
 
   backend:
     image: tomatesoft_server:latest
@@ -22,7 +24,9 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - database
-  
+    networks: 
+      - tomatesoft_network
+
   backend_alter:
     image: tomatesoft_server_alter:latest
     container_name: backend_alter
@@ -32,6 +36,8 @@ services:
     depends_on:
       - database
       - backend
+    networks: 
+      - tomatesoft_network
 
   frontend:
     image: tomatesoft_frontend:latest
@@ -44,20 +50,29 @@ services:
     depends_on:
       - backend
       - backend_alter
+    networks: 
+      - tomatesoft_network
 
   proxy:
     image: proxy:latest
     container_name: proxy
     build:
       context: ./proxy
-    ports: 
+    ports:
       - ${PROXY_PORTS}
     depends_on:
       - backend
       - backend_alter
       - database
       - frontend
-      
+    networks: 
+      - tomatesoft_network
+
 volumes:
   mongodb_data:
     driver: local
+
+
+networks:
+  tomatesoft_network: 
+    driver: bridge 
