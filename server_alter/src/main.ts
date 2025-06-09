@@ -14,7 +14,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:5174',
       'http://localhost:5173',
-      'http://tomatesoft.com',
+      'https://tomatesoft.com',
     ],
     methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     credentials: true,
