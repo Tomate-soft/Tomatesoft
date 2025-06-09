@@ -20,9 +20,6 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
-    ports:
-      - ${SERVER_PORTS}
-      - 80:80
     depends_on:
       - database
   
@@ -32,9 +29,6 @@ services:
     build:
       context: ./server_alter
       dockerfile: Dockerfile
-    ports:
-      - ${SERVER_PORTS_ALTER}
-      - 80:80
     depends_on:
       - database
       - backend
