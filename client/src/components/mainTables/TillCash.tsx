@@ -21,7 +21,6 @@ interface Props {
 
 
 export default function TillCashMainTable({ element, setState, children }: Props) {
-  const totalBills: any = [];
   const getTotalBills = useProcessOperationsStore(
     (state) => state.getTotalBills,
   );
@@ -30,12 +29,13 @@ export default function TillCashMainTable({ element, setState, children }: Props
   );
   const sellTotal = useProcessOperationsStore((state) => state.sellTotal);
 
-  useEffect(() => {
+
+  const tempo = formatTempo(element?.createdAt).split(' ');
+    useEffect(() => {
     getTotalBills();
     getSellTotal();
+    console.log(element)
   }, []);
-  const tempo = formatTempo(element?.createdAt).split(' ');
-
   return (
     <div className={styles.container}>
       <div>
@@ -81,9 +81,9 @@ export default function TillCashMainTable({ element, setState, children }: Props
           <table className={styles.table}>
             <thead>
               <tr>
-                <th className={styles.tHeadCuenta}>Cuenta</th>
-                <th className={styles.tHeadTipoDeVenta}>Tipo de venta</th>
-                <th className={styles.tHeadAbiertaPor}>Abierta por</th>
+                <th className={styles.tHeadCuenta}>Folio</th>
+                <th className={styles.tHeadTipoDeVenta}>Concepto</th>
+                <th className={styles.tHeadAbiertaPor}>Tipo</th>
                 <th className={styles.tHeadTotal}> Total</th>
                 <th className={styles.tHeadStatus}>Status</th>
                 <th className={styles.tHeadFechaDeCreacion}>
@@ -94,67 +94,20 @@ export default function TillCashMainTable({ element, setState, children }: Props
               </tr>
             </thead>
             <tbody>
-              {totalBills?.map((element) => {
-                // Revisa si el estado del elemento no es 'disabled'
-                return element.status !== FINISHED_STATUS ? (
+              {element?.moneyMovements?.map((item, index) => {
+                const { quantity, _id: folio,  operation } = item;
+                return  (
                   <tr
-                    key={element.code}
-                    className={
-                      element.status === 'disabled'
-                        ? styles.rowDisabled
-                        : styles.release
-                    }
+                  key={index}
                   >
-                    <td className={styles.tableRows}>{element?.code}</td>
-                    <td className={styles.tableRows}>{element?.sellType}</td>
-                    <td className={styles.tableRows}>{element?.user}</td>
-                    <td className={styles.tableRows}>{element?.checkTotal}</td>
-                    <td className={styles.tableRows}>
-                      {element.status === 'enabled' ? (
-                        <>
-                          <img
-                            className={styles.statusIcon}
-                            src={enabledIcon}
-                            alt="enabled-icon"
-                          />
-                          {element.status}
-                        </>
-                      ) : element.status === 'disabled' ? (
-                        <>
-                          <img
-                            className={styles.statusIcon}
-                            src={disabledIcon}
-                            alt="disabled-icon"
-                          />
-                          {element.status}
-                        </>
-                      ) : (
-                        <>
-                          <img
-                            className={styles.statusIcon}
-                            src={pendingIcon}
-                            alt="pending-icon"
-                          />
-                          {element.status}
-                        </>
-                      )}
-                    </td>
-                    <td className={styles.tableRows}>{element.createdAt}</td>
-                    <td className={styles.tableRows}>{element.paymentDate}</td>
-                    <td className={styles.buttonsContainer}>
-                      <button
-                        className={styles.actionButtonsFirstDetails}
-                        onClick={() => {
-                          notesDetails.openModal();
-                          setAccount(element);
-                        }}
-                      >
-                        <img src={eyeIcon} alt="open-eye-icon" />
-                      </button>
-                    </td>
+                    <td className={styles.tableRows}>{folio.slice(0, 6)}</td>
+                    <td className={styles.tableRows}>#pending</td>
+                    <td className={styles.tableRows}>{quantity}</td>
+                    <td className={styles.tableRows}>{operation === "inflow" ? "Ingreso" : "Egreso"}</td>
+                    <td className={styles.tableRows}>{element?.type}</td>
                   </tr>
-                ) : null;
-              })}
+                ) 
+              }) }
             </tbody>
           </table>
           <div className={styles.tableFooter}></div>

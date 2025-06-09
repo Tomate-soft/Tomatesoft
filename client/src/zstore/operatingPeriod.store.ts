@@ -68,7 +68,7 @@ export const useOperatingPeriodStore = create<state>((set) => ({
       throw new Error('No se pudo aprobar el periodo de operacion');
     }
   },
-  currentPeriod: null,
+  currentPeriod: [],
   getCurrentPeriod: async () => {
     set((state) => ({ ...state, isLoading: true }));
     try {

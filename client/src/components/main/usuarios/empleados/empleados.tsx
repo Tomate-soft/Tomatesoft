@@ -17,8 +17,11 @@ import Register from './regiter/register';
 import ConfirmChangesModal from '../../../modals/confimChanges/confirmChanges';
 import { getDepartamentsAction } from '../../../../redux/actions/usuarios/departamentsActions/getDepartaments';
 import { getUsersAction } from '../../../../redux/actions/auth';
+import { SearchBar } from '@/components/customElements/searchBar/SearchBar';
+import { set } from 'ref-napi';
 
 export default function Empleados() {
+  const [filteredUsers, setFilteredUsers] = useState<string>("");
   const [employee, setEmployee] = useState({});
   const register = useModal('register');
   const confirmChanges = useModal('confirmChanges');
@@ -35,6 +38,13 @@ export default function Empleados() {
   const handleChange = (args: any) => {
     setEmployee(args);
   };
+
+  const filterUsers = allUsers?.filter((user: any) => { 
+    return user.name.toLowerCase().includes(filteredUsers.toLowerCase()) ||
+           user.lastName.toLowerCase().includes(filteredUsers.toLowerCase()) ||
+            user.employeeNumber.toString().includes(filteredUsers.toLowerCase());
+  }
+  );
   useEffect(() => {
     console.log(isLoadingRegister);
     dispatch(getUsersAction());
@@ -80,19 +90,10 @@ export default function Empleados() {
         </div>
       </section>
       <section className={styles.mainSection}>
-        <div className={styles.searchBarContainer}>
-          <div className={styles.searchInputContainer}>
-            <img
-              src={searchIcon}
-              alt="search-icon"
-              className={styles.searchIcon}
-            />
-            <input
-              type="text"
-              className={styles.searchBar}
-              placeholder="Buscar de"
-            />
-          </div>
+        <div>
+          <SearchBar width='600px' onSearch={(value: string) => {
+            setFilteredUsers(value);
+          }} onClear={filteredUsers.length > 0} value={filteredUsers} placeholder="Buscar por nombre, apellido o código"  />
         </div>
         <table className={styles.table}>
           <thead>
@@ -107,7 +108,7 @@ export default function Empleados() {
             </tr>
           </thead>
           <tbody>
-            {allUsers?.map(
+            {(filteredUsers.length > 0 ? filterUsers : allUsers)?.map(
               (element: any) =>
                 !element.employeeNumber.toString().startsWith('10') && (
                   <tr

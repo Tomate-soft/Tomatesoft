@@ -12,7 +12,6 @@ enum ShowModalOptions {
   CREATE_EXPENSE = 'CREATE_EXPENSE',
 }
 
-
 export default function IncomingCash() {
   const [showModal, setShowModal] = useState<ShowModalOptions>(ShowModalOptions.INITAL_STATE);
 
@@ -21,11 +20,10 @@ export default function IncomingCash() {
     (state) => state.getCurrentPeriod,
   );
   const response = useOperatingPeriodStore((state) => state.currentPeriod);
-  const currentPeriod = response[0];
+  const currentPeriod = response[0] ?? [];
 
   useEffect(() => {
     getCurrentPeriod();
-    console.log('currentPeriod', currentPeriod);
   }, []);
   return isLoading ? (
     <TomateLoader />  ) :

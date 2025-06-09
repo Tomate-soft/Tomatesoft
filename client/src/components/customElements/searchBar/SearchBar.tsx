@@ -6,14 +6,16 @@ interface SearchBarProps {
   onSearch: (value: string) => void;
   onClear?: boolean;
   value?: string;
+  width?: string;
+  placeholder?: string;
 }
 
-export const SearchBar = ({ onSearch, onClear, value }: SearchBarProps) => {
+export const SearchBar = ({ onSearch, onClear, value, width, placeholder }: SearchBarProps) => {
   return (
-    <div className={styles.searchBar}>  
+    <div className={styles.searchBar} style={{width: width || '100%'}}>  
         <img src={searchIcon} alt="search-icon" />
         <input
-            placeholder="Search..."
+            placeholder={placeholder || "Buscar..."}
             value={value}
             onChange={(e) => {
               const { value } = e.target;

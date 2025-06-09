@@ -5,7 +5,7 @@ type SecurityValue = boolean;
 type SellTypeName = string;
 type SellTypeValue = string;
 type adminModuleName = string;
-type adminModuleValue = String;
+type adminModuleValue = string;
 
 // Modules auth values
 const APP_ENABLE: AuthValueModules = true;
@@ -31,10 +31,12 @@ export const COURTESY_BILL_AUTH: ActionValue = 'COURTESY_BILL_AUTH';
 export const CANCEL_NOTE_AUTH: ActionValue = 'CANCEL_NOTE_AUTH';
 export const CANCEL_PRODUCT_AUTH: ActionValue = 'CANCEL_PRODUCT_AUTH';
 export const CANCEL_BILL_AUTH: ActionValue = 'CANCEL_BILL_AUTH';
+export const TABLE_ASSIGNMENT: ActionValue = 'TABLE_ASSIGNMENT';
 
 // SellTypes
 export const RESTAURANT = 'RESTAURANT';
 export const RAPPI = 'RAPPI';
+export const TOGO = 'TOGO';
 
 // Admin modules
 const DASHBOARD_MODULE = 'DASHBOARD_MODULE';
@@ -84,6 +86,10 @@ export const SellTypes: selltypesAuth[] = [
   },
   {
     name: 'Rappi',
+    value: RAPPI,
+  },
+  {
+    name: 'Para llevar',
     value: RAPPI,
   },
 ];
@@ -173,6 +179,11 @@ export const actionsAuthsRestaurant: AuthAction[] = [
   {
     name: 'Cancelar cuenta',
     value: CANCEL_BILL_AUTH,
+    secure: false,
+  },
+  {
+    name: 'Asignacion de mesas',
+    value: TABLE_ASSIGNMENT,
     secure: false,
   },
 ];
