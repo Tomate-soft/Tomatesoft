@@ -1,5 +1,0 @@
-
-services:
-  - name: tomate-backend
-    buildCommand: npm install
-    startCommand: nest start
