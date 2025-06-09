@@ -33,6 +33,16 @@ services:
     networks: 
       - tomatesoft_network
 
+  backend_third:
+    image: ghcr.io/tomate-soft/tomatesoft_server:latest
+    container_name: backend_third
+    depends_on:
+      - database
+      - backend
+      - backend_alter
+    networks: 
+      - tomatesoft_network
+
   frontend:
     image: tomatesoft_frontend:latest
     container_name: frontend_
