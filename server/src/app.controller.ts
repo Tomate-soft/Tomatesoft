@@ -5,6 +5,7 @@ import { Response } from 'express';
 export class AppController {
   @Get()
   getHello(@Res() res: Response): void {
+    console.log("yo fui")
     res.status(200).send(`<h1> OK DESDE EL SERVIDOR UNO </h1>`);
   }
 }
