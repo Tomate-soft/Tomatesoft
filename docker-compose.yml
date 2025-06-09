@@ -17,22 +17,16 @@ services:
       - tomatesoft_network 
 
   backend:
-    image: tomatesoft_server:latest
+    image: ghcr.io/tomate-soft/tomatesoft_server:latest
     container_name: backend_
-    build:
-      context: ./server
-      dockerfile: Dockerfile
     depends_on:
       - database
     networks: 
       - tomatesoft_network
 
   backend_alter:
-    image: tomatesoft_server_alter:latest
+    image: ghcr.io/tomate-soft/tomatesoft_server:latest
     container_name: backend_alter
-    build:
-      context: ./server_alter
-      dockerfile: Dockerfile
     depends_on:
       - database
       - backend
