@@ -16,7 +16,6 @@ services:
 
   backend:
     image: tomatesoft_server:latest
-    container_name: backend_
     build:
       context: ./server
       dockerfile: Dockerfile
@@ -27,7 +26,6 @@ services:
   
   backend_alter:
     image: tomatesoft_server_alter:latest
-    container_name: backend_alter
     build:
       context: ./server_alter
       dockerfile: Dockerfile
