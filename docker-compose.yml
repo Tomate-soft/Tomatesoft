@@ -34,8 +34,6 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    ports:
-      - ${CLIENT_PORTS}
     depends_on:
       - backend
     networks: 
