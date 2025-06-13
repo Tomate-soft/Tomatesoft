@@ -40,9 +40,6 @@ services:
       - backend
     networks: 
       - tomatesoft_network
-
- 
-
 volumes:
   mongodb_data:
     driver: local
