@@ -1,7 +1,7 @@
 /////////////////////////////
 // operatingPeriod report////
 /////////////////////////////
-import { StylesConfigsInterface } from './types/stylesConfig.types';
+import { StylesConfigsInterface } from './types/stylesConfig.d.types';
 
 export const SELLTYPES_TABLE_POSITION = 120;
 export const PAYMENTS_TABLE_POSITION = 180;

@@ -1,4 +1,4 @@
-import { centerTextProps } from '../types/reports.types';
+import { centerTextProps } from '../types/reports.d.types';
 
 export const centrarTexto = ({
   doc,
