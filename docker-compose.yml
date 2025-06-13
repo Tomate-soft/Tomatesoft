@@ -26,6 +26,8 @@ services:
       - database
     networks: 
       - tomatesoft_network
+    ports:
+      - "${SERVER_PORTS}"
 
 
   frontend:
