@@ -25,19 +25,43 @@ export default function CreateDishesModal({
 
   const [dishesName, setDishesName] = useState('');
   const [prices, setPrices] = useState([{
-    name: "ON_SITE_ORDER",
+    name: "ON_SITE",
     price: 15,
   },
 {
-  name: "TOGO_ORDER",
+  name: "TOGO",
   price: 15,
 },
 {
-  name: "PHONE_ORDER",
+  name: "PHONE",
   price: 15,
 },
 {
-  name: "RAPPI_ORDER",
+  name: "RAPPI",
+  price: 15,
+},
+{
+  name: "PRICE_LIST_FIVE",
+  price: 15,
+},
+{
+  name: "PRICE_LIST_SIX",
+  price: 15,
+},
+{
+  name: "PRICE_LIST_SEVEN",
+  price: 15,
+},
+{
+  name: "PRICE_LIST_EIGHT",
+  price: 15,
+},
+{
+  name: "PRICE_LIST_NINE",
+  price: 15,
+},
+{
+  name: "PRICE_LIST_TEN",
   price: 15,
 },
 ]);
