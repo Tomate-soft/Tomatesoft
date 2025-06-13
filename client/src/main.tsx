@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import './fonts/fonts.css';
 import './index.css';
-import { store } from './redux/store';
+import { store } from './redux/store/index.ts';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Landing from './pages/landing/landing.tsx';

@@ -1,5 +1,5 @@
 import jsPDF from 'jspdf';
-import { centerTextProps, headerStyle } from './types/reports.d.types';
+import { centerTextProps, headerStyle } from './types/reports.types';
 import logo from '@/assets/header/tomateLogo.png';
 import {
   CANCELLATIONS_POSITION,

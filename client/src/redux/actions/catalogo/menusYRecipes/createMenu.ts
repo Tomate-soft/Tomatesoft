@@ -4,7 +4,7 @@ import {
   MENUS_FAILURE,
   MENUS_REQUEST,
   SAVE_MENUS,
-} from '../menusYRecipes/actionTypes';
+} from './actionTypes';
 
 export const createMenusAction = (menus) => async (dispatch) => {
   dispatch({ type: MENUS_REQUEST });

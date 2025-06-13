@@ -1,7 +1,7 @@
 import styles from './confirmChanges.module.css';
 
 import { useDispatch } from 'react-redux';
-import ConfirmLoader from '../../../components/loaders/confirmsLoader/confirmsLoader';
+import ConfirmLoader from '../../loaders/confirmsLoader/confirmsLoader';
 import checkIcon from '../../../assets/public/checkIcon.svg';
 import errorIcon from '../../../assets/public/errorIcon.svg';
 import { useNavigate } from 'react-router-dom';

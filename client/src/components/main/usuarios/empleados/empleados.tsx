@@ -95,6 +95,7 @@ export default function Empleados() {
             setFilteredUsers(value);
           }} onClear={filteredUsers.length > 0} value={filteredUsers} placeholder="Buscar por nombre, apellido o código"  />
         </div>
+       
         <table className={styles.table}>
           <thead>
             <tr>
