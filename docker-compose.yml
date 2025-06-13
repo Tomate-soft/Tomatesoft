@@ -27,31 +27,6 @@ services:
     networks: 
       - tomatesoft_network
 
-  # backend_alter:
-  #   image:  tomatesoft_server_alter:latest
-  #   container_name: backend_alter
-  #   build:
-  #     context: ./server
-  #     dockerfile: Dockerfile
-      
-  #   depends_on:
-  #     - database
-  #     - backend
-  #   networks: 
-  #     - tomatesoft_network
-
-  # backend_third:
-  #   image:  tomatesoft_server_third:latest
-  #   container_name: backend_third
-  #   build:
-  #     context: ./server
-  #     dockerfile: Dockerfile
-      
-  #   depends_on:
-  #     - database
-  #     - backend
-  #   networks: 
-  #     - tomatesoft_network
 
   frontend:
     image: tomatesoft_frontend:latest
@@ -63,24 +38,10 @@ services:
       - ${CLIENT_PORTS}
     depends_on:
       - backend
-      - backend_alter
     networks: 
       - tomatesoft_network
 
-  # proxy:
-  #   image: proxy:latest
-  #   container_name: proxy
-  #   build:
-  #     context: ./proxy
-  #   ports:
-  #     - ${PROXY_PORTS}
-  #   depends_on:
-  #     - backend
-  #     - backend_alter
-  #     - database
-  #     - frontend
-  #   networks: 
-  #     - tomatesoft_network
+ 
 
 volumes:
   mongodb_data:
