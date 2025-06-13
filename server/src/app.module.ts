@@ -47,7 +47,7 @@ import { RewritePeriodModule } from './rewrite-period/rewrite-period.module';
 import { AppController } from './app.controller';
 
 const uri =
-  'mongodb+srv://tomatesoftadmin:Masqueunataqueria.2025@tomatesoft.mongocluster.cosmos.azure.com/dbtomatesoft?tls=true&authMechanism=SCRAM-SHA-256&retrywrites=false&maxIdleTimeMS=120000';
+  'mongodb://tomatesoft_db_admin01:tomatesoft.Admin01@database:27017/tomatesoft_db?authSource=admin';
 @Module({
   imports: [
     MongooseModule.forRoot(uri),
