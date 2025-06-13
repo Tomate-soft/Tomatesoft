@@ -1,4 +1,4 @@
-import { toggleStatus } from '../../reducer/utils/toggleStatus';
+import { toggleStatus } from '../utils/toggleStatus';
 
 // Public
 export function tillsRequest(state) {
