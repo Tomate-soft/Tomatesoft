@@ -22,7 +22,7 @@ async function bootstrap() {
   });
 
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(process.env.PORT || 8001);
+  await app.listen(process.env.PORT || 8001, "0.0.0.0")
 }
 machineIdentifier();
 bootstrap();
