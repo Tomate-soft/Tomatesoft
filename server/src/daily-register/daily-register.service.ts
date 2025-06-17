@@ -17,7 +17,7 @@ export class DailyRegisterService {
     private operatingPeriodService: OperatingPeriodService,
   ) {}
 
-  async create(body: CreateDailyRegisterDto) {
+  async create(body: CreateDailyRegisterDto, isFinger?: boolean) {
     const actuallyUser = await this.userModel
       .findOne({ employeeNumber: body.employeeNumber })
       .populate({
@@ -27,7 +27,7 @@ export class DailyRegisterService {
     if (!actuallyUser) {
       throw new NotFoundException('No se encontro el usuario');
     }
-    const isAllow = actuallyUser && body.pinPos === actuallyUser.pinPos;
+    const isAllow = isFinger ? true : actuallyUser && body.pinPos === actuallyUser.pinPos ? true : false;
     if (!isAllow) {
       throw new NotFoundException('Contraseña incorrecta');
     }
