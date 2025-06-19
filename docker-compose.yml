@@ -20,9 +20,6 @@ services:
 
   mongo-init:
     image: mongo:latest
-    depends_on:
-      database:
-        condition: service_healthy
     entrypoint: >
       bash -c "
       until mongo --host database_ -u ${MONGO_INITDB_ROOT_USERNAME} -p ${MONGO_INITDB_ROOT_PASSWORD} --authenticationDatabase admin --eval 'rs.status()' | grep -q 'ok'; do
