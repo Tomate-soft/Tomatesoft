@@ -51,8 +51,10 @@ export class SubcategoryOneController {
       }
     } catch (error) {
       if (error.code === 11000) {
+        console.error(error);
         throw new ConflictException('La categoría ya existe');
       } else {
+        console.error(error);
         throw new NotFoundException('Ha ocurrido algo inesperado');
       }
     }
