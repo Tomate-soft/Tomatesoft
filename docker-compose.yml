@@ -17,11 +17,6 @@ services:
     restart: on-failure
     networks:
       - tomatesoft_network
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017 --quiet
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   mongo-init:
     image: mongo:latest
