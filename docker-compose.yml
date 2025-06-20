@@ -13,7 +13,6 @@ services:
     volumes:
       - mongodb_data:/data/db
       - /etc/mongo/mongo-new.keyfile:/etc/mongo/mongodb-keyfile:ro
-      - ./init-replica:/docker-entrypoint-initdb.d
     command: ["mongod", "--bind_ip_all", "--auth", "--replSet", "rs0", "--keyFile", "/etc/mongo/mongodb-keyfile"]
     restart: on-failure
     networks:

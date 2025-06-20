@@ -24,3 +24,9 @@ async function initReplicaSet() {
 }
 
 initReplicaSet();
+
+
+// rs.initiate({
+//   _id: "rs0",
+//   members: [{ _id: 0, host: "database:27017" }]
+// });
