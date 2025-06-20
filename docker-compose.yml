@@ -13,30 +13,39 @@ services:
     volumes:
       - mongodb_data:/data/db
       - /etc/mongo/mongo-new.keyfile:/etc/mongo/mongodb-keyfile:ro
+      - ./init-replica:/docker-entrypoint-initdb.d
     command: ["mongod", "--bind_ip_all", "--auth", "--replSet", "rs0", "--keyFile", "/etc/mongo/mongodb-keyfile"]
     restart: on-failure
     networks:
       - tomatesoft_network
 
-  mongo-init:
-    image: node:18
-    container_name: mongo_init_rs
+  backend:
+    image: tomatesoft_server:latest
+    container_name: backend_
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     depends_on:
       - database
-    volumes:
-      - ./mongo-init:/app
-    working_dir: /app
-    entrypoint: sh -c "sleep 10 && node init-replica.js"
+    networks:
+      - tomatesoft_network
+    ports:
+      - "${SERVER_PORTS}"
+
+  frontend:
+    image: tomatesoft_frontend:latest
+    container_name: frontend_
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
     networks:
       - tomatesoft_network
 
-  backend:
-    ...
-  frontend:
-    ...
-
 volumes:
   mongodb_data:
+    driver: local
 
 networks:
   tomatesoft_network:
