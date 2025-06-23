@@ -24,11 +24,23 @@ import { ProcessService } from 'src/process/process.service';
 import { BillsService } from 'src/ventas/bills/bills.service';
 import { Discount, DiscountSchema } from 'src/schemas/ventas/discounts.schema';
 import { DiscountsService } from 'src/ventas/discounts/discounts.service';
-import { Cancellations, CancellationSchema } from 'src/schemas/ventas/cancellations.schema';
+import {
+  Cancellations,
+  CancellationSchema,
+} from 'src/schemas/ventas/cancellations.schema';
 import { CancellationsService } from 'src/ventas/cancellations/cancellations.service';
-import { ToGoOrder, ToGoOrderSchema } from 'src/schemas/ventas/orders/toGoOrder.schema';
-import { RappiOrder, RappiOrderSchema } from 'src/schemas/ventas/orders/rappiOrder.schema';
-import { PhoneOrder, PhoneOrderSchema } from 'src/schemas/ventas/orders/phoneOrder.schema';
+import {
+  ToGoOrder,
+  ToGoOrderSchema,
+} from 'src/schemas/ventas/orders/toGoOrder.schema';
+import {
+  RappiOrder,
+  RappiOrderSchema,
+} from 'src/schemas/ventas/orders/rappiOrder.schema';
+import {
+  PhoneOrder,
+  PhoneOrderSchema,
+} from 'src/schemas/ventas/orders/phoneOrder.schema';
 import { User, UserSchema } from 'src/schemas/users.schema';
 import { Product } from 'src/schemas/ventas/product.schema';
 import { ProductSchema } from 'src/schemas/catalogo/products.schema';

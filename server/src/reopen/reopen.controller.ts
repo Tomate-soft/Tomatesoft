@@ -26,7 +26,7 @@ export class ReopenController {
     }
   }
 
-  @Get()
+  @Get('current')
   async findCurrent() {
     try {
       const data = await this.reopenService.findCurrent();
