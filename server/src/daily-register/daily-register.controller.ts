@@ -31,8 +31,8 @@ export class DailyRegisterController {
     }
   }
 
-  @Post("finger-print")
-   async createWithFinger(@Body() body: CreateDailyRegisterDto) {
+  @Post('finger-print')
+  async createWithFinger(@Body() body: CreateDailyRegisterDto) {
     try {
       const newRegister = await this.dailyRegisterService.create(body, true);
       return newRegister;
@@ -55,7 +55,7 @@ export class DailyRegisterController {
       throw new NotFoundException(`Ha ocurrido algo inesperado ${error}`);
     }
   }
-  
+
   @Put(':id')
   async updateRegister(
     @Param('id') id: string,
@@ -71,7 +71,4 @@ export class DailyRegisterController {
       throw new NotFoundException(`Ha ocurrido algo inesperado ${error}`);
     }
   }
-
 }
-
-

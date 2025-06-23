@@ -47,7 +47,7 @@ import { RewritePeriodModule } from './rewrite-period/rewrite-period.module';
 import { AppController } from './app.controller';
 // update
 
-  const uri =
+const uri =
   'mongodb://tomatesoft_db_admin01:tomatesoft.Admin01@database:27017/tomatesoft_db?authSource=admin&replicaSet=rs0';
 @Module({
   imports: [

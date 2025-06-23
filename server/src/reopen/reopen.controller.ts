@@ -26,6 +26,19 @@ export class ReopenController {
     }
   }
 
+  @Get()
+  async findCurrent() {
+    try {
+      const data = await this.reopenService.findCurrent();
+      if (!data) {
+        throw new NotFoundException('No data found');
+      }
+      return data;
+    } catch (error) {
+      throw new NotFoundException('No data found');
+    }
+  }
+
   @Post()
   async create(@Body() payload: CreateReopenDto) {
     try {

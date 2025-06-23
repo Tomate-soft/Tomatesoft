@@ -27,7 +27,11 @@ export class DailyRegisterService {
     if (!actuallyUser) {
       throw new NotFoundException('No se encontro el usuario');
     }
-    const isAllow = isFinger ? true : actuallyUser && body.pinPos === actuallyUser.pinPos ? true : false;
+    const isAllow = isFinger
+      ? true
+      : actuallyUser && body.pinPos === actuallyUser.pinPos
+        ? true
+        : false;
     if (!isAllow) {
       throw new NotFoundException('Contraseña incorrecta');
     }

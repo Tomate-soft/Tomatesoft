@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateReopenDto } from 'src/dto/reopen/createReopen';
 import { ENABLE_STATUS } from 'src/libs/status.libs';
+import { OperatingPeriodService } from 'src/operating-period/operating-period.service';
 import { CashierSession } from 'src/schemas/cashierSession/cashierSession';
 import { Reopen } from 'src/schemas/reopen/reopen.schema';
 import { Table } from 'src/schemas/tables/tableSchema';
@@ -18,6 +19,7 @@ export class ReopenService {
     @InjectModel(Table.name) private tableModel: Model<Table>,
     @InjectModel(CashierSession.name)
     private cashierSessionModel: Model<CashierSession>,
+    private readonly operatingPeriodService: OperatingPeriodService,
   ) {}
 
   async findAll() {
@@ -29,6 +31,31 @@ export class ReopenService {
       .populate({
         path: 'userId',
       });
+  }
+
+  async findCurrent(id?: string) {
+    try {
+      const currentPeriod = id
+        ? await this.operatingPeriodService.getCurrent(id)
+        : await this.operatingPeriodService.getCurrent();
+
+      if (!currentPeriod) {
+        throw new NotFoundException(
+          'No se encontro ningun periodo actualmente',
+        );
+      }
+
+      return await this.reopenModel
+        .find()
+        .populate({
+          path: 'accountId',
+        })
+        .populate({
+          path: 'userId',
+        });
+    } catch (error) {
+      throw new NotFoundException('No se encuentran cuentas activas');
+    }
   }
 
   async findOne(id: string) {
