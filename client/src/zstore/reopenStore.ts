@@ -1,4 +1,4 @@
-import { getReopens, getReopensCurrentService } from '@/services/reopen.services';
+import { getReopens, getReopensCurrent  } from '@/services/reopen.services';
 import { create } from 'zustand';
 
 interface state {
@@ -32,7 +32,7 @@ export const useReopenStore = create<state>((set) => ({
    getReopensCurrent: async () => {
     set({ loading: true });
     try {
-      const response = await getReopensCurrentService();
+      const response = await getReopensCurrent();
       if (!response) {
         set({ loading: false, error: 'Something went wrong' });
         throw new Error('Something went wrong');

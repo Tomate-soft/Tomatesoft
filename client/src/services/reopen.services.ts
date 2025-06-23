@@ -6,11 +6,6 @@ export const getReopens = async () => {
   return response;
 };
 
-
-export const getReopensCurrentService = async () => {
-  const response = await axios(REOPEN_BILL_PATH);
-  return response;
-};
 export const getReopensCurrent = async () => {
   const response = await axios(`${REOPEN_BILL_PATH}/current`);
   return response;
