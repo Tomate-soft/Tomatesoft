@@ -10,3 +10,8 @@ export const getReopensCurrent = async () => {
   const response = await axios(`${REOPEN_BILL_PATH}/current`);
   return response;
 };
+
+export const getReopensHistory = async () => {
+  const response = await axios(`${REOPEN_BILL_PATH}/history`);
+  return response;
+};

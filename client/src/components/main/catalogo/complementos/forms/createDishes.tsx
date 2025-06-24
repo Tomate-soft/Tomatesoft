@@ -87,7 +87,7 @@ export default function CreateDishesModal({
                 <input
                   type="text"
                   className={styles.input}
-                  placeholder={`Precio ${formatSellType(price.name)}`}
+                  placeholder={`${price.name == 'ON_SITE' ? 'Restaurante' : price.name == 'TOGO' ? 'Para llevar' : price.name == 'PHONE' ? 'Telefono' : price.name == 'RAPPI' ? 'Rappi' : price.name == 'PRICE_LIST_FIVE' ? 'Precio lista 5' : price.name == 'PRICE_LIST_SIX' ? 'Precio lista 6' : price.name == 'PRICE_LIST_SEVEN' ? 'Precio lista 7' : price.name == 'PRICE_LIST_EIGHT' ? 'Precio lista 8' : price.name == 'PRICE_LIST_NINE' ? 'Precio lista 9' : price.name == 'PRICE_LIST_TEN' ? 'Precio lista 10' : 'Precio lista 11'}`}
                   onChange={(e) => {
                     const newPrices = [...prices];
                     newPrices[index].price = parseFloat(e.target.value);
@@ -102,10 +102,7 @@ export default function CreateDishesModal({
           <button
             className={styles.nextButton}
             onClick={() => {
-              console.log({
-                dishesName: dishesName,
-                prices: prices,
-              });
+             
               dispatch(createDishesAction({
                 dishesName: dishesName,
                 prices: prices,

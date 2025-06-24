@@ -5,8 +5,8 @@ interface state {
   loading: boolean;
   error: string | null;
   reopens: [];
-  getReopens: () => Promise<void>;
   currentReopen: [],
+  getReopens: () => Promise<void>;
   getReopensCurrent: () => void;
 }
 
@@ -38,6 +38,20 @@ export const useReopenStore = create<state>((set) => ({
         throw new Error('Something went wrong');
       }
       set({ loading: false, currentReopen: response.data });
+    } catch (error) {
+      set({ loading: false, error: 'Something went wrong' });
+      throw new Error('Something went wrong');
+    }
+  },
+  getReopensHistory: async () => {
+    set({ loading: true });
+    try {
+      const response = await getReopens();
+      if (!response) {
+        set({ loading: false, error: 'Something went wrong' });
+        throw new Error('Something went wrong');
+      }
+      set({ loading: false, reopens: response.data });
     } catch (error) {
       set({ loading: false, error: 'Something went wrong' });
       throw new Error('Something went wrong');

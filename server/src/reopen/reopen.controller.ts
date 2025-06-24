@@ -25,6 +25,19 @@ export class ReopenController {
       throw new NotFoundException('No data found');
     }
   }
+  
+  @Get('history')
+  async findHistory() {
+    try {
+      const data = await this.reopenService.findCurrent(null, 'history');
+      if (!data) {
+        throw new NotFoundException('No data found');
+      }
+      return data;
+    } catch (error) {
+      throw new NotFoundException('No data found');
+    }
+  }
 
   @Get('current')
   async findCurrent() {
