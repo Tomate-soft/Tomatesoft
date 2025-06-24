@@ -1,4 +1,4 @@
-import { getReopens, getReopensCurrent  } from '@/services/reopen.services';
+import { getReopens, getReopensCurrent, getReopensHistory  } from '@/services/reopen.services';
 import { create } from 'zustand';
 
 interface state {
@@ -8,6 +8,7 @@ interface state {
   currentReopen: [],
   getReopens: () => Promise<void>;
   getReopensCurrent: () => void;
+  getReopensHistory: () => void;
 }
 
 export const useReopenStore = create<state>((set) => ({
@@ -46,7 +47,7 @@ export const useReopenStore = create<state>((set) => ({
   getReopensHistory: async () => {
     set({ loading: true });
     try {
-      const response = await getReopens();
+      const response = await getReopensHistory();
       if (!response) {
         set({ loading: false, error: 'Something went wrong' });
         throw new Error('Something went wrong');

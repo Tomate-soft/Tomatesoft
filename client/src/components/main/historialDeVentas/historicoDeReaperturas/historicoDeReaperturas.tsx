@@ -5,10 +5,10 @@ import ReOpenMainTable from '@/components/mainTables/reOpenMainTable';
 
 export default function HistoricoDeReaperturas() {
   const reopens = useReopenStore((state) => state.reopens);
-  const getReopens = useReopenStore((state) => state.getReopens);
+  const getReopensHistory = useReopenStore((state) => state.getReopensHistory);
 
   useEffect(() => {
-    getReopens();
+    getReopensHistory();
   }, []);
   return <ReOpenMainTable data={reopens} />;
 }
