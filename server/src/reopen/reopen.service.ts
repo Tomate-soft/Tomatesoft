@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import doc from 'pdfkit';
 import { CreateReopenDto } from 'src/dto/reopen/createReopen';
 import { ENABLE_STATUS } from 'src/libs/status.libs';
 import { OperatingPeriodService } from 'src/operating-period/operating-period.service';
@@ -9,6 +10,10 @@ import { Reopen } from 'src/schemas/reopen/reopen.schema';
 import { Table } from 'src/schemas/tables/tableSchema';
 import { Bills } from 'src/schemas/ventas/bills.schema';
 import { Notes } from 'src/schemas/ventas/notes.schema';
+enum ReopenType {
+  HISTORY = 'history',
+  CURRENT = 'current',
+}
 
 @Injectable()
 export class ReopenService {
@@ -33,11 +38,12 @@ export class ReopenService {
       });
   }
 
-  async findCurrent(id?: string) {
+  async findCurrent(id?: string | null, type?: string) {
     try {
       const currentPeriod = id
         ? await this.operatingPeriodService.getCurrent(id)
         : await this.operatingPeriodService.getCurrent();
+      const currentPeriodId = currentPeriod[0]._id.toString();
 
       if (!currentPeriod) {
         throw new NotFoundException(
@@ -45,7 +51,7 @@ export class ReopenService {
         );
       }
 
-      return await this.reopenModel
+      const docs = await this.reopenModel
         .find()
         .populate({
           path: 'accountId',
@@ -53,6 +59,18 @@ export class ReopenService {
         .populate({
           path: 'userId',
         });
+
+      if (type === ReopenType.HISTORY) {
+        return docs.filter(
+          (doc) => doc.accountId.operatingPeriod.toString() !== currentPeriodId,
+        );
+      }
+
+      if (type === ReopenType.CURRENT) {
+        return docs.filter(
+          (doc) => doc.accountId.operatingPeriod.toString() === currentPeriodId,
+        );
+      }
     } catch (error) {
       throw new NotFoundException('No se encuentran cuentas activas');
     }
@@ -79,9 +97,6 @@ export class ReopenService {
         { status: ENABLE_STATUS },
       );
 
-      // cambiar el status de la mesa de nuevo a enable
-      // buscar la cuenta en la session del cajero y sacarla de la session
-
       await session.commitTransaction();
       session.endSession();
       return reopen;
@@ -89,7 +104,6 @@ export class ReopenService {
   }
 
   async createReopenNote(payload: CreateReopenDto) {
-    console.log(payload);
     const session = await this.reopenModel.startSession();
     await session.withTransaction(async () => {
       const reopen = new this.reopenModel(payload);

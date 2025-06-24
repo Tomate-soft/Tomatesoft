@@ -29,7 +29,7 @@ export class ReopenController {
   @Get('current')
   async findCurrent() {
     try {
-      const data = await this.reopenService.findCurrent();
+      const data = await this.reopenService.findCurrent(null, 'current');
       if (!data) {
         throw new NotFoundException('No data found');
       }
