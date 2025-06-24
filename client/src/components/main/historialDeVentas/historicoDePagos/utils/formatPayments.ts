@@ -6,8 +6,7 @@ export function formatPayments(payment) {
     return acc + !item.tips ? 0 :  parseFloat(item.tips);
   }, 0);
 
-  console.log("es aca");
-  console.log(payment);
+
 
   const formatedPayment = {
     payCode: payment?.paymentCode ?? '--',
@@ -17,7 +16,7 @@ export function formatPayments(payment) {
     tips: `$${parseFloat(calculateTips).toFixed(2)}`,  
     paid: `$${parseFloat(payment.paymentTotal).toFixed(2)}`,
     method: settingPayMethods(payment.transactions).type,
-    cashier: `${payment.cashier.name} ${payment.cashier.lastName}`,
+    cashier: `${payment.cashier?.name} ${payment.cashier?.lastName}`,
     date: formatTempo(payment.createdAt),
     billing: payment.billing,
   };

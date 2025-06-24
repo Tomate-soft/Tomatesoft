@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface Props {
   loading: boolean;
-  errors: Error | string | null;
+  errors: Error | string | null | boolean;
   isOpen: boolean;
   onClose: () => void;
   children?: string;

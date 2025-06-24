@@ -19,8 +19,16 @@ import { getDepartamentsAction } from '../../../../redux/actions/usuarios/depart
 import { getUsersAction } from '../../../../redux/actions/auth';
 import { SearchBar } from '@/components/customElements/searchBar/SearchBar';
 import { set } from 'ref-napi';
+import UpdateUserForm from './updateUserForm/updateUserForm';
+
+enum ModalOptions {
+  INITIAL_STATE = "INITIAL_STATE",
+  UPDATE_USER_STATE = "UPDATE_USER_STATE"
+}
 
 export default function Empleados() {
+  const [modalState, setModalState] = useState(ModalOptions.INITIAL_STATE);
+  const [ selectedEmployee, setSelectedEmployee ] = useState({});
   const [filteredUsers, setFilteredUsers] = useState<string>("");
   const [employee, setEmployee] = useState({});
   const register = useModal('register');
@@ -46,7 +54,6 @@ export default function Empleados() {
   }
   );
   useEffect(() => {
-    console.log(isLoadingRegister);
     dispatch(getUsersAction());
   }, []);
   return (
@@ -153,7 +160,10 @@ export default function Empleados() {
                         </>
                       ) : (
                         <>
-                          <button className={styles.actionButtonsFirstEnabled}>
+                          <button className={styles.actionButtonsFirstEnabled} onClick={() => {
+                            setSelectedEmployee(element);
+                            setModalState(ModalOptions.UPDATE_USER_STATE);
+                          }}>
                             <img src={update} alt="update-icon" />
                           </button>
                           <button
@@ -174,6 +184,9 @@ export default function Empleados() {
         </table>
         <div className={styles.tableFooter}></div>
       </section>
+      {
+        modalState === ModalOptions.UPDATE_USER_STATE && <UpdateUserForm onClose={() => setModalState(ModalOptions.INITIAL_STATE)} employee={selectedEmployee} />
+      }
     </div>
   );
 }

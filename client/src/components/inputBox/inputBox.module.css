@@ -1,0 +1,41 @@
+@import "../../varCss/colors.module.css";
+
+.inputBox{
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-radius: 16px;
+    background: var(--color-gradient);
+
+    >input{
+        padding: 16px;
+        background: var(--color-gradient);
+        color: aliceblue;
+        border-radius: 8px;
+    }
+
+    >select, 
+    ::picker(select){
+        appearance: base-select;
+        
+    }
+
+    >select{
+        border-radius: 8px;
+        padding: 16px;
+        font-size: var(--font-size-small);
+        border: none;
+        background: var(--color-gradient);
+
+        >option{
+            max-height: 100px;
+            overflow: auto;
+            padding: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.233);
+        }
+    }
+
+    
+    
+}
