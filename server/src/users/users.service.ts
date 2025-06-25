@@ -6,7 +6,6 @@ import { User } from 'src/schemas/users.schema';
 // interfaces
 import { CreateUserDto } from 'src/dto/users/createUser.dto';
 import { UpdateUserDto } from 'src/dto/users/updateUserDto';
-import { Bills } from 'src/schemas/ventas/bills.schema';
 
 @Injectable()
 export class UsersService {
@@ -82,7 +81,6 @@ export class UsersService {
   }
 
   async create(createUser: CreateUserDto) {
-    console.log(createUser);
     try {
       const lastUser = await this.UserModel.findOne({})
         .sort({ employeeNumber: -1 })
@@ -109,9 +107,6 @@ export class UsersService {
   }
 
   async updateSamples(id: string, body: UpdateUserDto) {
-    // const sampleByte = base64.decode(body.samples); //
-    console.log(body.samples);
-
     const updatedUser = await this.UserModel.findByIdAndUpdate(id, body, {
       new: true,
     });
@@ -119,7 +114,6 @@ export class UsersService {
   }
 
   async update(id: any, body: any) {
-    console.log(body);
     return this.UserModel.findByIdAndUpdate(id, body, { new: true });
   }
 

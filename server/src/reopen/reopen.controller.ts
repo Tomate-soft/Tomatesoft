@@ -25,7 +25,7 @@ export class ReopenController {
       throw new NotFoundException('No data found');
     }
   }
-  
+
   @Get('history')
   async findHistory() {
     try {

@@ -43,6 +43,7 @@ export class UsersController {
   delete() {
     return 'Usuario eliminado con exito';
   }
+
   @Put(':id')
   async update(@Param('id') id: string, @Body() body: UpdateUserDto) {
     try {
@@ -79,8 +80,12 @@ export class UsersController {
 
   @Put('apt/:id')
   async updateAuth(@Param('id') id: string, @Body() body: UpdateUserDto) {
+    console.log('esto llega al controller');
+    console.log(body);
     try {
       const userUpdated = await this.usersService.update(id, body);
+      console.log('y estio pasa');
+      console.log(userUpdated);
       if (!userUpdated) {
         throw new NotFoundException(
           'No se encontro el usuario que deseas actualizar',
