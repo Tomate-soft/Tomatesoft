@@ -13,9 +13,12 @@ export default function InputBox({ label, value, onChange, options, keys }: Prop
         <div className={styles.inputBox}>
             <label>{label}</label>
             { options ? (
-                <select value={value} onChange={(e) => onChange(e.target.value)}>
-                    {options.map((option, index) => (
-                        <option key={index} value={option[keys || " "]}>
+                <select value={value[keys]}  onChange={(e) => {
+                        const selected = options?.find(opt => opt[keys] === e.target.value);
+                        if (selected) onChange(selected);
+                    }}>
+                    {options.map((option) => (
+                        <option key={option[keys]} value={option[keys || " "]}>
                             {option[keys || " "]}
                         </option>
                     ))}
