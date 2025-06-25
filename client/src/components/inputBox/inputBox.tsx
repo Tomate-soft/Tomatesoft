@@ -14,8 +14,8 @@ export default function InputBox({ label, value, onChange, options, keys }: Prop
             <label>{label}</label>
             { options ? (
                 <select value={value} onChange={(e) => onChange(e.target.value)}>
-                    {options.map((option) => (
-                        <option key={option} value={option[keys || " "]}>
+                    {options.map((option, index) => (
+                        <option key={index} value={option[keys || " "]}>
                             {option[keys || " "]}
                         </option>
                     ))}

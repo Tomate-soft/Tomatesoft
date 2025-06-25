@@ -43,13 +43,15 @@ export default function UpdateUserForm({ onClose, employee }: Props) : JSX.Eleme
             <InputBox label="Nombre" value={name} onChange={(value) => setEmployeeData({ ...employeeData, name: value })} />
             <InputBox label="Apellido" value={lastName} onChange={(value) => setEmployeeData({ ...employeeData, lastName: value })} />
             <InputBox label="Código" value={employeeNumber} onChange={(value) => setEmployeeData({ ...employeeData, employeeNumber: value })} />
-            <InputBox label="Perfil" value={role.profileName} onChange={(value) => setEmployeeData({ ...employeeData, role: value })} options={profiles} keys="profileName" />
+            <InputBox label="Perfil" value={role} onChange={(value) => setEmployeeData({ ...employeeData, role: value })} options={profiles} keys="profileName" />
             <InputBox label="Turno" value={shift} onChange={(value) => setEmployeeData({ ...employeeData, shift: value })} />
             {/* <InputBox label="Fecha de ingreso" value={entryDate} onChange={(value) => setEmployeeData({ ...employeeData, entryDate: value })} /> */}
         </main>
         <footer>
             <button onClick={() => {
-                updateUser(employee._id, { name, lastName, employeeNumber, active, role: role._id, shift});
+              const data = { name, lastName, employeeNumber, active, role: role._id, shift};
+              console.log(data);
+                updateUser(employee._id, data);
                 confirmChanges.openModal();
             }}><img src={disquetIcon} alt="disquet-icon"  />Guardar</button>
         </footer>
