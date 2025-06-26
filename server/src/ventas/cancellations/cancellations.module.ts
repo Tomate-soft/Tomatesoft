@@ -42,6 +42,7 @@ import {
   CashierSession,
   CashierSessionSchema,
 } from 'src/schemas/cashierSession/cashierSession';
+import { MoneyMovement, MoneyMovementSchema } from 'src/schemas/moneyMovements/moneyMovement.schema';
 
 @Module({
   imports: [
@@ -101,6 +102,10 @@ import {
       {
         name: CashierSession.name,
         schema: CashierSessionSchema,
+      },
+      {
+        name: MoneyMovement.name,
+        schema: MoneyMovementSchema,
       },
     ]),
   ],

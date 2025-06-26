@@ -13,6 +13,7 @@ import { SourcePeriod } from 'src/schemas/SourcePeriod/sourcePeriod.schema';
 import { branchId } from 'src/variablesProvisionales';
 import { DiscountsService } from 'src/ventas/discounts/discounts.service';
 import { CancellationsService } from 'src/ventas/cancellations/cancellations.service';
+import { MoneyMovement } from 'src/schemas/moneyMovements/moneyMovement.schema';
 
 @Injectable()
 export class OperatingPeriodService {
@@ -21,6 +22,8 @@ export class OperatingPeriodService {
     private sourcePeriodModel: Model<SourcePeriod>,
     @InjectModel(OperatingPeriod.name)
     private operatingPeriodModel: Model<OperatingPeriod>,
+    @InjectModel(MoneyMovement.name)
+    private moneyMovementModel: Model<MoneyMovement>,
     @InjectModel(Branch.name) private branchModel: Model<Branch>,
     @Inject(forwardRef(() => ProcessService))
     private readonly processService: ProcessService,
@@ -39,9 +42,9 @@ export class OperatingPeriodService {
   }
 
   async createMoneyMovement(body: any) {
-    const session = await this.operatingPeriodModel.startSession();
+    const session = await this.moneyMovementModel.startSession();
     session.startTransaction();
-    const newMoneyMovement = new this.operatingPeriodModel(body);
+    const newMoneyMovement = new this.moneyMovementModel(body);
     await newMoneyMovement.save();
     await session.commitTransaction();
     session.endSession();

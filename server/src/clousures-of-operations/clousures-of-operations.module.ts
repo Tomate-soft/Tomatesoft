@@ -46,6 +46,7 @@ import {
   CancellationSchema,
 } from 'src/schemas/ventas/cancellations.schema';
 import { Product } from 'src/schemas/ventas/product.schema';
+import { MoneyMovement, MoneyMovementSchema } from 'src/schemas/moneyMovements/moneyMovement.schema';
 
 /**
  * Module for handling closures of operations.
@@ -70,6 +71,10 @@ import { Product } from 'src/schemas/ventas/product.schema';
       { name: Table.name, schema: TableSchema },
       { name: Cancellations.name, schema: CancellationSchema },
       { name: Product.name, schema: ProductSchema },
+      {
+        name: MoneyMovement.name,
+        schema: MoneyMovementSchema,
+      },
     ]),
     forwardRef(() => ProcessModule),
     forwardRef(() => OperatingPeriodModule),

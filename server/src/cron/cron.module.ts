@@ -44,6 +44,7 @@ import {
   Cancellations,
   CancellationSchema,
 } from 'src/schemas/ventas/cancellations.schema';
+import { MoneyMovement, MoneyMovementSchema } from 'src/schemas/moneyMovements/moneyMovement.schema';
 
 @Module({
   imports: [
@@ -103,6 +104,10 @@ import {
       {
         name: Product.name,
         schema: ProductSchema,
+      },
+      {
+        name: MoneyMovement.name,
+        schema: MoneyMovementSchema,
       },
     ]),
     forwardRef(() => ProcessModule),

@@ -47,6 +47,7 @@ import {
 } from 'src/schemas/ventas/cancellations.schema';
 import { Product } from 'src/schemas/ventas/product.schema';
 import { ProductSchema } from 'src/schemas/catalogo/products.schema';
+import { MoneyMovement, MoneyMovementSchema } from 'src/schemas/moneyMovements/moneyMovement.schema';
 
 @Module({
   imports: [
@@ -114,6 +115,10 @@ import { ProductSchema } from 'src/schemas/catalogo/products.schema';
       {
         name: Product.name,
         schema: ProductSchema,
+      },
+      {
+        name: MoneyMovement.name,
+        schema: MoneyMovementSchema,
       },
     ]),
   ],

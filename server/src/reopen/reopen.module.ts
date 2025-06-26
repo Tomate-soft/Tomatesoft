@@ -44,6 +44,7 @@ import {
 import { User, UserSchema } from 'src/schemas/users.schema';
 import { Product } from 'src/schemas/ventas/product.schema';
 import { ProductSchema } from 'src/schemas/catalogo/products.schema';
+import { MoneyMovement, MoneyMovementSchema } from 'src/schemas/moneyMovements/moneyMovement.schema';
 
 @Module({
   imports: [
@@ -63,6 +64,10 @@ import { ProductSchema } from 'src/schemas/catalogo/products.schema';
       { name: PhoneOrder.name, schema: PhoneOrderSchema },
       { name: User.name, schema: UserSchema },
       { name: Product.name, schema: ProductSchema },
+      {
+        name: MoneyMovement.name,
+        schema: MoneyMovementSchema,
+      },
     ]),
   ],
   controllers: [ReopenController],
