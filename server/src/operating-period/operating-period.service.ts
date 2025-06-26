@@ -44,7 +44,20 @@ export class OperatingPeriodService {
   async createMoneyMovement(body: any) {
     const session = await this.moneyMovementModel.startSession();
     session.startTransaction();
-    const newMoneyMovement = new this.moneyMovementModel(body);
+
+    const period = await this.getCurrent();
+
+    const newMovementData = {
+      ...body,
+      operatingPeriod: period[0]._id,
+    };
+    if (!newMovementData.operatingPeriod) {
+      await session.abortTransaction();
+      session.endSession();
+      throw new Error('No se encontro el periodo operativo actual');
+    }
+
+    const newMoneyMovement = new this.moneyMovementModel(newMovementData);
     await newMoneyMovement.save();
     await session.commitTransaction();
     session.endSession();

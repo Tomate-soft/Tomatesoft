@@ -17,7 +17,6 @@ import { PhoneOrder } from 'src/schemas/ventas/orders/phoneOrder.schema';
 import { RappiOrder } from 'src/schemas/ventas/orders/rappiOrder.schema';
 import { ToGoOrder } from 'src/schemas/ventas/orders/toGoOrder.schema';
 import { User } from 'src/schemas/users.schema';
-import { calculateBillTotal } from 'src/utils/business/CalculateTotals';
 import { Table } from 'src/schemas/tables/tableSchema';
 
 @Injectable()
@@ -120,8 +119,6 @@ export class BillsService {
         operatingPeriod: period[0]._id,
         // vamo a buscar la mesa
       });
-
-      console.log(billToCreate);
 
       await billToCreate.save();
       return billToCreate;

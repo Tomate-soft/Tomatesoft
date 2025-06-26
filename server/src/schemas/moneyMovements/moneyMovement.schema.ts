@@ -1,4 +1,6 @@
 import { SchemaFactory, Prop, Schema } from '@nestjs/mongoose';
+import { Schema as MongooseSchema } from 'mongoose';
+import { OperatingPeriod } from '../operatingPeriod/operatingPeriod.schema';
 
 enum MoneyMovementStatus {
   APPROVED = 'approved',
@@ -13,6 +15,13 @@ enum MoneyMovementType {
 
 @Schema({ versionKey: false, timestamps: true })
 export class MoneyMovement {
+  @Prop({
+    required: true,
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'OperatingPeriod',
+  })
+  operatingPeriod?: OperatingPeriod;
+
   @Prop({ required: true })
   amount: number;
 

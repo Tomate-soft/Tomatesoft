@@ -46,7 +46,10 @@ import {
   CancellationSchema,
 } from 'src/schemas/ventas/cancellations.schema';
 import { Product } from 'src/schemas/ventas/product.schema';
-import { MoneyMovement, MoneyMovementSchema } from 'src/schemas/moneyMovements/moneyMovement.schema';
+import {
+  MoneyMovement,
+  MoneyMovementSchema,
+} from 'src/schemas/moneyMovements/moneyMovement.schema';
 
 /**
  * Module for handling closures of operations.

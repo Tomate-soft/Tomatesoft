@@ -42,7 +42,10 @@ import {
   CashierSession,
   CashierSessionSchema,
 } from 'src/schemas/cashierSession/cashierSession';
-import { MoneyMovement, MoneyMovementSchema } from 'src/schemas/moneyMovements/moneyMovement.schema';
+import {
+  MoneyMovement,
+  MoneyMovementSchema,
+} from 'src/schemas/moneyMovements/moneyMovement.schema';
 
 @Module({
   imports: [
