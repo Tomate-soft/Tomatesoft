@@ -102,7 +102,6 @@ export class CashierSessionService {
     try {
       const currentSession = await this.cashierSessionModel.findById(id);
 
-      console.log(currentSession.bills);
       if (!currentSession) {
         throw new NotFoundException('No se pudo actualizar');
       }

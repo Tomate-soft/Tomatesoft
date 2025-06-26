@@ -38,6 +38,16 @@ export class OperatingPeriodService {
     });
   }
 
+  async createMoneyMovement(body: any) {
+    const session = await this.operatingPeriodModel.startSession();
+    session.startTransaction();
+    const newMoneyMovement = new this.operatingPeriodModel(body);
+    await newMoneyMovement.save();
+    await session.commitTransaction();
+    session.endSession();
+    return newMoneyMovement;
+  }
+
   async getCurrent(id?: string) {
     const session = await this.branchModel.startSession();
     session.startTransaction();

@@ -81,6 +81,21 @@ export class OperatingPeriodController {
     }
   }
 
+  @Post('money-movement')
+  async createMoneyMovement(@Body() body: any) {
+    try {
+      const res = await this.operatingPeriodService.createMoneyMovement(body);
+      if (!res) {
+        throw new NotFoundException('No se ha podido crear el movimiento');
+      }
+      return res;
+    } catch (error) {
+      throw new NotFoundException(
+        `Ha ocurrido algo inesperado. Mas informacion: ${error}`,
+      );
+    }
+  }
+
   @Patch('close-period/:id')
   async updatePeriod(@Param('id') id: string, @Body() body: any) {
     try {
