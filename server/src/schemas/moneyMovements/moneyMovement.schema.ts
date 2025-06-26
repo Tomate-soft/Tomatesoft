@@ -16,7 +16,7 @@ export class MoneyMovement {
   @Prop({ required: true })
   amount: number;
 
-  @Prop({ required: true })
+  @Prop({ required: true, enum: MoneyMovementType })
   type: MoneyMovementType;
 
   @Prop({ required: true })
@@ -31,7 +31,7 @@ export class MoneyMovement {
   @Prop({ required: true })
   user: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, enum: MoneyMovementStatus })
   status: MoneyMovementStatus;
 }
 
