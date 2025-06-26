@@ -77,7 +77,6 @@ export class OperatingPeriodService {
         .populate({
           path: 'moneyMovements',
         });
-
       console.log(operatingPeriod);
       await session.commitTransaction();
       session.endSession();
