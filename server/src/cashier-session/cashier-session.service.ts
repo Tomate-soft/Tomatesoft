@@ -147,6 +147,7 @@ export class CashierSessionService {
   // ver si hay dinero para realizar el retiro
   // ya que creamos el retiro lo metemos a la session del cajero
   async cashWithdrawal(body: { auth: any; body: createCashWithdrawDto }) {
+    console.log('body', body);
     const bodyData = body.body;
     const session = await this.cashierSessionModel.startSession();
     const newWithdraw = await session.withTransaction(async () => {
