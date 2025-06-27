@@ -2,6 +2,7 @@ import { Body, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { parse } from 'path';
+import { title } from 'process';
 import { createCashWithdrawDto } from 'src/dto/cashierSession/cashWithdraw/createCashWithdraw';
 
 import { createCashierSessionDto } from 'src/dto/cashierSession/createCashierSession';
@@ -181,6 +182,7 @@ export class CashierSessionService {
       const movementData = {
         amount: parseFloat(bodyData.quantity), // ✅
         type: 'income', // ✅
+        title: 'Retiro parcial de efectivo', // ✅
         description: `Retiro de efectivo efectuado a el cajero ${currentSession.user.name}, aprovado por ${body.auth.pin} en la fecha ${new Date().toISOString()}`,
         date: new Date().toISOString(),
         user: userName,
