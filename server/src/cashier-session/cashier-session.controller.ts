@@ -80,8 +80,6 @@ export class CashierSessionController {
 
   @Post()
   async create(@Body() body: createCashierSessionDto) {
-    console.log('entra a crear la session');
-    console.log(body);
     try {
       const newSession = await this.cashierSessionService.create(body);
       console.log('depoues de crear la session');
@@ -121,7 +119,9 @@ export class CashierSessionController {
   }
 
   @Post('/cash-withdrawal')
-  async cashWithdrawal(@Body() body: createCashWithdrawDto) {
+  async cashWithdrawal(
+    @Body() body: { auth: any; body: createCashWithdrawDto },
+  ) {
     console.log('LLegue al metodo adecuado con la data:');
     console.log(body);
     try {

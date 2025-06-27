@@ -14,7 +14,6 @@ import { branchId } from 'src/variablesProvisionales';
 import { DiscountsService } from 'src/ventas/discounts/discounts.service';
 import { CancellationsService } from 'src/ventas/cancellations/cancellations.service';
 import { MoneyMovement } from 'src/schemas/moneyMovements/moneyMovement.schema';
-import { find } from 'rxjs';
 
 @Injectable()
 export class OperatingPeriodService {

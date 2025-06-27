@@ -94,9 +94,15 @@ export class OperatingPeriod {
   })
   cashIn: CashIn;
 
+  // aca hay que ver que onda con los retiros por que cree lo sMoneymovements para algo mas general
+  // tenemos los retiros que potencialmente puede ser un cash movement pero estoy valorando la idea
+  // de que el al canze del retiro de efectivo solo se para el cierre de  y que se nere un mopneyMovement para representarlo
+  // en el périodo operativo, a tra ves de este, no como un retiro como tal.
+
   @Prop({
     trim: true,
     type: [{ type: MongooseSchema.Types.ObjectId, ref: 'MoneyMovement' }],
+    ref: 'MoneyMovement',
     default: [],
   })
   moneyMovements: MoneyMovement[];

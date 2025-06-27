@@ -1,6 +1,7 @@
 import { Body, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { parse } from 'path';
 import { createCashWithdrawDto } from 'src/dto/cashierSession/cashWithdraw/createCashWithdraw';
 
 import { createCashierSessionDto } from 'src/dto/cashierSession/createCashierSession';
@@ -8,6 +9,7 @@ import { updateCashierSessionDto } from 'src/dto/cashierSession/updateCashierSes
 import { OperatingPeriodService } from 'src/operating-period/operating-period.service';
 import { CashWithdraw } from 'src/schemas/cashierSession/cashWithdraw';
 import { CashierSession } from 'src/schemas/cashierSession/cashierSession';
+import { MoneyMovement } from 'src/schemas/moneyMovements/moneyMovement.schema';
 import { OperatingPeriod } from 'src/schemas/operatingPeriod/operatingPeriod.schema';
 import { User } from 'src/schemas/users.schema';
 
@@ -23,6 +25,8 @@ export class CashierSessionService {
     private readonly userModel: Model<User>,
     @InjectModel(CashWithdraw.name)
     private readonly cashWithdrawModel: Model<CashWithdraw>,
+    @InjectModel(MoneyMovement.name)
+    private readonly moneyMovementModel: Model<MoneyMovement>,
   ) {}
 
   async findAll() {
@@ -142,28 +146,53 @@ export class CashierSessionService {
   }
   // ver si hay dinero para realizar el retiro
   // ya que creamos el retiro lo metemos a la session del cajero
-  async cashWithdrawal(body: createCashWithdrawDto) {
+  async cashWithdrawal(body: { auth: any; body: createCashWithdrawDto }) {
+    const bodyData = body.body;
     const session = await this.cashierSessionModel.startSession();
-    const currentPeriod = await this.operatingPeriodService.getCurrent();
     const newWithdraw = await session.withTransaction(async () => {
-      const currentSession = await this.cashierSessionModel.findById(
-        body.sessionId,
-      );
-      const newWithdraw = new this.cashWithdrawModel(body);
+      const currentPeriod = await this.operatingPeriodService.getCurrent();
+      // const currentSession = await this.cashierSessionModel.findById(
+      //   body.sessionId,
+      // );
+      const newWithdraw = new this.cashWithdrawModel(bodyData);
       await newWithdraw.save();
 
-      await this.cashierSessionModel.findByIdAndUpdate(
-        body.sessionId,
-        { cashWithdraw: [...currentSession.cashWithdraw, newWithdraw] },
+      const currentSession = await this.cashierSessionModel.findByIdAndUpdate(
+        bodyData.sessionId,
+        { $push: { cashWithdraws: newWithdraw._id } },
         {
           new: true,
         },
       );
 
+      // Que informacion necesito para crear el MoneyMovement?
+      // que aqui obviamente siempre es por defecto un retiro de efectivo.
+      // la info0rmaciopn que se necewsita es la siguiente:
+      /*
+      amount: este yua lo tenemos que tener por que viene para crear el cashWithdraw
+      type: este es un retiro de efectivo, por lo que siempre sera Income este dinero sale de la caja pero entra al operatingPeriod
+      description: Aca meteremos un string como: Retiro de efectivo efectuado a el cajero ${userName}, aprovado por ${quien aprueba} en la fecha ${new Date().toISOString()}
+      date: este es el momento en que se realiza el retiro, por lo que sera new Date().toISOString()
+      user: este es el usuario que realiza el retiro, por lo que sera body.user
+      status: siempre sera aprobado, ya que el retiro se realiza en el momento y no hay aprobacion previa. o esta aprobacion se corrobora en el POS
+      */
+      const userName = `${currentSession.user.name} ${currentSession.user.lastName}`;
+      const movementData = {
+        amount: parseFloat(bodyData.quantity), // ✅
+        type: 'income', // ✅
+        description: `Retiro de efectivo efectuado a el cajero ${currentSession.user.name}, aprovado por ${body.auth.pin} en la fecha ${new Date().toISOString()}`,
+        date: new Date().toISOString(),
+        user: userName,
+        status: 'approved',
+      };
+      // podemos aqui ademas crear un moneyMovement
+      const newMovement = new this.moneyMovementModel(movementData);
+      await newMovement.save();
+      // y el moneyMovement lo metemos al operatingPeriod
       const periodUpdated = await this.operatingPeriodModel.findByIdAndUpdate(
         currentPeriod[0]?._id,
         {
-          moneyMovements: [...currentPeriod[0]?.moneyMovements, newWithdraw],
+          $push: { moneyMovements: newMovement._id },
         },
       );
 
