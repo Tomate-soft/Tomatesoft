@@ -14,6 +14,7 @@ import { branchId } from 'src/variablesProvisionales';
 import { DiscountsService } from 'src/ventas/discounts/discounts.service';
 import { CancellationsService } from 'src/ventas/cancellations/cancellations.service';
 import { MoneyMovement } from 'src/schemas/moneyMovements/moneyMovement.schema';
+import { find } from 'rxjs';
 
 @Injectable()
 export class OperatingPeriodService {
@@ -58,6 +59,18 @@ export class OperatingPeriodService {
     }
 
     const newMoneyMovement = new this.moneyMovementModel(newMovementData);
+    if (!newMoneyMovement) {
+      await session.abortTransaction();
+      session.endSession();
+      throw new Error('No se pudo crear el movimiento de dinero');
+    }
+    await this.operatingPeriodModel.findByIdAndUpdate(
+      newMoneyMovement.operatingPeriod,
+      {
+        $push: { moneyMovements: newMoneyMovement._id },
+      },
+      { new: true },
+    );
     await newMoneyMovement.save();
     await session.commitTransaction();
     session.endSession();
