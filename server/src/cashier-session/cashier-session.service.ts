@@ -180,6 +180,7 @@ export class CashierSessionService {
       */
       const userName = `${currentSession.user.name} ${currentSession.user.lastName}`;
       const movementData = {
+        operatingPeriod: currentPeriod[0]?._id, // ✅
         amount: parseFloat(bodyData.quantity), // ✅
         type: 'income', // ✅
         title: 'Retiro parcial de efectivo', // ✅
