@@ -197,6 +197,7 @@ export class PaymentsService {
         status: FREE_STATUS,
         bill: [],
       });
+      console.log('updatedTable', updatedTable);
       if (!updatedTable) {
         await session.abortTransaction();
         await session.endSession();

@@ -19,7 +19,7 @@ interface Props {
 
 
 export default function TillCashMainTable({ element, setState, children }: Props) {
-    const moneyMovements = element?.moneyMovements ?? [];
+  const moneyMovements = element?.moneyMovements ?? [];
   
   const getTotalBills = useProcessOperationsStore(
     (state) => state.getTotalBills,
@@ -32,7 +32,6 @@ export default function TillCashMainTable({ element, setState, children }: Props
   useEffect(() => {
     getTotalBills();
     getSellTotal();
-    console.log('element', element);
   }, []);
   const tempo = formatTempo(element?.createdAt).split(' ');
 
@@ -102,7 +101,7 @@ export default function TillCashMainTable({ element, setState, children }: Props
                    <td>{element.title}</td>
                    <td>${formatToCurrency(element.amount)}</td>
                    <td>{element.user}</td>
-                   <td style={{display: "flex", justifyContent: "end", alignItems:"center", padding:"8px"}}>{status === "Pendiente" ? <DetailsButton onClick={()=> {}}/> : <button style={{width: "fit-content"}}>Aprobar<img width={"15px"} src={checkIcon} alt="check-icon" /></button>}</td>
+                   <td style={{display: "flex", justifyContent: "end", alignItems:"center", padding:"8px"}}>{status !== "Pendiente" ? <DetailsButton onClick={()=> {}}/> : <button style={{width: "fit-content"}}>Aprobar<img width={"15px"} src={checkIcon} alt="check-icon" /></button>}</td>
                   </tr>
                  )
               })}
