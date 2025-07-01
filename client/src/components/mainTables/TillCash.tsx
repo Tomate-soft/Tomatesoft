@@ -95,7 +95,6 @@ export default function TillCashMainTable({ element, setState, children }: Props
             </thead>
             <tbody>
               {totalBills?.map((element) => {
-                // Revisa si el estado del elemento no es 'disabled'
                 return element.status !== FINISHED_STATUS ? (
                   <tr
                     key={element.code}

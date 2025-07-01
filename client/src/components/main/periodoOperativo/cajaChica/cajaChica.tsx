@@ -41,7 +41,6 @@ export default function IncomingCash() {
    <>
     <TillCashMainTable element={currentPeriod}children={<IncomingButtons onCreateExpense={()=> setShowModal(ShowModalOptions.CREATE_EXPENSE)} onCreateIncoming={()=> setShowModal(ShowModalOptions.CREATE_INCOMING)} />} />
     {showModal === ShowModalOptions.CREATE_INCOMING && <IncomingForm onSubmit={()=> {}} title="Agregar Ingreso" onClose={()=> setShowModal(ShowModalOptions.INITAL_STATE)}/> }
-    description: '',
     {showModal === ShowModalOptions.CREATE_EXPENSE && <IncomingForm onSubmit={(form)=> { 
       createMovement({...form, status: "pending", user: "aqui metemos el usuario", operatingPeriod: currentPeriod._id})
       confirmChanges.openModal();
