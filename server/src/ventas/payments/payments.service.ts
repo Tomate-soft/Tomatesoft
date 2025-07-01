@@ -164,7 +164,7 @@ export class PaymentsService {
       );
 
       const tips = newPaymentCode.transactions?.some(
-        (element) => element.tips.length > 0,
+        (element) => element.tips?.length > 0,
       );
       if (tips) {
         await this.userModel.findOneAndUpdate(
@@ -278,7 +278,7 @@ export class PaymentsService {
         (note) =>
           note.status === ENABLE_STATUS || note.status === FOR_PAYMENT_STATUS,
       );
-      if (enableNotes.length <= 0) {
+      if (enableNotes?.length <= 0) {
         const tableUpdated = await this.tableModel.findByIdAndUpdate(
           currentBill.table,
           { status: FREE_STATUS, bill: [] },
@@ -362,7 +362,7 @@ export class PaymentsService {
       const totalTransactions = newPayment.transactions;
       // añadiremos las propinas al mesero
       const totalTips =
-        waiter.tips.length > 0
+        waiter.tips?.length > 0
           ? waiter.tips.concat(totalTransactions)
           : totalTransactions;
       const updatedWaiter = {
@@ -452,7 +452,7 @@ export class PaymentsService {
 
       // añadiremos las propinas al mesero
       const totalTips =
-        waiter.tips.length > 0
+        waiter.tips?.length > 0
           ? waiter.tips.concat(totalTransactions)
           : totalTransactions;
       const updatedWaiter = {
@@ -539,7 +539,7 @@ export class PaymentsService {
       const totalTransactions = newPayment.transactions;
 
       const totalTips =
-        waiter.tips.length > 0
+        waiter.tips?.length > 0
           ? waiter.tips.concat(totalTransactions)
           : totalTransactions;
       const updatedWaiter = {
