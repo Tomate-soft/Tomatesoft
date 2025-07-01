@@ -1,5 +1,7 @@
 import styles from './inputBox.module.css';
 
+// hoy reload the page to see the changes
+
 interface Props {
     label: string;
     value: string;
