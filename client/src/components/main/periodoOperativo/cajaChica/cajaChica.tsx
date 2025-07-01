@@ -9,6 +9,7 @@ import { useMoneyMovementStore } from '@/zstore/moneyMovements';
 import { useModal } from '@/hooks/useModals';
 import { CONFIRM_CHANGES } from '@/configs/consts';
 import ConfirmChangesModal from '@/components/modals/confimChanges/confirmChanges';
+import { set } from 'ref-napi';
 
 enum ShowModalOptions {
   INITAL_STATE = 'INITIAL_STATE',
@@ -52,7 +53,13 @@ export default function IncomingCash() {
         onClose={confirmChanges.closeModal}
         loading={isLoadingMovement}
         errors={error}
-        closeModal={confirmChanges.closeModal}>
+        actionType={() => {
+          setShowModal(ShowModalOptions.INITAL_STATE);
+          confirmChanges.closeModal();
+        }
+        }
+      >
+          
           Cambios guardados
         </ConfirmChangesModal>
 

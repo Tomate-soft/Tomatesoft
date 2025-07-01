@@ -11,18 +11,20 @@ export const useMoneyMovementStore = create<State>((set) => ({
     loading: false,
     error: null,
     createMovement: async (body) => {
-        try {
-            set({ loading: true, error: null });
-            const res = await createMoneyMovement(body);
-            if(!res.data) {
-                throw new Error('Something went wrong');
-            }
-            const data = res.data;
-            set({ loading: false});
-            return data;
-        } catch (error) {
-            set({ loading: false, error: error as Error});
-            throw new Error(error instanceof Error ? error.message : 'Something went wrong');
+    try {
+        set({ loading: true, error: null });
+        const res = await createMoneyMovement(body);
+
+        if (!res.data) {
+            console.error('❌ No se recibió data:', res);
+            throw new Error('No se recibió respuesta del servidor');
         }
-    },
-}));
+
+        set({ loading: false });
+        return res.data;
+    } catch (error: any) {
+        console.error('❌ Error al crear el movimiento:', error?.response?.data || error.message || error);
+        set({ loading: false, error });
+        throw error;
+    }
+},}));
