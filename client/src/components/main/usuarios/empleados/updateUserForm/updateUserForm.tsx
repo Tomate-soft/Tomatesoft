@@ -71,7 +71,6 @@ export default function UpdateUserForm({ onClose, employee }: Props) : JSX.Eleme
         ) : null
       }
       </div>
-     
     </main>
   );
 } 

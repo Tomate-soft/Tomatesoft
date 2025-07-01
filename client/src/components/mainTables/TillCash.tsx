@@ -3,16 +3,14 @@ import styles from './tables.module.css';
 //icons
 import searchIcon from '@/assets/public/searchIcon.svg';
 import filterIcon from '@/assets/public/filterIcon.svg';
-import eyeIcon from '@/assets/public/openEye.svg';
-import enabledIcon from '@/assets/public/StatusIcon(enabled).svg';
-import disabledIcon from '@/assets/public/StatusIcon(disabled).svg';
-import pendingIcon from '@/assets/public/StatusIcon(pending).svg';
 import { useProcessOperationsStore } from '@/zstore/processOperations.store';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import ReturnArrowButton from '../customElements/returnArrowButton.tsx/returnArrowButton';
 import { formatTempo } from '@/utils/tempoFormat';
 import { formatToCurrency } from '@/lib/formatToCurrency';
-import IncomingForm from '../customElements/incomingButtons/incoming-form/IncomingForm';
+import { DetailsButton } from '../customElements/detailsButton.tsx/detailsButton';
+import checkIcon from '@/assets/public/buttonCheck.svg';
+
 interface Props {
   element: any;
   setState?: () => void;
@@ -21,7 +19,8 @@ interface Props {
 
 
 export default function TillCashMainTable({ element, setState, children }: Props) {
-  const totalBills: any = [];
+    const moneyMovements = element?.moneyMovements ?? [];
+  
   const getTotalBills = useProcessOperationsStore(
     (state) => state.getTotalBills,
   );
@@ -33,6 +32,7 @@ export default function TillCashMainTable({ element, setState, children }: Props
   useEffect(() => {
     getTotalBills();
     getSellTotal();
+    console.log('element', element);
   }, []);
   const tempo = formatTempo(element?.createdAt).split(' ');
 
@@ -81,78 +81,30 @@ export default function TillCashMainTable({ element, setState, children }: Props
           <table className={styles.table}>
             <thead>
               <tr>
-                <th className={styles.tHeadCuenta}>Cuenta</th>
-                <th className={styles.tHeadTipoDeVenta}>Tipo de venta</th>
-                <th className={styles.tHeadAbiertaPor}>Abierta por</th>
-                <th className={styles.tHeadTotal}> Total</th>
-                <th className={styles.tHeadStatus}>Status</th>
-                <th className={styles.tHeadFechaDeCreacion}>
-                  Fecha de creacion
-                </th>
-                <th className={styles.tHeadFechaDePago}>Fecha de Pago</th>
-                <th className={styles.tHeadDetalles}>Detalles</th>
+                <th>Movimiento</th>
+                <th>Estado</th>
+                <th>Concepto</th>
+                <th>Monto</th>
+                <th>Usuario</th>
+                <th style={{width: "32px", padding:"0px 24px"}}>Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {totalBills?.map((element) => {
-                return element.status !== FINISHED_STATUS ? (
-                  <tr
-                    key={element.code}
-                    className={
-                      element.status === 'disabled'
-                        ? styles.rowDisabled
-                        : styles.release
-                    }
+              {moneyMovements?.map((element) => {
+                const type = element.type === 'income' ? 'Ingreso' : 'Egreso';
+                const status = element.status === 'pending' ? 'Pendiente' : 'Completado';
+                 return (
+                   <tr
+                    key={element._id}
                   >
-                    <td className={styles.tableRows}>{element?.code}</td>
-                    <td className={styles.tableRows}>{element?.sellType}</td>
-                    <td className={styles.tableRows}>{element?.user}</td>
-                    <td className={styles.tableRows}>{element?.checkTotal}</td>
-                    <td className={styles.tableRows}>
-                      {element.status === 'enabled' ? (
-                        <>
-                          <img
-                            className={styles.statusIcon}
-                            src={enabledIcon}
-                            alt="enabled-icon"
-                          />
-                          {element.status}
-                        </>
-                      ) : element.status === 'disabled' ? (
-                        <>
-                          <img
-                            className={styles.statusIcon}
-                            src={disabledIcon}
-                            alt="disabled-icon"
-                          />
-                          {element.status}
-                        </>
-                      ) : (
-                        <>
-                          <img
-                            className={styles.statusIcon}
-                            src={pendingIcon}
-                            alt="pending-icon"
-                          />
-                          {element.status}
-                        </>
-                      )}
-                    </td>
-                    <td className={styles.tableRows}>{element.createdAt}</td>
-                    <td className={styles.tableRows}>{element.paymentDate}</td>
-                    <td className={styles.buttonsContainer}>
-                      <button
-                        className={styles.actionButtonsFirstDetails}
-                        onClick={() => {
-                          notesDetails.openModal();
-                          setAccount(element);
-                        }}
-                      >
-                        <img src={eyeIcon} alt="open-eye-icon" />
-                      </button>
-                    </td>
+                   <td>{type}</td>
+                   <td>{status}</td>
+                   <td>{element.title}</td>
+                   <td>${formatToCurrency(element.amount)}</td>
+                   <td>{element.user}</td>
+                   <td style={{display: "flex", justifyContent: "end", alignItems:"center", padding:"8px"}}>{status === "Pendiente" ? <DetailsButton onClick={()=> {}}/> : <button style={{width: "fit-content"}}>Aprobar<img width={"15px"} src={checkIcon} alt="check-icon" /></button>}</td>
                   </tr>
-                ) : null;
+                 )
               })}
             </tbody>
           </table>

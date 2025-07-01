@@ -48,16 +48,19 @@ export default function IncomingForm({
         </header>
         <main>
           <form className={styles.form} id="movementForm" onSubmit={handleSubmit}>
-             <label htmlFor="type">Typo de movimiento:
-               <input
-              type="string"
-              maxLength={35}
+             <label htmlFor="type">Tipo de movimiento:
+
+              <select
               name="type"
               required
               value={formState.type}
               onChange={handleChange}
-            />
-            </label>      
+            >
+              <option value={MovementType.INCOMING}>Ingreso</option>
+              <option value={MovementType.EXPENSE}>Egreso</option>
+            </select> 
+             </label>
+                
             <label htmlFor="amount">Monto:
                <input
               type="number"

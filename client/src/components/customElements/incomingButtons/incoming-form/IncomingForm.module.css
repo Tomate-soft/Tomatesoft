@@ -44,6 +44,27 @@
                         background-color: rgba(245, 245, 245, 0.129);
                         padding: 16px;
 
+                         >select, 
+                            ::picker(select){
+                                appearance: base-select;
+                                
+                            }
+
+                            >select{
+                                border-radius: 8px;
+                                padding: 16px;
+                                font-size: var(--font-size-small);
+                                border: none;
+                                background: var(--color-gradient);
+
+                                >option{
+                                    max-height: 100px;
+                                    overflow: auto;
+                                    padding: 16px;
+                                    border: 1px solid rgba(0, 0, 0, 0.233);
+                                }
+                            }
+
                         >input{
                             width: 100%;
                             height: 48px;
