@@ -17,12 +17,48 @@
         align-items: center;
         justify-content: center;
         position: relative;
-        width: 924px;
-        height: 464px;
+        width: 512px;
         padding: 32px;
         border-radius: 32px;
         background: var(--color-primary);
         color: var(--color-white);
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        gap: 16px;
+
+        >main{
+            width: 100%;
+            flex: 1;
+
+               >form{
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
+
+                    >label{
+                        display: flex;
+                        flex-direction: column;
+                        gap: 16px;
+                        border-radius: 16px;
+                        background-color: rgba(245, 245, 245, 0.129);
+                        padding: 16px;
+
+                        >input{
+                            width: 100%;
+                            height: 48px;
+                            padding: 0 8px;
+                            border-radius: 8px;
+                            background-color: rgba(245, 245, 245, 0.129);
+                            color: var(--color-white);
+                            border: none;
+                            outline: none;
+                        }
+                    }
+                    
+                };
+        }
+
+     
     }
   }

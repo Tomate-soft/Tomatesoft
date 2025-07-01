@@ -9,13 +9,13 @@ interface IncomingButtonsProps {
 export const IncomingButtons = ({ onCreateIncoming, onCreateExpense }: IncomingButtonsProps) => {
     return (
         <section className={styles.container}>
-            <button onClick={onCreateIncoming}>
+            {/* <button onClick={onCreateIncoming}>
                 <img src={createIcon} alt="create-icon" />
                 Ingreso
-            </button>
+            </button> */}
             <button onClick={onCreateExpense}>
                 <img src={createIcon} alt="create-icon" />
-                Egreso
+                Nuevo movimiento
             </button>
         </section>
     )

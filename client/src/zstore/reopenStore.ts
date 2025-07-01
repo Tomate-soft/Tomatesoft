@@ -58,5 +58,4 @@ export const useReopenStore = create<state>((set) => ({
       throw new Error('Something went wrong');
     }
   },
-  
 }));

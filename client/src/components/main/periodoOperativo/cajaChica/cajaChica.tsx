@@ -5,6 +5,10 @@ import { useOperatingPeriodStore } from '@/zstore/operatingPeriod.store';
 import { useEffect, useState } from 'react';
 import { IncomingButtons } from '@/components/customElements/incomingButtons/IncomingButtons';
 import IncomingForm from '@/components/customElements/incomingButtons/incoming-form/IncomingForm';
+import { useMoneyMovementStore } from '@/zstore/moneyMovements';
+import { useModal } from '@/hooks/useModals';
+import { CONFIRM_CHANGES } from '@/configs/consts';
+import ConfirmChangesModal from '@/components/modals/confimChanges/confirmChanges';
 
 enum ShowModalOptions {
   INITAL_STATE = 'INITIAL_STATE',
@@ -22,7 +26,13 @@ export default function IncomingCash() {
   const response = useOperatingPeriodStore((state) => state.currentPeriod);
   const currentPeriod = response[0] ?? [];
 
-  useEffect(() => {
+  const createMovement = useMoneyMovementStore((state) => state.createMovement);
+  const isLoadingMovement = useMoneyMovementStore((state) => state.loading);
+  const error = useMoneyMovementStore((state) => state.error);
+
+  const confirmChanges = useModal(CONFIRM_CHANGES);
+
+  useEffect(() => { 
     getCurrentPeriod();
   }, []);
   return isLoading ? (
@@ -31,7 +41,24 @@ export default function IncomingCash() {
    <>
     <TillCashMainTable element={currentPeriod}children={<IncomingButtons onCreateExpense={()=> setShowModal(ShowModalOptions.CREATE_EXPENSE)} onCreateIncoming={()=> setShowModal(ShowModalOptions.CREATE_INCOMING)} />} />
     {showModal === ShowModalOptions.CREATE_INCOMING && <IncomingForm onSubmit={()=> {}} title="Agregar Ingreso" onClose={()=> setShowModal(ShowModalOptions.INITAL_STATE)}/> }
-    {showModal === ShowModalOptions.CREATE_EXPENSE && <IncomingForm onSubmit={()=> {}} title="Agregar Egreso" onClose={()=> setShowModal(ShowModalOptions.INITAL_STATE)}/> }
+    description: '',
+    {showModal === ShowModalOptions.CREATE_EXPENSE && <IncomingForm onSubmit={(form)=> { 
+      createMovement({...form, status: "pending", user: "aqui metemos el usuario", operatingPeriod: currentPeriod._id})
+      confirmChanges.openModal();
+    }} title="Nuevo movimiento" onClose={()=> setShowModal(ShowModalOptions.INITAL_STATE)}/> }
+      { confirmChanges.isOpen && confirmChanges.modalName === CONFIRM_CHANGES &&
+      (
+        <ConfirmChangesModal
+        isOpen={confirmChanges.isOpen}
+        onClose={confirmChanges.closeModal}
+        loading={isLoadingMovement}
+        errors={error}
+        closeModal={confirmChanges.closeModal}>
+          Cambios guardados
+        </ConfirmChangesModal>
+
+      )
+    }
    </>
   ) : (
   

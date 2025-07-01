@@ -1,11 +1,15 @@
+import { useState } from 'react';
 import CloseButton from '../../CloseButton';
 import styles from './IncomingForm.module.css';
 
-
 export interface IncomingFormProps {
   onClose: () => void;
-    onSubmit: (data: any) => void;
-    title: string;
+  onSubmit: (data: any) => void;
+  title: string;
+}
+enum MovementType {
+  INCOMING = 'income',
+  EXPENSE = 'expense',
 }
 
 export default function IncomingForm({
@@ -13,28 +17,81 @@ export default function IncomingForm({
   onSubmit,
   title,
 }: IncomingFormProps) {
+  const [formState, setFormState] = useState({
+    type: MovementType.INCOMING, 
+    amount: '',
+    date: new Date().toISOString().split('T')[0],
+    title: '',
+    description: '',
+
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const data = Object.fromEntries(formData.entries());
-    onSubmit(data);
+    onSubmit(formState);
   };
 
   return (
     <div className={styles.screen}>
-      {/* <form className={styles.form} onSubmit={handleSubmit}>
-        <h2>{title}</h2>
-        <label htmlFor="amount">Monto:</label>
-        <input type="number" name="amount" required />
-        <label htmlFor="description">Descripción:</label>
-        <input type="text" name="description" required />
-        <button type="submit">Enviar</button>
-        <button type="button" onClick={onClose}>Cerrar</button>
-      </form> */}
       <div>
-        <CloseButton  onClose={onClose} />
-
-        <h2>{title}</h2>
+        <header>
+          <CloseButton onClose={onClose} />
+          <h2>{title}</h2>
+        </header>
+        <main>
+          <form className={styles.form} id="movementForm" onSubmit={handleSubmit}>
+             <label htmlFor="type">Typo de movimiento:
+               <input
+              type="string"
+              maxLength={35}
+              name="type"
+              required
+              value={formState.type}
+              onChange={handleChange}
+            />
+            </label>      
+            <label htmlFor="amount">Monto:
+               <input
+              type="number"
+              name="amount"
+              required
+              value={formState.amount}
+              onChange={handleChange}
+            />
+           
+            </label>
+             <label htmlFor="title">Concepto:
+               <input
+                type="text"
+                name="title"
+                required
+                value={formState.title}
+                onChange={handleChange}
+            />
+            </label>
+             <label htmlFor="description">Descripción:
+               <input
+              type="text"
+              name="description"
+              required
+              value={formState.description}
+              onChange={handleChange}
+            />
+            </label>
+            
+          </form>
+        </main>
+        <footer>
+          <button form="movementForm" type="submit">Guardar</button>
+        </footer>
       </div>
     </div>
   );
