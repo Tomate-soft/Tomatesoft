@@ -167,6 +167,8 @@ export default function TillCashMainTable({ element, setState, children }: Props
           </span>
         </div>
         <div>
+          Y ESTE CAMBIO SI SE VE???
+
           <div>
             <small>Ingresos</small>
             <span>$200.00.00</span>
