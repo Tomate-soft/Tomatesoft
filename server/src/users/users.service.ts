@@ -26,7 +26,7 @@ export class UsersService {
       })
       .populate({
         path: 'tables',
-        populate: { path: 'bill' },
+        populate: { path: 'bill', populate: { path: 'notes' } },
       })
       .populate({
         path: 'dailyRegister',
