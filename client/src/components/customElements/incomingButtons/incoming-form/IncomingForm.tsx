@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CloseButton from '../../CloseButton';
 import styles from './IncomingForm.module.css';
+import { useSelector } from 'react-redux';
 
 export interface IncomingFormProps {
   onClose: () => void;
@@ -17,13 +18,17 @@ export default function IncomingForm({
   onSubmit,
   title,
 }: IncomingFormProps) {
+
+  const { loginUsers } = useSelector((state: any) => state.auth);
+  const user = loginUsers[0].payload;
+
   const [formState, setFormState] = useState({
     type: MovementType.INCOMING, 
     amount: '',
     date: new Date().toISOString().split('T')[0],
     title: '',
     description: '',
-
+    user: `${user.name} ${user.lastName.split(' ')[0]}`,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -24,6 +24,7 @@ export default function TillCashMainTable({ element, setState, children }: Props
   const getTotalBills = useProcessOperationsStore(
     (state) => state.getTotalBills,
   );
+  
   const getSellTotal = useProcessOperationsStore(
     (state) => state.getTotalCurrentSells,
   );

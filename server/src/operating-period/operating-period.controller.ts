@@ -96,6 +96,24 @@ export class OperatingPeriodController {
     }
   }
 
+  @Put('money-movement/:id')
+  async updateMoneyMovement(@Param('id') id: string, @Body() body: any) {
+    try {
+      const res = await this.operatingPeriodService.updateMoneyMovement(
+        id,
+        body,
+      );
+      if (!res) {
+        throw new NotFoundException('No se ha podido actualizar el movimiento');
+      }
+      return res;
+    } catch (error) {
+      throw new NotFoundException(
+        `Ha ocurrido algo inesperado. Mas informacion: ${error}`,
+      );
+    }
+  }
+
   @Patch('close-period/:id')
   async updatePeriod(@Param('id') id: string, @Body() body: any) {
     try {

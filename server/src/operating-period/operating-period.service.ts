@@ -76,6 +76,12 @@ export class OperatingPeriodService {
     return newMoneyMovement;
   }
 
+  async updateMoneyMovement(id: string, body: any) {
+    return await this.moneyMovementModel.findByIdAndUpdate(id, body, {
+      new: true,
+    });
+  }
+
   async getCurrent(id?: string) {
     const session = await this.branchModel.startSession();
     session.startTransaction();
