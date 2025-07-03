@@ -2,6 +2,7 @@ import { useState } from 'react';
 import CloseButton from '../../CloseButton';
 import styles from './IncomingForm.module.css';
 import { useSelector } from 'react-redux';
+import { formatToCurrency } from '@/lib/formatToCurrency';
 
 export interface IncomingFormProps {
   onClose: () => void;
@@ -66,14 +67,15 @@ export default function IncomingForm({
             </select> 
              </label>
                 
-            <label htmlFor="amount">Monto:
+            <label htmlFor="amount" className={styles.titleAmount}>Monto:
                <input
-              type="number"
-              name="amount"
-              required
-              value={formState.amount}
-              onChange={handleChange}
-            />
+                type="number"
+                name="amount"
+                required
+                value={formState.amount}
+                onChange={handleChange}
+                />
+                <span>${formatToCurrency(formState.amount)}</span>
            
             </label>
              <label htmlFor="title">Concepto:

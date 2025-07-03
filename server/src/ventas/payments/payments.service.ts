@@ -23,6 +23,7 @@ import { RappiOrder } from 'src/schemas/ventas/orders/rappiOrder.schema';
 import { ToGoOrder } from 'src/schemas/ventas/orders/toGoOrder.schema';
 import { Payment } from 'src/schemas/ventas/payment.schema';
 import { OperatingPeriodService } from 'src/operating-period/operating-period.service';
+import { MoneyMovementType } from 'src/dto/moneyMovements/moneyMovement.dto';
 
 @Injectable()
 export class PaymentsService {
@@ -578,10 +579,38 @@ export class PaymentsService {
   async paymentTips(id: string, body: any) {
     const session = await this.paymentModel.startSession();
     session.startTransaction();
+
+    const currentUser = await this.userModel.findByIdAndUpdate(id, {
+      $set: {
+        tips: [],
+      },
+    });
+    if (!currentUser) {
+      await session.abortTransaction();
+      session.endSession();
+      throw new NotFoundException('No se encontro el usuario');
+    }
+    const amount = currentUser?.tips
+      ?.filter(
+        (tip) => tip.paymentType === 'debit' || tip.paymentType === 'credit',
+      )
+      .reduce((acc, tip) => acc + parseFloat(tip.tips), 0)
+      .toFixed(2);
+    const sendData = {
+      type: MoneyMovementType.EXPENSE,
+      amount: amount,
+      date: body.date,
+      title: `Pago de propinas - ${currentUser.employeeNumber}}`,
+      description: body.description,
+      user: body.user,
+      status: 'pending',
+    };
+
+    await this.operatingPeriodService.createMoneyMovement(sendData);
+
     try {
       await session.commitTransaction();
       session.endSession();
-      console.log('Por aca si llega al paymentTips de payments.service');
       await this.reportsService.payTipsReport(body);
       return { message: 'Funciona perfecto' };
     } catch (error) {
