@@ -4,7 +4,7 @@ import styles from './tables.module.css';
 import searchIcon from '@/assets/public/searchIcon.svg';
 import filterIcon from '@/assets/public/filterIcon.svg';
 import { useProcessOperationsStore } from '@/zstore/processOperations.store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import ReturnArrowButton from '../customElements/returnArrowButton.tsx/returnArrowButton';
 import { formatTempo } from '@/utils/tempoFormat';
 import { formatToCurrency } from '@/lib/formatToCurrency';
@@ -15,16 +15,17 @@ interface Props {
   element: any;
   setState?: () => void;
   children?: React.ReactNode;
+  setSelectedElement: (element: any) => void;
+  requests?: any;
 }
 
 
-export default function TillCashMainTable({ element, setState, children }: Props) {
+export default function TillCashMainTable({ element, setState, children, selectedElement, setSelectedElement, requests }: Props) {
   const moneyMovements = element?.moneyMovements ?? [];
-  
   const getTotalBills = useProcessOperationsStore(
     (state) => state.getTotalBills,
   );
-  
+
   const getSellTotal = useProcessOperationsStore(
     (state) => state.getTotalCurrentSells,
   );
@@ -34,6 +35,7 @@ export default function TillCashMainTable({ element, setState, children }: Props
     getTotalBills();
     getSellTotal();
   }, []);
+
   const tempo = formatTempo(element?.createdAt).split(' ');
 
   return (
@@ -102,7 +104,10 @@ export default function TillCashMainTable({ element, setState, children }: Props
                    <td>{element.title}</td>
                    <td>${formatToCurrency(element.amount)}</td>
                    <td>{element.user}</td>
-                   <td style={{display: "flex", justifyContent: "end", alignItems:"center", padding:"8px"}}>{status !== "Pendiente" ? <DetailsButton onClick={()=> {}}/> : <button style={{width: "fit-content"}}>Aprobar<img width={"15px"} src={checkIcon} alt="check-icon" /></button>}</td>
+                   <td style={{display: "flex", justifyContent: "end", alignItems:"center", padding:"8px"}}>{status !== "Pendiente" ? <DetailsButton onClick={()=> {}}/> : <button style={{width: "fit-content"}} onClick={()=> {
+                      setSelectedElement(element);
+                      requests();
+                   }}>Aprobar<img width={"15px"} src={checkIcon} alt="check-icon" /></button>}</td>
                   </tr>
                  )
               })}

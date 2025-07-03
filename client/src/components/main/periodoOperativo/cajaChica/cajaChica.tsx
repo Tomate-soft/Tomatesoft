@@ -19,6 +19,7 @@ enum ShowModalOptions {
 
 export default function IncomingCash() {
   const [showModal, setShowModal] = useState<ShowModalOptions>(ShowModalOptions.INITAL_STATE);
+  const [selectedElement, setSelectedElement] = useState();
 
   const isLoading = useOperatingPeriodStore((state) => state.isLoading);
   const getCurrentPeriod = useOperatingPeriodStore(
@@ -28,19 +29,28 @@ export default function IncomingCash() {
   const currentPeriod = response[0] ?? [];
 
   const createMovement = useMoneyMovementStore((state) => state.createMovement);
+  const updateMovement = useMoneyMovementStore((state) => state.updateMovement);
   const isLoadingMovement = useMoneyMovementStore((state) => state.loading);
   const error = useMoneyMovementStore((state) => state.error);
 
   const confirmChanges = useModal(CONFIRM_CHANGES);
 
+  const handleClick = () => {
+    updateMovement(selectedElement._id, {
+      status: 'approved',
+    });
+    confirmChanges.openModal();
+  }
+
   useEffect(() => { 
     getCurrentPeriod();
   }, []);
+  
   return isLoading ? (
     <TomateLoader />  ) :
   currentPeriod?._id ? (
    <>
-    <TillCashMainTable element={currentPeriod}children={<IncomingButtons onCreateExpense={()=> setShowModal(ShowModalOptions.CREATE_EXPENSE)} onCreateIncoming={()=> setShowModal(ShowModalOptions.CREATE_INCOMING)} />} />
+    <TillCashMainTable requests={handleClick} setSelectedElement={setSelectedElement} element={currentPeriod}children={<IncomingButtons onCreateExpense={()=> setShowModal(ShowModalOptions.CREATE_EXPENSE)} onCreateIncoming={()=> setShowModal(ShowModalOptions.CREATE_INCOMING)} />} />
     {showModal === ShowModalOptions.CREATE_INCOMING && <IncomingForm onSubmit={()=> {}} title="Agregar Ingreso" onClose={()=> setShowModal(ShowModalOptions.INITAL_STATE)}/> }
     {showModal === ShowModalOptions.CREATE_EXPENSE && <IncomingForm onSubmit={(form)=> { 
       createMovement({...form, status: "approved", operatingPeriod: currentPeriod._id})
