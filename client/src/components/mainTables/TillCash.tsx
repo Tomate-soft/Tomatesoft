@@ -10,6 +10,7 @@ import { formatTempo } from '@/utils/tempoFormat';
 import { formatToCurrency } from '@/lib/formatToCurrency';
 import { DetailsButton } from '../customElements/detailsButton.tsx/detailsButton';
 import checkIcon from '@/assets/public/buttonCheck.svg';
+import acrossIcon from '@/assets/public/closeIcon.svg' ;
 
 interface Props {
   element: any;
@@ -104,10 +105,16 @@ export default function TillCashMainTable({ element, setState, children, selecte
                    <td>{element.title}</td>
                    <td>${formatToCurrency(element.amount)}</td>
                    <td>{element.user}</td>
-                   <td style={{display: "flex", justifyContent: "end", alignItems:"center", padding:"8px"}}>{status !== "Pendiente" ? <DetailsButton onClick={()=> {}}/> : <button style={{width: "fit-content"}} onClick={()=> {
+                   <td style={{display: "flex", justifyContent: "end", alignItems:"center", padding:"8px", gap:"8PX"}}>{status !== "Pendiente" ? <DetailsButton onClick={()=> {}}/> : <>
+                   <button style={{width: "fit-content"}} onClick={()=> {
                       setSelectedElement(element);
                       requests();
-                   }}>Aprobar<img width={"15px"} src={checkIcon} alt="check-icon" /></button>}</td>
+                   }}><img width={"16px"} src={checkIcon} alt="check-icon" /></button>
+                   <button style={{width: "fit-content", backgroundColor: "#99000F"}} onClick={()=> {
+                      setSelectedElement(element);
+                      requests();
+                   }}><img width={"15px"} src={acrossIcon} alt="check-icon" /></button>
+                   </>}</td>
                   </tr>
                  )
               })}
