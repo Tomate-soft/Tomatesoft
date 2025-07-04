@@ -368,7 +368,7 @@ export class OperatingPeriodService {
       }
       await session.commitTransaction();
       session.endSession();
-      return updatedPeriod;
+      return resumeData;
     } catch (error) {
       console.log(error);
     }

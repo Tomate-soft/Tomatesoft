@@ -14,6 +14,7 @@ import { Notes } from 'src/schemas/ventas/notes.schema';
 import { PhoneOrder } from 'src/schemas/ventas/orders/phoneOrder.schema';
 import { RappiOrder } from 'src/schemas/ventas/orders/rappiOrder.schema';
 import { ToGoOrder } from 'src/schemas/ventas/orders/toGoOrder.schema';
+import { SendMessagesService } from 'src/send-messages/send-messages.service';
 
 @Injectable()
 export class CronService {
@@ -32,6 +33,7 @@ export class CronService {
     @InjectModel(RappiOrder.name) private rappiOrderModel: Model<RappiOrder>,
     @InjectModel(PhoneOrder.name) private phoneOrderModel: Model<PhoneOrder>,
     private readonly operatingPeriodService: OperatingPeriodService,
+    private readonly sendMessageService: SendMessagesService,
   ) {
     this.initializeCronJobs();
   }
@@ -81,6 +83,12 @@ export class CronService {
         if (!updatedPeriod) {
           console.error('No se pudo cerrar el periodo operativo');
         }
+
+        const debugCloseperiodReturn = `Este es el mensaje de debug de lo que retorna el closePeriod. Si todo funciona bien aqui deberia aparecer el status del periodo que es ---> ${updatedPeriod.state}, con una venta de ${updatedPeriod.totalSellsAmount}`;
+
+        await this.sendMessageService.SendTelegramMessage(
+          debugCloseperiodReturn,
+        );
       }
 
       ////////////////////////////////////////////////////////////////////
