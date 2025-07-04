@@ -176,7 +176,7 @@ export class CashierSessionService {
         amount: parseFloat(bodyData.quantity), // ✅
         type: 'income', // ✅
         title: 'Retiro parcial de efectivo', // ✅
-        description: `Retiro de efectivo efectuado a el cajero ${currentSession.user.name}, aprovado por ${body.auth.pin} en la fecha ${new Date().toISOString()}`,
+        description: `Retiro de efectivo efectuado a el cajero ${currentSession.user.name}, aprovado por ${userName} en la fecha ${new Date().toLocaleDateString()}`,
         date: new Date().toISOString(),
         user: userName,
         status: 'approved',
