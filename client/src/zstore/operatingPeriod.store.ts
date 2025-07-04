@@ -100,7 +100,7 @@ export const useOperatingPeriodStore = create<state>((set) => ({
       return error;
     }
   },
-  balanceSheet: [],
+  balanceSheet: {},
   getBalanceSheet: async () => {
     set({ isLoading: true });
     try {

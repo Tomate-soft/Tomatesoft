@@ -24,7 +24,7 @@ export default function IncomingForm({
   const user = loginUsers[0].payload;
 
   const [formState, setFormState] = useState({
-    type: MovementType.INCOMING, 
+    type: MovementType.EXPENSE, 
     amount: '',
     date: new Date().toISOString().split('T')[0],
     title: '',

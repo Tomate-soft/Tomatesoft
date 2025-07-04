@@ -19,10 +19,10 @@ interface Props {
   setSelectedElement: (element: any) => void;
   requests?: any;
   showDescription: () => void;
+  balanceSeet: any
 }
 
-
-export default function TillCashMainTable({ element, setState, children, showDescription, setSelectedElement, requests }: Props) {
+export default function TillCashMainTable({ element, setState, children, showDescription, setSelectedElement, requests, balanceSeet }: Props) {
   const moneyMovements = element?.moneyMovements ?? [];
   const getTotalBills = useProcessOperationsStore(
     (state) => state.getTotalBills,
@@ -137,15 +137,15 @@ export default function TillCashMainTable({ element, setState, children, showDes
         <div>
           <div>
             <small>Ingresos</small>
-            <span>$200.00.00</span>
+            <span>${formatToCurrency(balanceSeet.totalIncome)}</span>
           </div>
           <div>
             <small>Egresos</small>
-            <span>$200.00.00</span>
+            <span>${formatToCurrency(balanceSeet.totalExpense)}</span>
           </div>
           <div>
             <small>Saldo actual</small>
-            <h4>${formatToCurrency(sellTotal)}</h4>
+            <h4>${formatToCurrency(balanceSeet.balanceSheet)}</h4>
           </div>
         </div>
       </footer>

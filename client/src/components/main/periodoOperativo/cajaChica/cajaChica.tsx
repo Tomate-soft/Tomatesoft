@@ -51,14 +51,14 @@ export default function IncomingCash() {
   useEffect(() => { 
     getCurrentPeriod();
     getBalanceSheet();
-    console.log(`Balance Sheet: `, balanceSheet);
+    
   }, []);
   
   return isLoading ? (
     <TomateLoader />  ) :
   currentPeriod?._id ? (
    <>
-    <TillCashMainTable requests={handleClick} setSelectedElement={setSelectedElement} element={currentPeriod}children={<IncomingButtons onCreateExpense={()=> setShowModal(ShowModalOptions.CREATE_EXPENSE)} onCreateIncoming={()=> setShowModal(ShowModalOptions.CREATE_INCOMING)} />} showDescription={() => {setShowModal(ShowModalOptions.SHOW_DESCRIPTION)}} />
+    <TillCashMainTable balanceSeet={balanceSheet} requests={handleClick} setSelectedElement={setSelectedElement} element={currentPeriod}children={<IncomingButtons onCreateExpense={()=> setShowModal(ShowModalOptions.CREATE_EXPENSE)} onCreateIncoming={()=> setShowModal(ShowModalOptions.CREATE_INCOMING)} />} showDescription={() => {setShowModal(ShowModalOptions.SHOW_DESCRIPTION)}} />
     {showModal === ShowModalOptions.SHOW_DESCRIPTION && <ShowDescription children={selectedElement?.description} onClose={()=> setShowModal(ShowModalOptions.INITAL_STATE)}/> }
     {showModal === ShowModalOptions.CREATE_EXPENSE && <IncomingForm onSubmit={(form)=> { 
       createMovement({...form, status: "approved", operatingPeriod: currentPeriod._id})

@@ -146,7 +146,6 @@ export class CashierSessionService {
   // ver si hay dinero para realizar el retiro
   // ya que creamos el retiro lo metemos a la session del cajero
   async cashWithdrawal(body: { auth: any; body: createCashWithdrawDto }) {
-    console.log('body', body);
     const bodyData = body.body;
     const session = await this.cashierSessionModel.startSession();
     const newWithdraw = await session.withTransaction(async () => {
@@ -157,26 +156,21 @@ export class CashierSessionService {
       const newWithdraw = new this.cashWithdrawModel(bodyData);
       await newWithdraw.save();
 
-      const currentSession = await this.cashierSessionModel.findByIdAndUpdate(
-        bodyData.sessionId,
-        { $push: { cashWithdraws: newWithdraw._id } },
-        {
-          new: true,
-        },
-      );
+      const currentSession = await this.cashierSessionModel
+        .findByIdAndUpdate(
+          bodyData.sessionId,
+          { $push: { cashWithdraws: newWithdraw._id } },
+          {
+            new: true,
+          },
+        )
+        .populate({ path: 'user' });
 
-      // Que informacion necesito para crear el MoneyMovement?
-      // que aqui obviamente siempre es por defecto un retiro de efectivo.
-      // la info0rmaciopn que se necewsita es la siguiente:
-      /*
-      amount: este yua lo tenemos que tener por que viene para crear el cashWithdraw
-      type: este es un retiro de efectivo, por lo que siempre sera Income este dinero sale de la caja pero entra al operatingPeriod
-      description: Aca meteremos un string como: Retiro de efectivo efectuado a el cajero ${userName}, aprovado por ${quien aprueba} en la fecha ${new Date().toISOString()}
-      date: este es el momento en que se realiza el retiro, por lo que sera new Date().toISOString()
-      user: este es el usuario que realiza el retiro, por lo que sera body.user
-      status: siempre sera aprobado, ya que el retiro se realiza en el momento y no hay aprobacion previa. o esta aprobacion se corrobora en el POS
-      */
-      const userName = `${currentSession.user.name} ${currentSession.user.lastName}`;
+      const userBy = await this.userModel.find({
+        employeeNumber: body.auth.pin,
+      });
+
+      const userName = `${userBy[0].name} ${userBy[0].lastName}`;
       const movementData = {
         operatingPeriod: currentPeriod[0]?._id, // ✅
         amount: parseFloat(bodyData.quantity), // ✅
