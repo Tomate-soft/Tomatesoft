@@ -594,13 +594,17 @@ export class PaymentsService {
       ?.filter(
         (tip) => tip.paymentType === 'debit' || tip.paymentType === 'credit',
       )
-      .reduce((acc, tip) => acc + parseFloat(tip.tips), 0)
+      .reduce(
+        (acc, tip) =>
+          isNaN(parseFloat(tip.tips)) ? acc : acc + parseFloat(tip.tips),
+        0,
+      )
       .toFixed(2);
     const sendData = {
       type: MoneyMovementType.EXPENSE,
       amount: amount,
       date: body.date,
-      title: `Pago de propinas - ${currentUser.employeeNumber}}`,
+      title: `Pago de propinas - ${currentUser.employeeNumber}`,
       description: body.description,
       user: body.user,
       status: 'pending',

@@ -10,11 +10,13 @@ import { useModal } from '@/hooks/useModals';
 import { CONFIRM_CHANGES } from '@/configs/consts';
 import ConfirmChangesModal from '@/components/modals/confimChanges/confirmChanges';
 import { set } from 'ref-napi';
+import ShowDescription from './showDescription/showDescription';
 
 enum ShowModalOptions {
   INITAL_STATE = 'INITIAL_STATE',
   CREATE_INCOMING = 'CREATE_INCOMING',
   CREATE_EXPENSE = 'CREATE_EXPENSE',
+  SHOW_DESCRIPTION = 'SHOW_DESCRIPTION',
 }
 
 export default function IncomingCash() {
@@ -50,8 +52,8 @@ export default function IncomingCash() {
     <TomateLoader />  ) :
   currentPeriod?._id ? (
    <>
-    <TillCashMainTable requests={handleClick} setSelectedElement={setSelectedElement} element={currentPeriod}children={<IncomingButtons onCreateExpense={()=> setShowModal(ShowModalOptions.CREATE_EXPENSE)} onCreateIncoming={()=> setShowModal(ShowModalOptions.CREATE_INCOMING)} />} />
-    {showModal === ShowModalOptions.CREATE_INCOMING && <IncomingForm onSubmit={()=> {}} title="Agregar Ingreso" onClose={()=> setShowModal(ShowModalOptions.INITAL_STATE)}/> }
+    <TillCashMainTable requests={handleClick} setSelectedElement={setSelectedElement} element={currentPeriod}children={<IncomingButtons onCreateExpense={()=> setShowModal(ShowModalOptions.CREATE_EXPENSE)} onCreateIncoming={()=> setShowModal(ShowModalOptions.CREATE_INCOMING)} />} showDescription={() => {setShowModal(ShowModalOptions.SHOW_DESCRIPTION)}} />
+    {showModal === ShowModalOptions.SHOW_DESCRIPTION && <ShowDescription children={selectedElement?.description} onClose={()=> setShowModal(ShowModalOptions.INITAL_STATE)}/> }
     {showModal === ShowModalOptions.CREATE_EXPENSE && <IncomingForm onSubmit={(form)=> { 
       createMovement({...form, status: "approved", operatingPeriod: currentPeriod._id})
       confirmChanges.openModal();
@@ -68,13 +70,13 @@ export default function IncomingCash() {
           confirmChanges.closeModal();
         }
         }
-      >
-          
+      > 
           Cambios guardados
         </ConfirmChangesModal>
 
       )
     }
+    
    </>
   ) : (
   

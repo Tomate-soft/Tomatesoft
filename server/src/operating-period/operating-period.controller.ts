@@ -179,6 +179,21 @@ export class OperatingPeriodController {
     }
   }
 
+  @Get('balance/:id')
+  async getBalance(@Param('id') id: string) {
+    try {
+      const response = await this.operatingPeriodService.getBalanceSheet(id);
+      if (!response) {
+        throw new NotFoundException('No se ha encontrado el balance');
+      }
+      return response;
+    } catch (error) {
+      throw new NotFoundException(
+        `Ha ocurrido algo inesperado. Mas informacion: ${error}`,
+      );
+    }
+  }
+
   // @Get('source/:id')
   // async getSourcePeriod(@Param('id') id: string) {
   //   try {

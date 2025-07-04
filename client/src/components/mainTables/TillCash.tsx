@@ -18,10 +18,11 @@ interface Props {
   children?: React.ReactNode;
   setSelectedElement: (element: any) => void;
   requests?: any;
+  showDescription: () => void;
 }
 
 
-export default function TillCashMainTable({ element, setState, children, selectedElement, setSelectedElement, requests }: Props) {
+export default function TillCashMainTable({ element, setState, children, showDescription, setSelectedElement, requests }: Props) {
   const moneyMovements = element?.moneyMovements ?? [];
   const getTotalBills = useProcessOperationsStore(
     (state) => state.getTotalBills,
@@ -38,7 +39,7 @@ export default function TillCashMainTable({ element, setState, children, selecte
   }, []);
 
   const tempo = formatTempo(element?.createdAt).split(' ');
-
+  
   return (
     <div className={styles.container}>
       <div>
@@ -105,7 +106,10 @@ export default function TillCashMainTable({ element, setState, children, selecte
                    <td>{element.title}</td>
                    <td>${formatToCurrency(element.amount)}</td>
                    <td>{element.user}</td>
-                   <td style={{display: "flex", justifyContent: "end", alignItems:"center", padding:"8px", gap:"8PX"}}>{status !== "Pendiente" ? <DetailsButton onClick={()=> {}}/> : <>
+                   <td style={{display: "flex", justifyContent: "end", alignItems:"center", padding:"8px", gap:"8PX"}}>{status !== "Pendiente" ? <DetailsButton onClick={()=> {
+                      setSelectedElement(element);
+                      showDescription();
+                   }}/> : <>
                    <button style={{width: "fit-content"}} onClick={()=> {
                       setSelectedElement(element);
                       requests();

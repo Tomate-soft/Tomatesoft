@@ -533,4 +533,53 @@ export class OperatingPeriodService {
       throw error;
     }
   }
+
+  async getBalanceSheet(id: string) {
+    const session = await this.operatingPeriodModel.startSession();
+    session.startTransaction();
+    try {
+      const currentPeriod = id
+        ? await this.getCurrent(id)
+        : await this.getCurrent();
+      if (!currentPeriod || currentPeriod.length === 0) {
+        throw new Error('No se encontró el periodo operativo actual');
+      }
+
+      const period = currentPeriod[0];
+      const moneyMovements = period.moneyMovements || [];
+
+      let totalIncome = 0;
+      let totalExpense = 0;
+
+      for (const movement of moneyMovements) {
+        if (
+          !movement ||
+          typeof movement.amount !== 'number' ||
+          !movement.type ||
+          movement.status === 'pending'
+        )
+          continue;
+
+        if (movement.type === 'income') {
+          totalIncome += movement.amount;
+        } else if (movement.type === 'expense') {
+          totalExpense += movement.amount;
+        }
+      }
+
+      const balanceSheet = totalIncome - totalExpense;
+
+      await session.commitTransaction();
+      return {
+        balanceSheet,
+        totalIncome,
+        totalExpense,
+      };
+    } catch (error) {
+      await session.abortTransaction();
+      throw error;
+    } finally {
+      session.endSession();
+    }
+  }
 }
