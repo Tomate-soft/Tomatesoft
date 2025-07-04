@@ -16,7 +16,7 @@ interface state {
   currentPeriod: any;
   getCurrentPeriod: () => void;
   balanceSheet: any;
-  getBalanceSheet: (periodId: string) => Promise<void>;
+  getBalanceSheet: () => Promise<void>;
 }
 
 export const useOperatingPeriodStore = create<state>((set) => ({
@@ -101,10 +101,10 @@ export const useOperatingPeriodStore = create<state>((set) => ({
     }
   },
   balanceSheet: [],
-  getBalanceSheet: async (periodId: string) => {
+  getBalanceSheet: async () => {
     set({ isLoading: true });
     try {
-      const response = await getBalanceSheetService(periodId);
+      const response = await getBalanceSheetService();
       const balanceSheet = response.data;
       if (!balanceSheet) {
         set({

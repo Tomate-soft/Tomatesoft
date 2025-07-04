@@ -179,13 +179,10 @@ export class OperatingPeriodController {
     }
   }
 
-  @Get('balance/:id')
-  async getBalance(@Param('id') id: string) {
+  @Get('balance-sheet')
+  async getBalance() {
     try {
-      const response =
-        id === undefined
-          ? await this.operatingPeriodService.getBalanceSheet()
-          : await this.operatingPeriodService.getBalanceSheet(id);
+      const response = await this.operatingPeriodService.getBalanceSheet();
       if (!response) {
         throw new NotFoundException('No se ha encontrado el balance');
       }

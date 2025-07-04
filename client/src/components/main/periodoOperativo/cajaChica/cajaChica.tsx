@@ -50,7 +50,7 @@ export default function IncomingCash() {
 
   useEffect(() => { 
     getCurrentPeriod();
-    getBalanceSheet(currentPeriod._id);
+    getBalanceSheet();
     console.log(`Balance Sheet: `, balanceSheet);
   }, []);
   

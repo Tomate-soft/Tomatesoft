@@ -534,13 +534,11 @@ export class OperatingPeriodService {
     }
   }
 
-  async getBalanceSheet(id?: string) {
+  async getBalanceSheet() {
     const session = await this.operatingPeriodModel.startSession();
     session.startTransaction();
     try {
-      const currentPeriod = id
-        ? await this.getCurrent(id)
-        : await this.getCurrent();
+      const currentPeriod = await this.getCurrent();
       if (!currentPeriod || currentPeriod.length === 0) {
         throw new Error('No se encontró el periodo operativo actual');
       }

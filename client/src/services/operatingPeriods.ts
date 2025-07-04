@@ -24,9 +24,9 @@ export const getCurrentPeriodService = async () => {
   return response;
 };
 
-export const getBalanceSheetService = async (periodId: string) => {
+export const getBalanceSheetService = async () => {
   const response = await axios(
-    `${OPERATING_PERIODS_PATH}/balance/${periodId}`,
+    `${OPERATING_PERIODS_PATH}/balance-sheet`,
   );
   return response;
 }
