@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import {
   approvePeriodService,
+  getBalanceSheetService,
   getCurrentPeriodService,
   getOperatingPeriodsService,
 } from '@/services/operatingPeriods';
@@ -14,6 +15,8 @@ interface state {
   approvePeriod: (id: string, body: { userId: string }) => Promise<void>;
   currentPeriod: any;
   getCurrentPeriod: () => void;
+  balanceSheet: any;
+  getBalanceSheet: (periodId: string) => Promise<void>;
 }
 
 export const useOperatingPeriodStore = create<state>((set) => ({
@@ -97,4 +100,32 @@ export const useOperatingPeriodStore = create<state>((set) => ({
       return error;
     }
   },
+  balanceSheet: [],
+  getBalanceSheet: async (periodId: string) => {
+    set({ isLoading: true });
+    try {
+      const response = await getBalanceSheetService(periodId);
+      const balanceSheet = response.data;
+      if (!balanceSheet) {
+        set({
+          isLoading: false,
+          erros: true,
+          message: 'Ocurrio un error al recuperar el balance del periodo',
+        });
+        return;
+      }
+      set({
+        isLoading: false,
+        balanceSheet,
+      });
+      return balanceSheet;
+    } catch (error) {
+      set({
+        isLoading: false,
+        erros: true,
+        message: 'Ocurrio un error al recuperar el balance del periodo',
+      });
+      return error;
+    }
+  }
 }));

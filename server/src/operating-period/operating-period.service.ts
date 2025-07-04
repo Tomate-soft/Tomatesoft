@@ -534,7 +534,7 @@ export class OperatingPeriodService {
     }
   }
 
-  async getBalanceSheet(id: string) {
+  async getBalanceSheet(id?: string) {
     const session = await this.operatingPeriodModel.startSession();
     session.startTransaction();
     try {

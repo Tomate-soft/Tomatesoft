@@ -9,7 +9,7 @@ import { useMoneyMovementStore } from '@/zstore/moneyMovements';
 import { useModal } from '@/hooks/useModals';
 import { CONFIRM_CHANGES } from '@/configs/consts';
 import ConfirmChangesModal from '@/components/modals/confimChanges/confirmChanges';
-import { set } from 'ref-napi';
+import { get, set } from 'ref-napi';
 import ShowDescription from './showDescription/showDescription';
 
 enum ShowModalOptions {
@@ -29,6 +29,10 @@ export default function IncomingCash() {
   );
   const response = useOperatingPeriodStore((state) => state.currentPeriod);
   const currentPeriod = response[0] ?? [];
+  const balanceSheet = useOperatingPeriodStore(
+    (state) => state.balanceSheet);
+  const getBalanceSheet = useOperatingPeriodStore(
+    (state) => state.getBalanceSheet);
 
   const createMovement = useMoneyMovementStore((state) => state.createMovement);
   const updateMovement = useMoneyMovementStore((state) => state.updateMovement);
@@ -46,6 +50,8 @@ export default function IncomingCash() {
 
   useEffect(() => { 
     getCurrentPeriod();
+    getBalanceSheet(currentPeriod._id);
+    console.log(`Balance Sheet: `, balanceSheet);
   }, []);
   
   return isLoading ? (
@@ -76,7 +82,6 @@ export default function IncomingCash() {
 
       )
     }
-    
    </>
   ) : (
   

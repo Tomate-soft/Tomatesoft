@@ -23,3 +23,10 @@ export const getCurrentPeriodService = async () => {
   console.log(response);
   return response;
 };
+
+export const getBalanceSheetService = async (periodId: string) => {
+  const response = await axios(
+    `${OPERATING_PERIODS_PATH}/balance/${periodId}`,
+  );
+  return response;
+}
