@@ -245,6 +245,8 @@ export class ClousuresOfOperationsService {
     const totalTargetsAmount = parseFloat(body.debit) + parseFloat(body.credit);
     const totalTranferencesAmount = parseFloat(body.transference);
 
+    // por aca falta el tema de los pagos por medio de QR
+
     const dataForPrint = {
       ...body,
       cashWithdraws: currentSession.cashWithdraw,
@@ -279,6 +281,8 @@ export class ClousuresOfOperationsService {
     // console.log(dataForPrint);
 
     // const report = await this.reportsService.closeCashierSession(dataForPrint);
+    // hayq ue importar para crear el nuevo moneyMovemente
+    // lo c reamos con la informacion que haga falta y el monto del efectiuvo que se tienen en la caja.
 
     return dataForPrint;
   }

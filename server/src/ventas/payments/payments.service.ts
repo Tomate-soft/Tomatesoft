@@ -154,15 +154,6 @@ export class PaymentsService {
       const billCurrent = await this.billModel
         .findById(createdPayment.accountId)
         .populate({ path: 'payment' });
-      const updatedUser = await this.userModel.findOneAndUpdate(
-        { employeeNumber: parseInt(billCurrent.userCode, 10) },
-        {
-          $push: {
-            tips: { $each: createdPayment.transactions || [] },
-          },
-        },
-        { new: true },
-      );
 
       const tips = newPaymentCode.transactions?.some(
         (element) => element.tips?.length > 0,
