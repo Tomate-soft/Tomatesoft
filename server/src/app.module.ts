@@ -45,6 +45,7 @@ import { ReopenModule } from './reopen/reopen.module';
 import { AdditionsGroupModule } from './additions-group/additions-group.module';
 import { RewritePeriodModule } from './rewrite-period/rewrite-period.module';
 import { AppController } from './app.controller';
+import { SendMessagesModule } from './send-messages/send-messages.module';
 // update
 
 const uri =
@@ -96,6 +97,7 @@ const uri =
     ReopenModule,
     AdditionsGroupModule,
     RewritePeriodModule,
+    SendMessagesModule,
   ],
   controllers: [AppController],
   providers: [
