@@ -20,6 +20,7 @@ export class ClousuresOfOperationsController {
       }
       return result;
     } catch (error) {
+      console.error(error);
       throw new NotFoundException('No se ha podido cerrar la caja');
     }
   }
