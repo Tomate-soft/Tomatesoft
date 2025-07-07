@@ -111,7 +111,7 @@ export class ClousuresOfOperationsService {
     const authUser =
       await this.usersService.findByEmployeeNumber(employeeNumber);
     const currentSession = await this.cashierSessionModel
-      .findById(body.session._id)
+      .findById(body.session)
       .populate({
         path: 'bills',
         populate: { path: 'payment' },
