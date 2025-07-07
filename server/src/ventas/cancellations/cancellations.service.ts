@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { path } from 'pdfkit';
 import { CreateCancellationDto } from 'src/dto/ventas/cancellations/createCancellationDto';
 import { UpdateCancellationDto } from 'src/dto/ventas/cancellations/updateCancellationDto';
+import { formatToCurrency } from 'src/libs/formatToCurrency';
 import {
   CANCELLED_STATUS,
   ENABLE_STATUS,
@@ -93,16 +94,19 @@ export class CancellationsService {
 
         await newCancellation.populate({ path: 'cancellationBy' });
         const message = `
-                    ⚠️ Notificación de Cancelación de Cuenta
+              ⚠️ *Notificación de Cancelación de Cuenta*
 
-                    Se ha cancelado una cuenta en el sistema.
-                    - 🔒 Autorizado por: ${newCancellation.cancellationBy.name.concat(` ${newCancellation.cancellationBy.lastName}`)}
-                    - 💼 Atendida por: ${newCancellation.accountId.user}
-                    - 🍽️ Mesa: ${newCancellation.accountId.tableNum}
-                    - 🧾 Número de cuenta: ${newCancellation.accountId.code}
-                    - 🏬 Motivo: ${newCancellation.cancellationReason}
-                    Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.
-                    `;
+              Se ha cancelado una cuenta en el sistema.
+
+              🔒 *Autorizado por:* ${newCancellation.cancellationBy.name} ${newCancellation.cancellationBy.lastName}
+              💼 *Atendida por:* ${newCancellation.accountId.user}
+              🍽️ *Mesa:* ${newCancellation.accountId.tableNum}
+              🧾 *Número de cuenta:* ${newCancellation.accountId.code}
+              💲 *Total cancelado:* $${formatToCurrency(parseFloat(newCancellation.cancelledAmount)) || '0.00'}
+              🏬 *Motivo:* ${newCancellation.cancellationReason}
+
+              Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.
+              `;
 
         // - 🕒 Fecha y hora: ${newCancellation.}
 
