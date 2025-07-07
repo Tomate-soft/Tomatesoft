@@ -214,7 +214,7 @@ export class CancellationsService {
         await newCancellation.populate({ path: 'cancellationBy' });
         await newCancellation.populate({ path: 'noteId' });
         const message =
-          '⚠️ Notificación de Cancelación de Cuenta\n\n' +
+          '⚠️ Notificación de Cancelación de nota en cuenta\n\n' +
           'Se ha cancelado una cuenta en el sistema.\n\n' +
           `🔒 Autorizado por: ${newCancellation.cancellationBy.name} ${newCancellation.cancellationBy.lastName}\n` +
           `💼 Atendida por: ${newCancellation.accountId.user}\n` +
@@ -263,7 +263,7 @@ export class CancellationsService {
         await newCancelproduct.populate({ path: 'cancellationBy' });
         await newCancelproduct.populate({ path: 'noteId' });
         const message =
-          '⚠️ Notificación de Cancelación de Cuenta\n\n' +
+          '⚠️ Notificación de Cancelación de producto en cuenta\n\n' +
           'Se ha cancelado una cuenta en el sistema.\n\n' +
           `🔒 Autorizado por: ${newCancelproduct.cancellationBy.name} ${newCancelproduct.cancellationBy.lastName}\n` +
           `💼 Atendida por: ${newCancelproduct.accountId.user}\n` +
@@ -310,8 +310,9 @@ export class CancellationsService {
 
       await newCancelproduct.populate({ path: 'cancellationBy' });
       await newCancelproduct.populate({ path: 'noteId' });
+      console.log(newCancelproduct);
       const message =
-        '⚠️ Notificación de Cancelación de Cuenta\n\n' +
+        '⚠️ Notificación de Cancelación de producto en nota\n\n' +
         'Se ha cancelado una cuenta en el sistema.\n\n' +
         `🔒 Autorizado por: ${newCancelproduct.cancellationBy.name} ${newCancelproduct.cancellationBy.lastName}\n` +
         `💼 Atendida por: ${newCancelproduct.accountId.user}\n` +
