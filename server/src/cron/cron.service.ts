@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as cron from 'node-cron';
+import { formatToCurrency } from 'src/libs/formatToCurrency';
 import { FREE_STATUS } from 'src/libs/status.libs';
 import { OperatingPeriodService } from 'src/operating-period/operating-period.service';
 import { Branch } from 'src/schemas/business/branchSchema';
@@ -88,10 +89,18 @@ export class CronService {
         }
 
         const debugCloseperiodReturn =
-          '🛠️ *Debug - Resultado de closePeriod*\n\n' +
-          'Este es el mensaje de depuración del proceso de cierre de periodo.\n\n' +
-          `➡️ *Estado del periodo:* ${updatedPeriod.state}\n` +
-          `💰 *Venta total registrada:* $${updatedPeriod.totalSellsAmount?.toFixed(2) || '0.00'}\n\n` +
+          '🛠️ Cierre de periodo completado.\n\n' +
+          `➡️ Estado del periodo: ${updatedPeriod.state}\n` +
+          `💰 Venta total registrada: $${formatToCurrency(updatedPeriod.totalSellsAmount) || '0.00'}\n\n` +
+          `➡️ Venta en restaurante: $${formatToCurrency(updatedPeriod.totalRestaurantAmount)} en ${updatedPeriod.restaurantOrdersTotal} cuentas.\n` +
+          `➡️ Ventas para llevar: $${formatToCurrency(updatedPeriod.totalToGoOrdersAmount)} en ${updatedPeriod.togoOrdersTotal} cuentas.\n` +
+          `➡️ Ventas por telefono: $${formatToCurrency(updatedPeriod.totalPhoneAmount)} en ${updatedPeriod.phoneOrdersTotal}, cuentas.\n` +
+          `➡️ Ventas rappi: $${formatToCurrency(updatedPeriod.totalRappiAmount)} en ${updatedPeriod.rappiOrdersTotal} cuentas.\n` +
+          `➡️ Efectivo total: $${formatToCurrency(updatedPeriod.totalCashInAmount)}\n` +
+          `➡️ Total en tarjeta de debito $${formatToCurrency(updatedPeriod.totalDebitAmount)}\n` +
+          `➡️ Total en tarjeta de credito $${formatToCurrency(updatedPeriod.totalCreditAmount)}\n` +
+          `➡️ Total en transferencias $${formatToCurrency(updatedPeriod.totalTransferAmount)}\n` +
+          `➡️ Numero de comensales: $${formatToCurrency(updatedPeriod.totalDiners)}\n` +
           'Si todo funciona correctamente, estos valores deberían reflejarse con precisión.';
 
         await this.sendMessageService.SendTelegramMessage(
