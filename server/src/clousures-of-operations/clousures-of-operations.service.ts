@@ -109,6 +109,9 @@ export class ClousuresOfOperationsService {
   }
 
   async closeCashierSession(body: any, auth: any) {
+    console.log('1111111111111111111111111111111');
+    console.log(body);
+    console.log(auth);
     try {
       const { employeeNumber } = auth;
 
