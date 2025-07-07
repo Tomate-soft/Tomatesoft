@@ -98,12 +98,12 @@ export class CancellationsService {
 
         Se ha cancelado una cuenta en el sistema.
 
-        🔒 *Autorizado por:* ${newCancellation.cancellationBy.name} ${newCancellation.cancellationBy.lastName}
-        💼 *Atendida por:* ${newCancellation.accountId.user}
-        🍽️ *Mesa:* ${newCancellation.accountId.tableNum}
-        🧾 *Número de cuenta:* ${newCancellation.accountId.code}
-        💲 *Total cancelado:* $${formatToCurrency(parseFloat(newCancellation.cancelledAmount)) || '0.00'}
-        🏬 *Motivo:* ${newCancellation.cancellationReason}
+    🔒 *Autorizado por:* ${newCancellation.cancellationBy.name} ${newCancellation.cancellationBy.lastName}
+    💼 *Atendida por:* ${newCancellation.accountId.user}
+    🍽️ *Mesa:* ${newCancellation.accountId.tableNum}
+    🧾 *Número de cuenta:* ${newCancellation.accountId.code}
+    💲 *Total cancelado:* $${formatToCurrency(parseFloat(newCancellation.cancelledAmount)) || '0.00'}
+    🏬 *Motivo:* ${newCancellation.cancellationReason}
 
         Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.
               `;
