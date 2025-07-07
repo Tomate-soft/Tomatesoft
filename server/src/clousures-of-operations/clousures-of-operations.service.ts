@@ -109,106 +109,107 @@ export class ClousuresOfOperationsService {
   }
 
   async closeCashierSession(body: any, auth: any) {
-    const { employeeNumber } = auth;
+    try {
+      const { employeeNumber } = auth;
 
-    const authUser =
-      await this.usersService.findByEmployeeNumber(employeeNumber);
-    const currentSession = await this.cashierSessionModel
-      .findById(body.session._id)
-      .populate({
-        path: 'bills',
-        populate: { path: 'payment' },
-      })
-      .populate({
-        path: 'togoorders',
-        populate: { path: 'payment' },
-      })
-      .populate({
-        path: 'rappiOrders',
-        populate: { path: 'payment' },
-      })
-      .populate({
-        path: 'phoneOrders',
-        populate: { path: 'payment' },
-      })
-      .populate({
-        path: 'cashWithdraw',
-      });
+      const authUser =
+        await this.usersService.findByEmployeeNumber(employeeNumber);
+      const currentSession = await this.cashierSessionModel
+        .findById(body.session._id)
+        .populate({
+          path: 'bills',
+          populate: { path: 'payment' },
+        })
+        .populate({
+          path: 'togoorders',
+          populate: { path: 'payment' },
+        })
+        .populate({
+          path: 'rappiOrders',
+          populate: { path: 'payment' },
+        })
+        .populate({
+          path: 'phoneOrders',
+          populate: { path: 'payment' },
+        })
+        .populate({
+          path: 'cashWithdraw',
+        });
 
-    // calculate cash diference
-    const restaurantPayments = currentSession.bills.flatMap(
-      (bill) => bill.payment,
-    );
+      // calculate cash diference
+      const restaurantPayments = currentSession.bills.flatMap(
+        (bill) => bill.payment,
+      );
 
-    const togoPayments = currentSession.togoorders.flatMap(
-      (bill) => bill.payment,
-    );
+      const togoPayments = currentSession.togoorders.flatMap(
+        (bill) => bill.payment,
+      );
 
-    const rappiPayments = currentSession.rappiOrders.flatMap(
-      (bill) => bill.payment,
-    );
+      const rappiPayments = currentSession.rappiOrders.flatMap(
+        (bill) => bill.payment,
+      );
 
-    const phonePayments = currentSession.phoneOrders.flatMap(
-      (bill) => bill.payment,
-    );
+      const phonePayments = currentSession.phoneOrders.flatMap(
+        (bill) => bill.payment,
+      );
 
-    const concentratedPayments = [
-      ...restaurantPayments,
-      ...togoPayments,
-      ...rappiPayments,
-      ...phonePayments,
-    ];
+      const concentratedPayments = [
+        ...restaurantPayments,
+        ...togoPayments,
+        ...rappiPayments,
+        ...phonePayments,
+      ];
 
-    const totalWithdraws = currentSession.cashWithdraw.reduce(
-      (acc, current) => parseFloat(current.quantity) + acc,
-      0,
-    );
+      const totalWithdraws = currentSession.cashWithdraw.reduce(
+        (acc, current) => parseFloat(current.quantity) + acc,
+        0,
+      );
 
-    const requestCash = concentratedPayments.flatMap(
-      (payment) => payment.transactions,
-    );
+      const requestCash = concentratedPayments.flatMap(
+        (payment) => payment.transactions,
+      );
 
-    const totalCash = calculateTotalByType(requestCash, 'cash');
-    const totalDebit = calculateTotalByType(requestCash, 'debit');
-    const totalCredit = calculateTotalByType(requestCash, 'credit');
-    const totalTransfer = calculateTotalByType(requestCash, 'transfer');
-    const totalQr = calculateTotalByType(requestCash, 'qr');
-    const total =
-      totalCash + totalDebit + totalCredit + totalTransfer + totalQr;
+      const totalCash = calculateTotalByType(requestCash, 'cash');
+      const totalDebit = calculateTotalByType(requestCash, 'debit');
+      const totalCredit = calculateTotalByType(requestCash, 'credit');
+      const totalTransfer = calculateTotalByType(requestCash, 'transfer');
+      const totalQr = calculateTotalByType(requestCash, 'qr');
+      const total =
+        totalCash + totalDebit + totalCredit + totalTransfer + totalQr;
 
-    // Summary totals
-    // Summary cash    total de las ventas del efetivo -
-    const summaryCash =
-      parseFloat(totalCash) - parseFloat(body.cash ?? 0) - totalWithdraws;
-    const summaryDebit = parseFloat(totalDebit) - parseFloat(body.debit ?? 0);
-    const summaryCredit =
-      parseFloat(totalCredit) - parseFloat(body.credit ?? 0);
-    const summaryTransfer =
-      parseFloat(totalTransfer) - parseFloat(body.transference ?? 0);
+      // Summary totals
+      // Summary cash    total de las ventas del efetivo -
+      const summaryCash =
+        parseFloat(totalCash) - parseFloat(body.cash ?? 0) - totalWithdraws;
+      const summaryDebit = parseFloat(totalDebit) - parseFloat(body.debit ?? 0);
+      const summaryCredit =
+        parseFloat(totalCredit) - parseFloat(body.credit ?? 0);
+      const summaryTransfer =
+        parseFloat(totalTransfer) - parseFloat(body.transference ?? 0);
 
-    const summaryTargets =
-      totalDebit + totalCredit - (body.debit ?? 0 + body.credit ?? 0);
+      const summaryTargets =
+        totalDebit + totalCredit - (body.debit ?? 0 + body.credit ?? 0);
 
-    const summaryTotal =
-      totalCash +
-      totalDebit +
-      totalCredit +
-      totalTransfer -
-      parseFloat(
-        body.totalAmount ??
-          parseFloat(body.cash ?? 0) +
-            parseFloat(body.debit ?? 0) +
-            parseFloat(body.credit ?? 0) +
-            parseFloat(body.transference ?? 0),
-      ) -
-      totalWithdraws;
+      const summaryTotal =
+        totalCash +
+        totalDebit +
+        totalCredit +
+        totalTransfer -
+        parseFloat(
+          body.totalAmount ??
+            parseFloat(body.cash ?? 0) +
+              parseFloat(body.debit ?? 0) +
+              parseFloat(body.credit ?? 0) +
+              parseFloat(body.transference ?? 0),
+        ) -
+        totalWithdraws;
 
-    // const summaryRappi = parseFloat(totalRappi ?? 0) - parseFloat(body.rappi ?? 0); // esto habra que filtrar por tipo de venta|
-    // const summaryUberEats = parseFloat(totalUberEats ?? 0) - parseFloat(body.uberEats ?? 0); // esto habra que filtrar por tipo de venta|
-    // const summaryDidiFood = parseFloat(totalDidiFood ?? 0) - parseFloat(body.didiFood ?? 0); // esto habra que filtrar por tipo de venta|
-    // new deployed version
-    // summary deployed
-    /*
+      // const summaryRappi = parseFloat(totalRappi ?? 0) - parseFloat(body.rappi ?? 0); // esto habra que filtrar por tipo de venta|
+      // const summaryUberEats = parseFloat(totalUberEats ?? 0) - parseFloat(body.uberEats ?? 0); // esto habra que filtrar por tipo de venta|
+      // const summaryDidiFood = parseFloat(totalDidiFood ?? 0) - parseFloat(body.didiFood ?? 0); // esto habra que filtrar por tipo de venta|
+      // new deployed version
+      // summary deployed
+      /*
     const summaryTotal =
       parseFloat(total) -
       (parseFloat(body?.cash ?? 0) +
@@ -220,7 +221,7 @@ export class ClousuresOfOperationsService {
         parseFloat(body?.didiFood ?? 0));
         */
 
-    /* 
+      /* 
     const requestDebit = arrayDeTransacciones.filter((payment) => payment.type === 'debit');
     const requestCredit = arrayDeTransacciones.filter((payment) => payment.type === 'credit');
     const requestTransfer = arrayDeTransacciones.filter((payment) => payment.type === 'transfer');
@@ -251,45 +252,46 @@ export class ClousuresOfOperationsService {
     // Folio de corte
 
 */
-    // Esto es de lo que mandamos desde el front
-    const totalTargetsAmount = parseFloat(body.debit) + parseFloat(body.credit);
-    const totalTranferencesAmount = parseFloat(body.transference);
+      // Esto es de lo que mandamos desde el front
+      const totalTargetsAmount =
+        parseFloat(body.debit) + parseFloat(body.credit);
+      const totalTranferencesAmount = parseFloat(body.transference);
 
-    // por aca falta el tema de los pagos por medio de QR
+      // por aca falta el tema de los pagos por medio de QR
 
-    const dataForPrint = {
-      ...body,
-      cashWithdraws: currentSession.cashWithdraw,
-      totalWithdraws: totalWithdraws,
-      totalCash: total,
-      cashAmount: totalCash,
-      debitAmount: totalDebit,
-      creditAmount: totalCredit,
-      targetsAmount: totalDebit + totalCredit,
-      transferencesAmount: totalTransfer, // Aca sujmaremos rappi , uber y todo lo que venga de transferencias aunque sean de otro tipo de venta.
-      transferAmount: totalTransfer,
-      totalTargetsAmount: totalTargetsAmount,
-      totalTranferencesAmount: totalTranferencesAmount,
-      rappiAmount: 0,
-      uberEatsAmount: 0,
-      didiFoodAmount: 0,
-      totalAmount: total,
-      summaryTargets: summaryTargets,
-      summaryTransferences: summaryTransfer,
-      summaryCash: summaryCash,
-      summaryDebit: summaryDebit,
-      summaryCredit: summaryCredit,
-      summaryTransfer: summaryTransfer,
-      summaryRappi: '$0.00',
-      summaryUberEats: '0.00',
-      summaryDidiFood: '0.00',
-      summaryTotal: summaryTotal,
-      authFor: authUser.name
-        ? `${authUser.name} ${authUser.lastName}`
-        : 'No encontrado',
-    };
+      const dataForPrint = {
+        ...body,
+        cashWithdraws: currentSession.cashWithdraw,
+        totalWithdraws: totalWithdraws,
+        totalCash: total,
+        cashAmount: totalCash,
+        debitAmount: totalDebit,
+        creditAmount: totalCredit,
+        targetsAmount: totalDebit + totalCredit,
+        transferencesAmount: totalTransfer, // Aca sujmaremos rappi , uber y todo lo que venga de transferencias aunque sean de otro tipo de venta.
+        transferAmount: totalTransfer,
+        totalTargetsAmount: totalTargetsAmount,
+        totalTranferencesAmount: totalTranferencesAmount,
+        rappiAmount: 0,
+        uberEatsAmount: 0,
+        didiFoodAmount: 0,
+        totalAmount: total,
+        summaryTargets: summaryTargets,
+        summaryTransferences: summaryTransfer,
+        summaryCash: summaryCash,
+        summaryDebit: summaryDebit,
+        summaryCredit: summaryCredit,
+        summaryTransfer: summaryTransfer,
+        summaryRappi: '$0.00',
+        summaryUberEats: '0.00',
+        summaryDidiFood: '0.00',
+        summaryTotal: summaryTotal,
+        authFor: authUser.name
+          ? `${authUser.name} ${authUser.lastName}`
+          : 'No encontrado',
+      };
 
-    const descriptiveMessage = `
+      const descriptiveMessage = `
           ---
 
           El **cierre de caja** del día ha finalizado **exitosamente**. Esta operación, realizada por el usuario con el número de empleado **${currentSession.user.employeeNumber}** y autorizada por **${dataForPrint.authFor}**, consolida y verifica la totalidad de los movimientos financieros.
@@ -305,26 +307,29 @@ export class ClousuresOfOperationsService {
           ---
           `;
 
-    const movementData = {
-      amount: summaryCash, // es el total de efectivo por que es lo que va entrar a caja chica
-      type: MoneyMovementType.INCOME,
-      title: `Cierre de caja - ${currentSession.user.employeeNumber}`,
-      description: descriptiveMessage,
-      date: new Date().toLocaleDateString(),
-      user: dataForPrint.auth,
-      status: MoneyMovementStatus.APPROVED,
-    };
+      const movementData = {
+        amount: summaryCash, // es el total de efectivo por que es lo que va entrar a caja chica
+        type: MoneyMovementType.INCOME,
+        title: `Cierre de caja - ${currentSession.user.employeeNumber}`,
+        description: descriptiveMessage,
+        date: new Date().toLocaleDateString(),
+        user: dataForPrint.auth,
+        status: MoneyMovementStatus.APPROVED,
+      };
 
-    // aca la data de moneyMovemenet
+      // aca la data de moneyMovemenet
 
-    await this.operatingPeriodService.createMoneyMovement(movementData);
+      await this.operatingPeriodService.createMoneyMovement(movementData);
 
-    // console.log(dataForPrint);
+      // console.log(dataForPrint);
 
-    // const report = await this.reportsService.closeCashierSession(dataForPrint);
-    // hayq ue importar para crear el nuevo moneyMovemente
-    // lo c reamos con la informacion que haga falta y el monto del efectiuvo que se tienen en la caja.
+      // const report = await this.reportsService.closeCashierSession(dataForPrint);
+      // hayq ue importar para crear el nuevo moneyMovemente
+      // lo c reamos con la informacion que haga falta y el monto del efectiuvo que se tienen en la caja.
 
-    return dataForPrint;
+      return dataForPrint;
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
