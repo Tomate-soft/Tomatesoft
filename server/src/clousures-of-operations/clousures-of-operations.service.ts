@@ -104,6 +104,9 @@ export class ClousuresOfOperationsService {
 
   async closeCashierSession(body: any, auth: any) {
     const { employeeNumber } = auth;
+    console.log(`y este es el perro body, ${body}`);
+    console.log(`y este es el perro body, ${body.session}`);
+    console.log(`y este es el perro body, ${body.session._id}`);
 
     const authUser =
       await this.usersService.findByEmployeeNumber(employeeNumber);
