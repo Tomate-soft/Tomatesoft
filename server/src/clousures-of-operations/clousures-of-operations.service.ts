@@ -318,6 +318,7 @@ export class ClousuresOfOperationsService {
       };
 
       // aca la data de moneyMovemenet
+      // updtae
 
       await this.operatingPeriodService.createMoneyMovement(movementData);
 
