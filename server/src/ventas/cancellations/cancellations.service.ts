@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { path } from 'pdfkit';
 import { CreateCancellationDto } from 'src/dto/ventas/cancellations/createCancellationDto';
 import { UpdateCancellationDto } from 'src/dto/ventas/cancellations/updateCancellationDto';
 import {
@@ -86,10 +87,25 @@ export class CancellationsService {
           { status: FREE_STATUS, bill: [] },
           { new: true },
         );
-        const cancellation = await newCancellation.populate({
+        await newCancellation.populate({
           path: 'accountId',
         });
-        const message = `${cancellation}`;
+
+        await newCancellation.populate({ path: 'cancellationBy' });
+        const message = `
+                    ⚠️ Notificación de Cancelación de Cuenta
+
+                    Se ha cancelado una cuenta en el sistema.
+                    - 🔒 Autorizado por: ${newCancellation.cancellationBy.name.concat(` ${newCancellation.cancellationBy.lastName}`)}
+                    - 💼 Atendida por: ${newCancellation.accountId.user}
+                    - 🍽️ Mesa: ${newCancellation.accountId.tableNum}
+                    - 🧾 Número de cuenta: ${newCancellation.accountId.code}
+                    - 🏬 Motivo: ${newCancellation.cancellationReason}
+                    Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.
+                    `;
+
+        // - 🕒 Fecha y hora: ${newCancellation.}
+
         await this.sendMessagesService.SendTelegramMessage(
           message,
           -1002859358686,
