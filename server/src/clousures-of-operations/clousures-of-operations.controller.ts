@@ -15,9 +15,6 @@ export class ClousuresOfOperationsController {
           body.body,
           body.auth,
         );
-      if (!result) {
-        throw new NotFoundException('No se ha podido cerrar la caja');
-      }
       return result;
     } catch (error) {
       console.error(error);
