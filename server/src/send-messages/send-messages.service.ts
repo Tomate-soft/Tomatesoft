@@ -9,10 +9,10 @@ export class SendMessagesService {
     'https://api.telegram.org/bot7256346176:AAEVp9BGEvCwRFn9WRaokNIhXKIRB9YUrkU/sendMessage';
   private readonly CHAT_ID = -4659578124;
 
-  async SendTelegramMessage(message: string) {
+  async SendTelegramMessage(message: string, id?: number) {
     try {
       const response = await axios.post(this.TELEGRAM_URL, {
-        chat_id: this.CHAT_ID,
+        chat_id: id ?? this.CHAT_ID,
         text: message,
       });
       this.logger.log(`Mensaje enviado correctamente a Telegram: ${message}`);

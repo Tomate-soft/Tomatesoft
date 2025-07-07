@@ -50,6 +50,7 @@ import {
   MoneyMovement,
   MoneyMovementSchema,
 } from 'src/schemas/moneyMovements/moneyMovement.schema';
+import { SendMessagesService } from 'src/send-messages/send-messages.service';
 
 /**
  * Module for handling closures of operations.
@@ -91,6 +92,7 @@ import {
     UsersService,
     DiscountsService,
     CancellationsService,
+    SendMessagesService,
   ],
 })
 export class ClousuresOfOperationsModule {}

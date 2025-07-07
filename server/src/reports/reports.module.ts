@@ -45,6 +45,7 @@ import {
   MoneyMovement,
   MoneyMovementSchema,
 } from 'src/schemas/moneyMovements/moneyMovement.schema';
+import { SendMessagesService } from 'src/send-messages/send-messages.service';
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import {
     ProcessService,
     DiscountsService,
     CancellationsService,
+    SendMessagesService,
   ],
 })
 export class ReportsModule {}

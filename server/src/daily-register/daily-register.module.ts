@@ -51,6 +51,7 @@ import {
   MoneyMovement,
   MoneyMovementSchema,
 } from 'src/schemas/moneyMovements/moneyMovement.schema';
+import { SendMessagesService } from 'src/send-messages/send-messages.service';
 
 @Module({
   imports: [
@@ -132,6 +133,7 @@ import {
     BillsService,
     DiscountsService,
     CancellationsService,
+    SendMessagesService,
   ],
   controllers: [DailyRegisterController],
 })

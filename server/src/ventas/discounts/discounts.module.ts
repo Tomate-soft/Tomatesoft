@@ -34,6 +34,7 @@ import {
   MoneyMovement,
   MoneyMovementSchema,
 } from 'src/schemas/moneyMovements/moneyMovement.schema';
+import { SendMessagesService } from 'src/send-messages/send-messages.service';
 
 @Module({
   imports: [
@@ -88,6 +89,11 @@ import {
     forwardRef(() => BillsModule),
   ],
   controllers: [DiscountsController],
-  providers: [DiscountsService, OperatingPeriodService, CancellationsService],
+  providers: [
+    DiscountsService,
+    OperatingPeriodService,
+    CancellationsService,
+    SendMessagesService,
+  ],
 })
 export class DiscountsModule {}

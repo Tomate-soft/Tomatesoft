@@ -21,6 +21,7 @@ import { Bills } from 'src/schemas/ventas/bills.schema';
 import { Cancellations } from 'src/schemas/ventas/cancellations.schema';
 import { Notes } from 'src/schemas/ventas/notes.schema';
 import { Product } from 'src/schemas/ventas/product.schema';
+import { SendMessagesService } from 'src/send-messages/send-messages.service';
 import { calculateBillTotal } from 'src/utils/business/CalculateTotals';
 
 @Injectable()
@@ -34,6 +35,7 @@ export class CancellationsService {
     @InjectModel(Product.name) private productsModel: Model<Product>,
     @Inject(forwardRef(() => OperatingPeriodService))
     private readonly operatingPeriodService: OperatingPeriodService,
+    private readonly sendMessagesService: SendMessagesService,
   ) {}
 
   async findAll() {
@@ -83,6 +85,11 @@ export class CancellationsService {
           currentBill.table,
           { status: FREE_STATUS, bill: [] },
           { new: true },
+        );
+        const message = `${newCancellation}`;
+        await this.sendMessagesService.SendTelegramMessage(
+          message,
+          -1002859358686,
         );
 
         await session.commitTransaction();
