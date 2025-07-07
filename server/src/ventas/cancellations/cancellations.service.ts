@@ -93,20 +93,16 @@ export class CancellationsService {
         });
 
         await newCancellation.populate({ path: 'cancellationBy' });
-        const message = `
-        ⚠️ *Notificación de Cancelación de Cuenta*
-
-        Se ha cancelado una cuenta en el sistema.
-
-    🔒 *Autorizado por:* ${newCancellation.cancellationBy.name} ${newCancellation.cancellationBy.lastName}
-    💼 *Atendida por:* ${newCancellation.accountId.user}
-    🍽️ *Mesa:* ${newCancellation.accountId.tableNum}
-    🧾 *Número de cuenta:* ${newCancellation.accountId.code}
-    💲 *Total cancelado:* $${formatToCurrency(parseFloat(newCancellation.cancelledAmount)) || '0.00'}
-    🏬 *Motivo:* ${newCancellation.cancellationReason}
-
-        Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.
-              `;
+        const message =
+          '⚠️ *Notificación de Cancelación de Cuenta*\n\n' +
+          'Se ha cancelado una cuenta en el sistema.\n\n' +
+          `🔒 *Autorizado por:* ${newCancellation.cancellationBy.name} ${newCancellation.cancellationBy.lastName}\n` +
+          `💼 *Atendida por:* ${newCancellation.accountId.user}\n` +
+          `🍽️ *Mesa:* ${newCancellation.accountId.tableNum}\n` +
+          `🧾 *Número de cuenta:* ${newCancellation.accountId.code}\n` +
+          `💲 *Total cancelado:* $${formatToCurrency(parseFloat(newCancellation.cancelledAmount)) || '0.00'}\n` +
+          `🏬 *Motivo:* ${newCancellation.cancellationReason}\n\n` +
+          'Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.';
 
         // - 🕒 Fecha y hora: ${newCancellation.}
 
