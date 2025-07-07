@@ -74,6 +74,9 @@ export class CronService {
       // Aquí se cierra el actual periodo operativo actual //////////////
       ///////////////////////////////////////////////////////////////////
       const currentPeriodId = branch.operatingPeriod;
+      await this.sendMessageService.SendTelegramMessage(
+        ` Este es el periodo actual: ${currentPeriodId}`,
+      );
 
       if (currentPeriodId) {
         const updatedPeriod = await this.operatingPeriodService.closePeriod(
@@ -84,18 +87,26 @@ export class CronService {
           console.error('No se pudo cerrar el periodo operativo');
         }
 
-        const debugCloseperiodReturn = `Este es el mensaje de debug de lo que retorna el closePeriod. Si todo funciona bien aqui deberia aparecer el status del periodo que es ---> ${updatedPeriod.state}, con una venta de ${updatedPeriod.totalSellsAmount}`;
+        const debugCloseperiodReturn =
+          '🛠️ *Debug - Resultado de closePeriod*\n\n' +
+          'Este es el mensaje de depuración del proceso de cierre de periodo.\n\n' +
+          `➡️ *Estado del periodo:* ${updatedPeriod.state}\n` +
+          `💰 *Venta total registrada:* $${updatedPeriod.totalSellsAmount?.toFixed(2) || '0.00'}\n\n` +
+          'Si todo funciona correctamente, estos valores deberían reflejarse con precisión.';
 
         await this.sendMessageService.SendTelegramMessage(
           debugCloseperiodReturn,
         );
       }
-
       ////////////////////////////////////////////////////////////////////
       // Aquí se crea el nuevo periodo operativo /////////////////////////
       ////////////////////////////////////////////////////////////////////
       const session = await this.branchModel.startSession();
       session.startTransaction();
+      await this.sendMessageService.SendTelegramMessage(
+        ` Aqui se inicia la transaccion para actualizar la sucursal`,
+      );
+
       try {
         const newOperatingPeriod = new this.operatingPeriodModel();
         await newOperatingPeriod.save();
@@ -104,6 +115,11 @@ export class CronService {
           session.endSession();
           throw new Error('No se pudo crear el nuevo periodo operativo');
         }
+
+        await this.sendMessageService.SendTelegramMessage(
+          `El nuevo periodo se creo y tiene el id: ${newOperatingPeriod}`,
+        );
+
         // vamos a actualizar la branch en su key operatingperiod si no hay ninguno metemos el nuevo y hay ya hay uno lo reemplazamos
         const updatedBranch = await this.branchModel.findByIdAndUpdate(
           branchId,
@@ -112,6 +128,12 @@ export class CronService {
           },
         );
         if (!updatedBranch) {
+          const debugCloseperiodReturn =
+            'No se pudo actualizar el ID de la sucursal';
+
+          await this.sendMessageService.SendTelegramMessage(
+            debugCloseperiodReturn,
+          );
           await session.abortTransaction();
           session.endSession();
           throw new Error('No se pudo actualizar la branch');
@@ -157,6 +179,11 @@ export class CronService {
         await session.commitTransaction();
         session.endSession();
       } catch (error) {
+        const debugCloseperiodReturn = 'Entre al error del catch';
+
+        await this.sendMessageService.SendTelegramMessage(
+          debugCloseperiodReturn,
+        );
         await session.abortTransaction();
       } finally {
         session.endSession();
