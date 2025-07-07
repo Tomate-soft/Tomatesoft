@@ -86,7 +86,10 @@ export class CancellationsService {
           { status: FREE_STATUS, bill: [] },
           { new: true },
         );
-        const message = `${newCancellation.populate({ path: 'accountId' })}`;
+        const cancellation = await newCancellation.populate({
+          path: 'accountId',
+        });
+        const message = `${cancellation}`;
         await this.sendMessagesService.SendTelegramMessage(
           message,
           -1002859358686,
