@@ -94,14 +94,14 @@ export class CancellationsService {
 
         await newCancellation.populate({ path: 'cancellationBy' });
         const message =
-          '⚠️ *Notificación de Cancelación de Cuenta*\n\n' +
+          '⚠️ Notificación de Cancelación de Cuenta\n\n' +
           'Se ha cancelado una cuenta en el sistema.\n\n' +
-          `🔒 *Autorizado por:* ${newCancellation.cancellationBy.name} ${newCancellation.cancellationBy.lastName}\n` +
-          `💼 *Atendida por:* ${newCancellation.accountId.user}\n` +
-          `🍽️ *Mesa:* ${newCancellation.accountId.tableNum}\n` +
-          `🧾 *Número de cuenta:* ${newCancellation.accountId.code}\n` +
-          `💲 *Total cancelado:* $${formatToCurrency(parseFloat(newCancellation.cancelledAmount)) || '0.00'}\n` +
-          `🏬 *Motivo:* ${newCancellation.cancellationReason}\n\n` +
+          `🔒 Autorizado por: ${newCancellation.cancellationBy.name} ${newCancellation.cancellationBy.lastName}\n` +
+          `💼 Atendida por: ${newCancellation.accountId.user}\n` +
+          `🍽️ Mesa: ${newCancellation.accountId.tableNum}\n` +
+          `🧾 Número de cuenta: ${newCancellation.accountId.code}\n` +
+          `💲 Total cancelado: $${formatToCurrency(parseFloat(newCancellation.cancelledAmount)) || '0.00'}\n` +
+          `🏬 Motivo: ${newCancellation.cancellationReason}\n\n` +
           'Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.';
 
         // - 🕒 Fecha y hora: ${newCancellation.}
@@ -206,6 +206,28 @@ export class CancellationsService {
             { new: true },
           );
         }
+
+        await newCancellation.populate({
+          path: 'accountId',
+        });
+
+        await newCancellation.populate({ path: 'cancellationBy' });
+        await newCancellation.populate({ path: 'noteId' });
+        const message =
+          '⚠️ Notificación de Cancelación de Cuenta\n\n' +
+          'Se ha cancelado una cuenta en el sistema.\n\n' +
+          `🔒 Autorizado por: ${newCancellation.cancellationBy.name} ${newCancellation.cancellationBy.lastName}\n` +
+          `💼 Atendida por: ${newCancellation.accountId.user}\n` +
+          `🍽️ Mesa: ${newCancellation.accountId.tableNum}\n` +
+          `🧾 Nota: ${newCancellation.noteId.noteNumber}, de la cuenta: ${newCancellation.accountId.code}\n` +
+          `💲 Total cancelado: $${formatToCurrency(parseFloat(newCancellation.cancelledAmount)) || '0.00'}\n` +
+          `🏬 Motivo: ${newCancellation.cancellationReason}\n\n` +
+          'Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.';
+
+        await this.sendMessagesService.SendTelegramMessage(
+          message,
+          -1002859358686,
+        );
         await session.commitTransaction();
         await session.endSession();
         return newCancellation;
@@ -234,6 +256,28 @@ export class CancellationsService {
           { products: body.aptAccount.products, checkTotal: checkTotalNew },
         );
 
+        await newCancelproduct.populate({
+          path: 'accountId',
+        });
+
+        await newCancelproduct.populate({ path: 'cancellationBy' });
+        await newCancelproduct.populate({ path: 'noteId' });
+        const message =
+          '⚠️ Notificación de Cancelación de Cuenta\n\n' +
+          'Se ha cancelado una cuenta en el sistema.\n\n' +
+          `🔒 Autorizado por: ${newCancelproduct.cancellationBy.name} ${newCancelproduct.cancellationBy.lastName}\n` +
+          `💼 Atendida por: ${newCancelproduct.accountId.user}\n` +
+          `🍽️ Producto cancelado: ${newCancelproduct.product.productName}\n` +
+          `🧾 Cuenta: ${newCancelproduct.accountId.code}\n` +
+          `💲 Total cancelado: $${formatToCurrency(parseFloat(newCancelproduct.cancelledAmount)) || '0.00'}\n` +
+          `🏬 Motivo: ${newCancelproduct.cancellationReason}\n\n` +
+          'Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.';
+
+        await this.sendMessagesService.SendTelegramMessage(
+          message,
+          -1002859358686,
+        );
+
         await session.commitTransaction();
         session.endSession();
         return newCancelproduct;
@@ -258,6 +302,28 @@ export class CancellationsService {
           products: body.aptAccount.products,
           checkTotal: newTotalBill,
         },
+      );
+
+      await newCancelproduct.populate({
+        path: 'accountId',
+      });
+
+      await newCancelproduct.populate({ path: 'cancellationBy' });
+      await newCancelproduct.populate({ path: 'noteId' });
+      const message =
+        '⚠️ Notificación de Cancelación de Cuenta\n\n' +
+        'Se ha cancelado una cuenta en el sistema.\n\n' +
+        `🔒 Autorizado por: ${newCancelproduct.cancellationBy.name} ${newCancelproduct.cancellationBy.lastName}\n` +
+        `💼 Atendida por: ${newCancelproduct.accountId.user}\n` +
+        `🍽️ Producto cancelado: ${newCancelproduct.product.productName}\n` +
+        `🧾 Nota: ${newCancelproduct.noteId.noteNumber}, de la cuenta: ${newCancelproduct.accountId.code}\n` +
+        `💲 Total cancelado: $${formatToCurrency(parseFloat(newCancelproduct.cancelledAmount)) || '0.00'}\n` +
+        `🏬 Motivo: ${newCancelproduct.cancellationReason}\n\n` +
+        'Si no reconoces esta acción, por favor comunícate de inmediato con el área de administración.';
+
+      await this.sendMessagesService.SendTelegramMessage(
+        message,
+        -1002859358686,
       );
       await session.commitTransaction();
       session.endSession();
