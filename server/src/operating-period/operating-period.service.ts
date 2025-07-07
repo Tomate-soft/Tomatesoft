@@ -445,7 +445,6 @@ export class OperatingPeriodService {
   }
 
   // new pull request
-
   async createSourcePeriod(
     data: any,
     branchId: string,

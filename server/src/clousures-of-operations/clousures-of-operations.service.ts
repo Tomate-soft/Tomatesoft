@@ -11,7 +11,17 @@ import { RappiOrder } from 'src/schemas/ventas/orders/rappiOrder.schema';
 import { ToGoOrder } from 'src/schemas/ventas/orders/toGoOrder.schema';
 import { calculateTotalByType } from './lib/calculateTotalByType';
 import { UsersService } from 'src/users/users.service';
-import { parse } from 'path';
+
+enum MoneyMovementStatus {
+  APPROVED = 'approved',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+}
+
+enum MoneyMovementType {
+  INCOME = 'income',
+  EXPENSE = 'expense',
+}
 
 @Injectable()
 export class ClousuresOfOperationsService {
@@ -278,6 +288,37 @@ export class ClousuresOfOperationsService {
         ? `${authUser.name} ${authUser.lastName}`
         : 'No encontrado',
     };
+
+    const descriptiveMessage = `
+          ---
+
+          El **cierre de caja** del día ha finalizado **exitosamente**. Esta operación, realizada por el usuario con el número de empleado **${currentSession.user.employeeNumber}** y autorizada por **${dataForPrint.authFor}**, consolida y verifica la totalidad de los movimientos financieros.
+
+          El **total general de ventas registradas** asciende a **$${dataForPrint.totalAmount.toFixed(2)}**. De este monto, **$${dataForPrint.cashAmount.toFixed(2)}** corresponde a **efectivo contado**, cuyo resumen es ${dataForPrint.summaryCash}. Las ventas mediante **tarjetas** suman **$${dataForPrint.targetsAmount.toFixed(2)}**, desglosadas en $${dataForPrint.creditAmount.toFixed(2)} (${dataForPrint.summaryCredit}) en crédito y $${dataForPrint.debitAmount.toFixed(2)} (${dataForPrint.summaryDebit}) en débito.
+
+          Las ventas y otros ingresos por **transferencias y plataformas** alcanzan los **$${dataForPrint.transferencesAmount.toFixed(2)}**. Esto incluye $${dataForPrint.transferAmount.toFixed(2)} (${dataForPrint.summaryTransfer}) por transferencias bancarias, y un desglose de $${dataForPrint.rappiAmount.toFixed(2)} (${dataForPrint.summaryRappi}) de Rappi, $${dataForPrint.uberEatsAmount.toFixed(2)} (${dataForPrint.summaryUberEats}) de Uber Eats, y $${dataForPrint.didiFoodAmount.toFixed(2)} (${dataForPrint.summaryDidiFood}) de Didi Food.
+
+          Se registraron **retiros de efectivo (cash withdraws)** por un total de **$${dataForPrint.cashWithdraws.toFixed(2)}**, sumando un **total de retiros registrados** de **$${dataForPrint.totalWithdraws.toFixed(2)}**.
+
+          Finalmente, el **monto total de efectivo a ingresar a caja chica** producto de este cierre es de **$${summaryCash}**, consolidándose como un ingreso y confirmando la **precisión e integridad** de los registros financieros del día.
+
+          ---
+          `;
+
+    const movementData = {
+      amount: summaryCash, // es el total de efectivo por que es lo que va entrar a caja chica
+      type: MoneyMovementType.INCOME,
+      title: `Cierre de caja - ${currentSession.user.employeeNumber}`,
+      description: descriptiveMessage,
+      date: new Date().toLocaleDateString(),
+      user: dataForPrint.auth,
+      status: MoneyMovementStatus.APPROVED,
+    };
+
+    // aca la data de moneyMovemenet
+
+    await this.operatingPeriodService.createMoneyMovement(movementData);
+
     // console.log(dataForPrint);
 
     // const report = await this.reportsService.closeCashierSession(dataForPrint);
