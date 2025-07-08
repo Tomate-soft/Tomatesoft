@@ -294,26 +294,20 @@ export class ClousuresOfOperationsService {
     // hayq ue importar para crear el nuevo moneyMovemente
     // lo c reamos con la informacion que haga falta y el monto del efectiuvo que se tienen en la caja.
 
-    const descriptiveMessage = `
-          ---
+    const descriptiveMessage =
+        '---\n\n' +
+        `El cierre de caja del día ha finalizado exitosamente. Esta operación, realizada por el usuario con el número de empleado ${currentSession.user.employeeNumber} y autorizada por ${dataForPrint.authFor}, consolida y verifica la totalidad de los movimientos financieros.\n\n` +
+        `El total general de ventas registradas asciende a $${dataForPrint.totalAmount}. De este monto, $${dataForPrint.cashAmount} corresponde a efectivo contado, cuyo resumen es ${dataForPrint.summaryCash}. Las ventas mediante tarjetas suman $${dataForPrint.targetsAmount.toFixed(2)}, desglosadas en $${dataForPrint.creditAmount.toFixed(2)} (${dataForPrint.summaryCredit}) en crédito y $${dataForPrint.debitAmount.toFixed(2)} (${dataForPrint.summaryDebit}) en débito.\n\n` +
+        `Las ventas y otros ingresos por transferencias y plataformas alcanzan los $${dataForPrint.transferencesAmount}. Esto incluye $${dataForPrint.transferAmount} (${dataForPrint.summaryTransfer}) por transferencias bancarias, y un desglose de $${dataForPrint.rappiAmount.toFixed(2)} (${dataForPrint.summaryRappi}) de Rappi, $${dataForPrint.uberEatsAmount.toFixed(2)} (${dataForPrint.summaryUberEats}) de Uber Eats, y $${dataForPrint.didiFoodAmount.toFixed(2)} (${dataForPrint.summaryDidiFood}) de Didi Food.\n\n` +
+        `Se registraron retiros de efectivo (cash withdraws) por un total de $${dataForPrint.cashWithdraws}, sumando un total de retiros registrados de $${dataForPrint.totalWithdraws}.\n\n` +
+        `Finalmente, el monto total de efectivo a ingresar a caja chica producto de este cierre es de $${summaryCash}, consolidándose como un ingreso y confirmando la precisión e integridad de los registros financieros del día.\n\n` +
+        '---';
 
-          El **cierre de caja** del día ha finalizado **exitosamente**. Esta operación, realizada por el usuario con el número de empleado **${currentSession.user.employeeNumber}** y autorizada por **${dataForPrint.authFor}**, consolida y verifica la totalidad de los movimientos financieros.
-
-          El **total general de ventas registradas** asciende a **$${dataForPrint.totalAmount}**. De este monto, **$${dataForPrint.cashAmount}** corresponde a **efectivo contado**, cuyo resumen es ${dataForPrint.summaryCash}. Las ventas mediante **tarjetas** suman **$${dataForPrint.targetsAmount.toFixed(2)}**, desglosadas en $${dataForPrint.creditAmount.toFixed(2)} (${dataForPrint.summaryCredit}) en crédito y $${dataForPrint.debitAmount.toFixed(2)} (${dataForPrint.summaryDebit}) en débito.
-
-          Las ventas y otros ingresos por **transferencias y plataformas** alcanzan los **$${dataForPrint.transferencesAmount}**. Esto incluye $${dataForPrint.transferAmount} (${dataForPrint.summaryTransfer}) por transferencias bancarias, y un desglose de $${dataForPrint.rappiAmount.toFixed(2)} (${dataForPrint.summaryRappi}) de Rappi, $${dataForPrint.uberEatsAmount.toFixed(2)} (${dataForPrint.summaryUberEats}) de Uber Eats, y $${dataForPrint.didiFoodAmount.toFixed(2)} (${dataForPrint.summaryDidiFood}) de Didi Food.
-
-          Se registraron **retiros de efectivo (cash withdraws)** por un total de **$${dataForPrint.cashWithdraws}**, sumando un **total de retiros registrados** de **$${dataForPrint.totalWithdraws}**.
-
-          Finalmente, el **monto total de efectivo a ingresar a caja chica** producto de este cierre es de **$${summaryCash}**, consolidándose como un ingreso y confirmando la **precisión e integridad** de los registros financieros del día.
-
-          ---
-          `;
 
     const movementData = {
       amount: summaryCash, // es el total de efectivo por que es lo que va entrar a caja chica
       type: MoneyMovementType.INCOME,
-      title: `Cierre de caja - ${currentSession.user.employeeNumber}`,
+      title: `Cierre de caja - ${currentSession.user}`,
       description: descriptiveMessage,
       date: new Date().toLocaleDateString(),
       user: authUser.name
