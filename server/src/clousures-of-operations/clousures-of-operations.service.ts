@@ -316,7 +316,9 @@ export class ClousuresOfOperationsService {
       title: `Cierre de caja - ${currentSession.user.employeeNumber}`,
       description: descriptiveMessage,
       date: new Date().toLocaleDateString(),
-      user: dataForPrint.auth,
+      user: authUser.name
+        ? `${authUser.name} ${authUser.lastName}`
+        : 'No encontrado',
       status: MoneyMovementStatus.APPROVED,
     };
 
