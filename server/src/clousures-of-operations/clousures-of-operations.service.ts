@@ -303,7 +303,7 @@ export class ClousuresOfOperationsService {
       '---';
 
     const movementData = {
-      amount: summaryCash, // es el total de efectivo por que es lo que va entrar a caja chica
+      amount: parseFloat(body.cash), // es el total de efectivo por que es lo que va entrar a caja chica
       type: MoneyMovementType.INCOME,
       title: `Cierre de caja - ${currentSession.user.employeeNumber}`,
       description: descriptiveMessage,
