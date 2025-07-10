@@ -170,7 +170,7 @@ export class ClousuresOfOperationsService {
     const totalDebit = calculateTotalByType(requestCash, 'debit');
     const totalCredit = calculateTotalByType(requestCash, 'credit');
     const totalTransfer = calculateTotalByType(requestCash, 'transfer');
-    const totalQr = calculateTotalByType(requestCash, 'qr');
+    const totalQr = calculateTotalByType(requestCash, 'qrCode');
     const total =
       totalCash + totalDebit + totalCredit + totalTransfer + totalQr;
 
