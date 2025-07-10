@@ -269,6 +269,7 @@ export class ClousuresOfOperationsService {
       cashAmount: totalCash,
       debitAmount: totalDebit,
       creditAmount: totalCredit,
+      qrAmount: totalQr,
       targetsAmount: totalDebit + totalCredit,
       transferencesAmount: totalTransfer, // Aca sujmaremos rappi , uber y todo lo que venga de transferencias aunque sean de otro tipo de venta.
       transferAmount: totalTransfer,
@@ -285,6 +286,7 @@ export class ClousuresOfOperationsService {
       summaryDebit: summaryDebit,
       summaryCredit: summaryCredit,
       summaryTransfer: summaryTransfer,
+      summaryQr: summaryQr,
       summaryRappi: '$0.00',
       summaryUberEats: '0.00',
       summaryDidiFood: '0.00',
