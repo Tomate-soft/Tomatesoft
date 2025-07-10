@@ -11,7 +11,6 @@ import { RappiOrder } from 'src/schemas/ventas/orders/rappiOrder.schema';
 import { ToGoOrder } from 'src/schemas/ventas/orders/toGoOrder.schema';
 import { calculateTotalByType } from './lib/calculateTotalByType';
 import { UsersService } from 'src/users/users.service';
-import { parse } from 'path';
 import {
   MoneyMovementStatus,
   MoneyMovementType,
@@ -177,6 +176,7 @@ export class ClousuresOfOperationsService {
 
     // Summary totals
     // Summary cash    total de las ventas del efetivo -
+    // aqui hay dos valores por que uno es el conteo y otro lo que se deberai de tener
     const summaryCash =
       parseFloat(totalCash) - parseFloat(body.cash ?? 0) - totalWithdraws;
     const summaryDebit = parseFloat(totalDebit) - parseFloat(body.debit ?? 0);
@@ -188,17 +188,21 @@ export class ClousuresOfOperationsService {
     const summaryTargets =
       totalDebit + totalCredit - (body.debit ?? 0 + body.credit ?? 0);
 
+    const summaryQr = parseFloat(totalQr) - parseFloat(body.qr ?? 0);
+
     const summaryTotal =
-      totalCash +
-      totalDebit +
-      totalCredit +
-      totalTransfer -
+      summaryCash +
+      summaryDebit +
+      summaryCredit +
+      summaryTransfer +
+      summaryQr -
       parseFloat(
         body.totalAmount ??
           parseFloat(body.cash ?? 0) +
             parseFloat(body.debit ?? 0) +
             parseFloat(body.credit ?? 0) +
-            parseFloat(body.transference ?? 0),
+            parseFloat(body.transference ?? 0) +
+            parseFloat(body.qr ?? 0),
       ) -
       totalWithdraws;
 
@@ -253,6 +257,7 @@ export class ClousuresOfOperationsService {
     // Esto es de lo que mandamos desde el front
     const totalTargetsAmount = parseFloat(body.debit) + parseFloat(body.credit);
     const totalTranferencesAmount = parseFloat(body.transference);
+    const totalQrAmount = parseFloat(body.qr);
 
     // por aca falta el tema de los pagos por medio de QR
 
@@ -269,6 +274,7 @@ export class ClousuresOfOperationsService {
       transferAmount: totalTransfer,
       totalTargetsAmount: totalTargetsAmount,
       totalTranferencesAmount: totalTranferencesAmount,
+      totalQrAmount: totalQrAmount,
       rappiAmount: 0,
       uberEatsAmount: 0,
       didiFoodAmount: 0,
