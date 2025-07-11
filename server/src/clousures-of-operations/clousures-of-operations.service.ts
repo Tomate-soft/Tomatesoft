@@ -132,7 +132,6 @@ export class ClousuresOfOperationsService {
       })
       .populate({ path: 'user' });
 
-
     // calculate cash diference
     const restaurantPayments = currentSession.bills.flatMap(
       (bill) => bill.payment,
@@ -189,6 +188,14 @@ export class ClousuresOfOperationsService {
       totalDebit + totalCredit - (body.debit ?? 0 + body.credit ?? 0);
 
     const summaryQr = parseFloat(totalQr) - parseFloat(body.qr ?? 0);
+
+    const countTotal =
+      (isNaN(body.cash) ? 0 : parseFloat(body.cash)) +
+      (isNaN(body.debit) ? 0 : parseFloat(body.debit)) +
+      (isNaN(body.transference) ? 0 : parseFloat(body.transference)) +
+      (isNaN(body.qr) ? 0 : parseFloat(body.qr));
+
+      const newTotal = (countTotal - total) - totalWithdraws;
 
     const summaryTotal =
       summaryCash +
@@ -290,7 +297,7 @@ export class ClousuresOfOperationsService {
       summaryRappi: '$0.00',
       summaryUberEats: '0.00',
       summaryDidiFood: '0.00',
-      summaryTotal: summaryTotal,
+      summaryTotal: newTotal,
       authFor: authUser.name
         ? `${authUser.name} ${authUser.lastName}`
         : 'No encontrado',
