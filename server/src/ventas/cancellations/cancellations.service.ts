@@ -121,6 +121,8 @@ export class CancellationsService {
           createdCancellation.noteId,
           { status: CANCELLED_STATUS },
         );
+
+       
         // const updateTable = await this.tableModel.findByIdAndUpdate(
         //   currentBill.table,
         //   { status: FREE_STATUS, bill: [] },
@@ -199,7 +201,7 @@ export class CancellationsService {
         });
 
         // Cuando vamos a actualizar la mesa?
-        if (enableNotes.length < 1) {
+        if (enableNotes.length <= 2) {
           const updateTabl = await this.tableModel.findByIdAndUpdate(
             currentBill.table,
             { status: newTableStatus, bill: [] },
