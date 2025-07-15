@@ -148,6 +148,10 @@ export class CronService {
           throw new Error('No se pudo actualizar la branch');
         }
 
+        await this.sendMessageService.SendTelegramMessage(
+          `Se actualizo la sucursal con el nuevo periodo operativo que es ${updatedBranch.operatingPeriod}`,
+        );
+
         const UserUpdated = await this.userModel.updateMany(
           {},
           { $set: { cashierSession: null, dailyRegister: null } },
