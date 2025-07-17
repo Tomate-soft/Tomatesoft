@@ -90,7 +90,6 @@ export const useOperatingPeriodStore = create<state>((set) => ({
           erros: false,
           currentPeriod,
         });
-        console.log(currentPeriod);
     } catch (error) {
       set({
         isLoading: false,

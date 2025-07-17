@@ -18,7 +18,6 @@ import ConfirmChangesModal from '../../../modals/confimChanges/confirmChanges';
 import { getDepartamentsAction } from '../../../../redux/actions/usuarios/departamentsActions/getDepartaments';
 import { getUsersAction } from '../../../../redux/actions/auth';
 import { SearchBar } from '@/components/customElements/searchBar/SearchBar';
-import { set } from 'ref-napi';
 import UpdateUserForm from './updateUserForm/updateUserForm';
 
 enum ModalOptions {
@@ -81,7 +80,7 @@ export default function Empleados() {
         >
           Registro del usuario exitoso
         </ConfirmChangesModal>
-      ) : null}
+      ) : null }
       <section className={styles.head}>
         <h2>Empleados</h2>
         <div>
@@ -102,7 +101,6 @@ export default function Empleados() {
             setFilteredUsers(value);
           }} onClear={filteredUsers.length > 0} value={filteredUsers} placeholder="Buscar por nombre, apellido o código"  />
         </div>
-       
         <table className={styles.table}>
           <thead>
             <tr>

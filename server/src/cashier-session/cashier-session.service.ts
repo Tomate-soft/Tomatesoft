@@ -166,6 +166,11 @@ export class CashierSessionService {
         )
         .populate({ path: 'user' });
 
+      console.log(currentSession);
+      if (!currentSession) {
+        throw new NotFoundException('No se pudo actualizar');
+      }
+
       const userBy = await this.userModel.find({
         employeeNumber: body.auth.pin,
       });
