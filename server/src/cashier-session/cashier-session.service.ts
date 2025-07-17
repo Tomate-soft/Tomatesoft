@@ -165,6 +165,7 @@ export class CashierSessionService {
           },
         )
         .populate({ path: 'user' });
+      console.log('AQUI EM PIEZAN LOS LOGS DEL RETIRO PARCIAL D EFECTIVGO');
 
       console.log(currentSession);
       if (!currentSession) {
