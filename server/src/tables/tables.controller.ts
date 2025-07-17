@@ -117,6 +117,7 @@ export class TablesController {
       });
       return body.tablesArray;
     } catch (error) {
+      console.log(error);
       throw new NotFoundException('Ha ocurrido un error inesperado');
     }
   }
