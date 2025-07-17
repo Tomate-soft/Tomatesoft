@@ -122,7 +122,6 @@ export class CancellationsService {
           { status: CANCELLED_STATUS },
         );
 
-       
         // const updateTable = await this.tableModel.findByIdAndUpdate(
         //   currentBill.table,
         //   { status: FREE_STATUS, bill: [] },
@@ -192,10 +191,7 @@ export class CancellationsService {
               (element) => element.status === FOR_PAYMENT_STATUS,
             ),
         );
-        console.log(enableNotes?.length === 2 && onlyForPayment.length > 0);
-        console.log(newTableStatus);
-        console.log(onlyForPayment);
-        console.log(onlyForPayment.length);
+
         enableNotes.forEach((element) => {
           console.log(element);
         });

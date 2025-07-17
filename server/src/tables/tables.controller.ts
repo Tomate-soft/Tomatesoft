@@ -109,6 +109,18 @@ export class TablesController {
     }
   }
 
+  @Patch('change-status')
+  async changeStatus(body: { tablesArray: string[]; value: boolean }) {
+    try {
+      body.tablesArray.forEach(async (element) => {
+        await this.tableService.update(element, { active: body.value });
+      });
+      return body.tablesArray;
+    } catch (error) {
+      throw new NotFoundException('Ha ocurrido un error inesperado');
+    }
+  }
+
   @Patch('enable/:id')
   async enableTable(@Param('id') id: string, @Body() body: UpdateTableDto) {
     try {

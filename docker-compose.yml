@@ -36,7 +36,7 @@ services:
     container_name: frontend_
     build:
       context: ./client
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile|
     depends_on:
       - backend
     networks:
