@@ -159,7 +159,7 @@ export class CashierSessionService {
       const currentSession = await this.cashierSessionModel
         .findByIdAndUpdate(
           bodyData.sessionId,
-          { $push: { cashWithdraws: newWithdraw._id } },
+          { $push: { cashWithdraw: newWithdraw._id } },
           {
             new: true,
           },
