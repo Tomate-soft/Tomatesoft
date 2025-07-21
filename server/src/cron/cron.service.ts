@@ -186,7 +186,6 @@ export class CronService {
         await this.toGoOrderModel.deleteMany({});
         await this.rappiOrderModel.deleteMany({});
         await this.phoneOrderModel.deleteMany({});
-
         */
 
         await session.commitTransaction();

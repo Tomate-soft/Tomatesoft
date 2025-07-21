@@ -195,6 +195,10 @@ export class ClousuresOfOperationsService {
       (isNaN(body.transference) ? 0 : parseFloat(body.transference)) +
       (isNaN(body.qr) ? 0 : parseFloat(body.qr));
 
+    console.log(`countTotal: ${countTotal}`);
+    console.log(`total: ${total}`);
+    console.log(`totalWithdraws: ${totalWithdraws}`);
+
     const newTotal = countTotal - total - totalWithdraws;
 
     const summaryTotal =
