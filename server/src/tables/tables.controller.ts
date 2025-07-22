@@ -137,6 +137,25 @@ export class TablesController {
       throw new NotFoundException('Ha ocurrido un error inesperado');
     }
   }
+  @Patch('enable/host/:id')
+  async enableTableHost(@Param('id') id: string, @Body() body: UpdateTableDto) {
+    try {
+      const table = await this.tableService.findOne(id);
+      if (table.status !== 'free') {
+        throw new ConflictException('La mesa se encuentra ocupada');
+      }
+      const updatedTable = await this.tableService.update(id, {
+        ...body,
+        status: PENDING_STATUS,
+      });
+      if (!updatedTable) {
+        new NotFoundException('No se encontro la mesa');
+      }
+      return updatedTable;
+    } catch (error) {
+      throw new NotFoundException('Ha ocurrido un error inesperado');
+    }
+  }
 
   @Put('join')
   async joinTables(@Body() body: any) {

@@ -195,11 +195,11 @@ export class ClousuresOfOperationsService {
       (isNaN(body.transference) ? 0 : parseFloat(body.transference)) +
       (isNaN(body.qr) ? 0 : parseFloat(body.qr));
 
+    const newTotal = countTotal - total + totalWithdraws;
     console.log(`countTotal: ${countTotal}`);
     console.log(`total: ${total}`);
     console.log(`totalWithdraws: ${totalWithdraws}`);
-
-    const newTotal = countTotal - total - totalWithdraws;
+    console.log(`newTotal: ${newTotal}`);
 
     const summaryTotal =
       summaryCash +
@@ -216,6 +216,8 @@ export class ClousuresOfOperationsService {
             parseFloat(body.qr ?? 0),
       ) -
       totalWithdraws;
+    console.log(`summaryTotal: ${summaryTotal}`);
+    console.log(total - countTotal - totalWithdraws);
 
     // const summaryRappi = parseFloat(totalRappi ?? 0) - parseFloat(body.rappi ?? 0); // esto habra que filtrar por tipo de venta|
     // const summaryUberEats = parseFloat(totalUberEats ?? 0) - parseFloat(body.uberEats ?? 0); // esto habra que filtrar por tipo de venta|
@@ -264,7 +266,7 @@ export class ClousuresOfOperationsService {
     // el nombre dle cajero
     // Folio de corte
 
-*/
+  */
     // Esto es de lo que mandamos desde el front
     const totalTargetsAmount = parseFloat(body.debit) + parseFloat(body.credit);
     const totalTranferencesAmount = parseFloat(body.transference);
