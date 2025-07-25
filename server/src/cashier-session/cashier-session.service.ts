@@ -204,7 +204,9 @@ export class CashierSessionService {
       }
       await session.commitTransaction();
       session.endSession();
-      return newWithdraw;
+      return {
+        user: `${currentSession.user.name} ${currentSession.user.lastName}`,
+      };
     });
     return newWithdraw;
   }
