@@ -12,7 +12,7 @@ import {
 import { TablesService } from './tables.service';
 import { CreateTableDto } from 'src/dto/tables/createTableDto';
 import { UpdateTableDto } from 'src/dto/tables/updateTableDto';
-import { PENDING_STATUS } from 'src/libs/status.libs';
+import { FREE_STATUS, PENDING_STATUS } from 'src/libs/status.libs';
 
 @Controller('tables')
 export class TablesController {
@@ -141,7 +141,7 @@ export class TablesController {
   async enableTableHost(@Param('id') id: string, @Body() body: UpdateTableDto) {
     try {
       const table = await this.tableService.findOne(id);
-      if (table.status !== 'free') {
+      if (table.status !== FREE_STATUS) {
         throw new ConflictException('La mesa se encuentra ocupada');
       }
       const updatedTable = await this.tableService.update(id, {

@@ -1,6 +1,6 @@
 export   const actions = [
     {
-      name: 'Impresion de tickets de venta en restaurante',
+      name: 'Reimpresion de tickets de venta (TODOS)',
       value: 'PRINT_ONSITE_ORDER_TICKET',
     },
     {

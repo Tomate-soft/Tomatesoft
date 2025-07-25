@@ -22,6 +22,7 @@ export default function PrinterPreferentes({
   children,
   printer
 }: Props) {
+  
   // Estado para acciones
   const [selectedActions, setSelectedActions] = useState<string[]>([]);
   
