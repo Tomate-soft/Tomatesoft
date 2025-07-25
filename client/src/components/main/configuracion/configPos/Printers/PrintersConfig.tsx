@@ -23,7 +23,6 @@ isOpen,
   onClose,
   children,
 }: Props) {
-
     const printers = usePrintersStore((state) => state.printers);
         const getPrinters = usePrintersStore((state) => state.getPrinters);
         const [printerProcess, setPrinterProcess] = useState<PrinterProcessOtions>(PrinterProcessOtions.INITIAL);
@@ -69,4 +68,4 @@ isOpen,
       }
     </main>
   );
-} 
+}

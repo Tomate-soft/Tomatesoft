@@ -126,6 +126,8 @@ export class CashierSessionController {
     console.log(body);
     try {
       const withdrawal = await this.cashierSessionService.cashWithdrawal(body);
+      console.log('Retiro realizado con exito');
+      console.log(withdrawal);
       return withdrawal;
     } catch (error) {
       console.log(error);
