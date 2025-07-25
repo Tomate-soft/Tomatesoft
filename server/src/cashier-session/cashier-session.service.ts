@@ -143,7 +143,6 @@ export class CashierSessionService {
       );
     }
   }
-
   // En tu servicio (cashier-session.service.ts)
 
   async cashWithdrawal(body: { auth: any; body: createCashWithdrawDto }) {
@@ -151,12 +150,12 @@ export class CashierSessionService {
     const session = await this.cashierSessionModel.startSession();
 
     try {
-      // Moví el try/catch para envolver todo el flujo de la transacción
-      const result = await session.withTransaction(async () => {
+      const transactionResult = await session.withTransaction(async () => {
         const currentPeriod = await this.operatingPeriodService.getCurrent();
 
         const newWithdraw = new this.cashWithdrawModel(bodyData);
-        await newWithdraw.save({ session }); // Pasa la sesión a la operación de guardar
+        // Pasa la sesión a la operación de guardar
+        await newWithdraw.save({ session });
 
         const currentSession = await this.cashierSessionModel
           .findByIdAndUpdate(
@@ -167,7 +166,7 @@ export class CashierSessionService {
               session, // Pasa la sesión a findByIdAndUpdate
             },
           )
-          .populate({ path: 'user' });
+          .populate({ path: 'user' }); // Asegúrate de que 'user' se está populando correctamente
 
         if (!currentSession) {
           throw new NotFoundException(
@@ -175,11 +174,12 @@ export class CashierSessionService {
           );
         }
 
+        // Pasa la sesión a find
         const userBy = await this.userModel
           .find({
             employeeNumber: body.auth.pin,
           })
-          .session(session); // Pasa la sesión a find
+          .session(session);
 
         if (!userBy || userBy.length === 0) {
           throw new NotFoundException(
@@ -200,14 +200,16 @@ export class CashierSessionService {
         };
 
         const newMovement = new this.moneyMovementModel(movementData);
-        await newMovement.save({ session }); // Pasa la sesión a la operación de guardar
+        // Pasa la sesión a la operación de guardar
+        await newMovement.save({ session });
 
+        // Pasa la sesión a findByIdAndUpdate
         const periodUpdated = await this.operatingPeriodModel.findByIdAndUpdate(
           currentPeriod[0]?._id,
           {
             $push: { moneyMovements: newMovement._id },
           },
-          { session }, // Pasa la sesión a findByIdAndUpdate
+          { session },
         );
 
         if (!periodUpdated) {
@@ -216,34 +218,34 @@ export class CashierSessionService {
           );
         }
 
-        // Este es el objeto que será devuelto por la transacción
-        return {
+        // **Captura y devuelve el valor deseado explícitamente**
+        // ¡ESTO ES LO CRÍTICO!: asegúrate de que esto sea lo último que se evalúe y se devuelva.
+        const finalResult = {
           user: `${currentSession.user.name} ${currentSession.user.lastName}`,
-          // Quizás quieras devolver también los detalles de newWithdraw o newMovement
-          // newWithdrawalId: newWithdraw._id,
+          // Puedes añadir más información si la necesitas en el frontend, por ejemplo:
+          // withdrawalId: newWithdraw._id,
           // movementId: newMovement._id,
         };
+
+        return finalResult; // Asegúrate de que este 'return' sea el que se propague
       });
 
-      // session.commitTransaction() y session.endSession() son manejados implícitamente por session.withTransaction()
-      // si la función de callback se resuelve exitosamente. Si ocurre un error, aborta y termina.
-
-      return result; // Devuelve el resultado de la transacción
+      // Lo que sea que 'transactionResult' contenga, es lo que 'session.withTransaction' devolvió.
+      // Esto es lo que tu servicio retornará.
+      return transactionResult;
     } catch (error) {
-      // Si ocurre un error, session.withTransaction() automáticamente abortará y terminará la sesión.
       console.error(
         `Hubo un error inesperado durante la sesión de retiro de efectivo: ${error}`,
       );
-      // Re-lanza el error para que NestJS pueda capturarlo y enviar una respuesta HTTP adecuada
-      throw error;
+      throw error; // Relanza el error para que el controlador y NestJS lo manejen
     } finally {
-      // Asegura que la sesión siempre termine, incluso si ocurre un error inesperado
       if (session.inTransaction()) {
-        await session.abortTransaction(); // Debería ser manejado por withTransaction, pero como salvaguarda
+        await session.abortTransaction(); // Salvaguarda: asegura que la transacción se aborte si hay algún estado pendiente
       }
-      await session.endSession();
+      await session.endSession(); // Siempre cierra la sesión
     }
   }
+
   // ver si hay dinero para realizar el retiro
   // ya que creamos el retiro lo metemos a la session del cajero
   // async cashWithdrawal(body: { auth: any; body: createCashWithdrawDto }) {
