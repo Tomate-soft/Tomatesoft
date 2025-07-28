@@ -195,7 +195,7 @@ export class PaymentsService {
         await session.endSession();
         throw new NotFoundException('No se pudo actualizar la mesa');
       }
-      newPaymentCode.populate({
+      await newPaymentCode.populate({
         path: 'accountId',
       });
       await session.commitTransaction();
