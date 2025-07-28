@@ -143,176 +143,73 @@ export class CashierSessionService {
       );
     }
   }
-  // En tu servicio (cashier-session.service.ts)
-
+  // ver si hay dinero para realizar el retiro
+  // ya que creamos el retiro lo metemos a la session del cajero
   async cashWithdrawal(body: { auth: any; body: createCashWithdrawDto }) {
     const bodyData = body.body;
     const session = await this.cashierSessionModel.startSession();
+    const newWithdraw = await session.withTransaction(async () => {
+      const currentPeriod = await this.operatingPeriodService.getCurrent();
+      // const currentSession = await this.cashierSessionModel.findById(
+      //   body.sessionId,
+      // );
+      const newWithdraw = new this.cashWithdrawModel(bodyData);
+      await newWithdraw.save();
 
-    try {
-      const transactionResult = await session.withTransaction(async () => {
-        const currentPeriod = await this.operatingPeriodService.getCurrent();
-
-        const newWithdraw = new this.cashWithdrawModel(bodyData);
-        // Pasa la sesión a la operación de guardar
-        await newWithdraw.save({ session });
-
-        const currentSession = await this.cashierSessionModel
-          .findByIdAndUpdate(
-            bodyData.sessionId,
-            { $push: { cashWithdraw: newWithdraw._id } },
-            {
-              new: true,
-              session, // Pasa la sesión a findByIdAndUpdate
-            },
-          )
-          .populate({ path: 'user' }); // Asegúrate de que 'user' se está populando correctamente
-
-        if (!currentSession) {
-          throw new NotFoundException(
-            'No se pudo actualizar la sesión del cajero.',
-          );
-        }
-
-        // Pasa la sesión a find
-        const userBy = await this.userModel
-          .find({
-            employeeNumber: body.auth.pin,
-          })
-          .session(session);
-
-        if (!userBy || userBy.length === 0) {
-          throw new NotFoundException(
-            'Usuario aprobador no encontrado por PIN.',
-          );
-        }
-
-        const userName = `${userBy[0].name} ${userBy[0].lastName}`;
-        const movementData = {
-          operatingPeriod: currentPeriod[0]?._id,
-          amount: parseFloat(bodyData.quantity),
-          type: 'income',
-          title: 'Retiro parcial de efectivo',
-          description: `Retiro de efectivo efectuado al cajero ${currentSession.user.name}, aprobado por ${userName} en la fecha ${new Date().toLocaleDateString('es-MX')}`,
-          date: new Date().toISOString(),
-          user: userName,
-          status: 'approved',
-        };
-
-        const newMovement = new this.moneyMovementModel(movementData);
-        // Pasa la sesión a la operación de guardar
-        await newMovement.save({ session });
-
-        // Pasa la sesión a findByIdAndUpdate
-        const periodUpdated = await this.operatingPeriodModel.findByIdAndUpdate(
-          currentPeriod[0]?._id,
+      const currentSession = await this.cashierSessionModel
+        .findByIdAndUpdate(
+          bodyData.sessionId,
+          { $push: { cashWithdraw: newWithdraw._id } },
           {
-            $push: { moneyMovements: newMovement._id },
+            new: true,
           },
-          { session },
-        );
+        )
+        .populate({ path: 'user' });
 
-        if (!periodUpdated) {
-          throw new NotFoundException(
-            'No se completó la actualización del período operativo.',
-          );
-        }
+      console.log(currentSession);
+      if (!currentSession) {
+        throw new NotFoundException('No se pudo actualizar');
+      }
 
-        // **Captura y devuelve el valor deseado explícitamente**
-        // ¡ESTO ES LO CRÍTICO!: asegúrate de que esto sea lo último que se evalúe y se devuelva.
-        const finalResult = {
-          user: `${currentSession.user.name} ${currentSession.user.lastName}`,
-          // Puedes añadir más información si la necesitas en el frontend, por ejemplo:
-          // withdrawalId: newWithdraw._id,
-          // movementId: newMovement._id,
-        };
-
-        return finalResult; // Asegúrate de que este 'return' sea el que se propague
+      const userBy = await this.userModel.find({
+        employeeNumber: body.auth.pin,
       });
 
-      // Lo que sea que 'transactionResult' contenga, es lo que 'session.withTransaction' devolvió.
-      // Esto es lo que tu servicio retornará.
-      return transactionResult;
-    } catch (error) {
-      console.error(
-        `Hubo un error inesperado durante la sesión de retiro de efectivo: ${error}`,
+      const userName = `${userBy[0].name} ${userBy[0].lastName}`;
+      const movementData = {
+        operatingPeriod: currentPeriod[0]?._id, // ✅
+        amount: parseFloat(bodyData.quantity), // ✅
+        type: 'income', // ✅
+        title: 'Retiro parcial de efectivo', // ✅
+        description: `Retiro de efectivo efectuado a el cajero ${currentSession.user.name}, aprovado por ${userName} en la fecha ${new Date().toLocaleDateString()}`,
+        date: new Date().toISOString(),
+        user: userName,
+        status: 'approved',
+      };
+      // podemos aqui ademas crear un moneyMovement
+      const newMovement = new this.moneyMovementModel(movementData);
+      await newMovement.save();
+      // y el moneyMovement lo metemos al operatingPeriod
+      const periodUpdated = await this.operatingPeriodModel.findByIdAndUpdate(
+        currentPeriod[0]?._id,
+        {
+          $push: { moneyMovements: newMovement._id },
+        },
       );
-      throw error; // Relanza el error para que el controlador y NestJS lo manejen
-    } finally {
-      if (session.inTransaction()) {
-        await session.abortTransaction(); // Salvaguarda: asegura que la transacción se aborte si hay algún estado pendiente
+
+      if (!periodUpdated) {
+        throw new NotFoundException(
+          'No se completo la actualizacion de usuario',
+        );
       }
-      await session.endSession(); // Siempre cierra la sesión
-    }
+      await session.commitTransaction();
+      session.endSession();
+      return {
+        user: `${currentSession.user.name} ${currentSession.user.lastName}`,
+      };
+    });
+    return newWithdraw;
   }
-
-  // ver si hay dinero para realizar el retiro
-  // ya que creamos el retiro lo metemos a la session del cajero
-  // async cashWithdrawal(body: { auth: any; body: createCashWithdrawDto }) {
-  //   const bodyData = body.body;
-  //   const session = await this.cashierSessionModel.startSession();
-  //   const newWithdraw = await session.withTransaction(async () => {
-  //     const currentPeriod = await this.operatingPeriodService.getCurrent();
-  //     // const currentSession = await this.cashierSessionModel.findById(
-  //     //   body.sessionId,
-  //     // );
-  //     const newWithdraw = new this.cashWithdrawModel(bodyData);
-  //     await newWithdraw.save();
-
-  //     const currentSession = await this.cashierSessionModel
-  //       .findByIdAndUpdate(
-  //         bodyData.sessionId,
-  //         { $push: { cashWithdraw: newWithdraw._id } },
-  //         {
-  //           new: true,
-  //         },
-  //       )
-  //       .populate({ path: 'user' });
-
-  //     console.log(currentSession);
-  //     if (!currentSession) {
-  //       throw new NotFoundException('No se pudo actualizar');
-  //     }
-
-  //     const userBy = await this.userModel.find({
-  //       employeeNumber: body.auth.pin,
-  //     });
-
-  //     const userName = `${userBy[0].name} ${userBy[0].lastName}`;
-  //     const movementData = {
-  //       operatingPeriod: currentPeriod[0]?._id, // ✅
-  //       amount: parseFloat(bodyData.quantity), // ✅
-  //       type: 'income', // ✅
-  //       title: 'Retiro parcial de efectivo', // ✅
-  //       description: `Retiro de efectivo efectuado a el cajero ${currentSession.user.name}, aprovado por ${userName} en la fecha ${new Date().toLocaleDateString()}`,
-  //       date: new Date().toISOString(),
-  //       user: userName,
-  //       status: 'approved',
-  //     };
-  //     // podemos aqui ademas crear un moneyMovement
-  //     const newMovement = new this.moneyMovementModel(movementData);
-  //     await newMovement.save();
-  //     // y el moneyMovement lo metemos al operatingPeriod
-  //     const periodUpdated = await this.operatingPeriodModel.findByIdAndUpdate(
-  //       currentPeriod[0]?._id,
-  //       {
-  //         $push: { moneyMovements: newMovement._id },
-  //       },
-  //     );
-
-  //     if (!periodUpdated) {
-  //       throw new NotFoundException(
-  //         'No se completo la actualizacion de usuario',
-  //       );
-  //     }
-  //     await session.commitTransaction();
-  //     session.endSession();
-  //     return {
-  //       user: `${currentSession.user.name} ${currentSession.user.lastName}`,
-  //     };
-  //   });
-  //   return newWithdraw;
-  // }
 
   async pauseResume(id: string) {
     const session = await this.cashierSessionModel.startSession();
