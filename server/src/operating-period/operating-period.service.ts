@@ -584,7 +584,7 @@ export class OperatingPeriodService {
   async updateRegistersService(id, body: updateOperatingPeriodDto) {
     return await this.operatingPeriodModel.findByIdAndUpdate(
       id,
-      { registers: body.registers },
+      { registers: body },
       {
         new: true,
       },
