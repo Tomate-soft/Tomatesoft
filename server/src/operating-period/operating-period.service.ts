@@ -14,6 +14,7 @@ import { branchId } from 'src/variablesProvisionales';
 import { DiscountsService } from 'src/ventas/discounts/discounts.service';
 import { CancellationsService } from 'src/ventas/cancellations/cancellations.service';
 import { MoneyMovement } from 'src/schemas/moneyMovements/moneyMovement.schema';
+import { updateOperatingPeriodDto } from 'src/dto/operatingPeriod/updateOperatingPerior.Dto';
 
 @Injectable()
 export class OperatingPeriodService {
@@ -580,9 +581,13 @@ export class OperatingPeriodService {
     }
   }
 
-  async updateRegistersService(id, body) {
-    return await this.operatingPeriodModel.findByIdAndUpdate(id, body, {
-      new: true,
-    });
+  async updateRegistersService(id, body: updateOperatingPeriodDto) {
+    return await this.operatingPeriodModel.findByIdAndUpdate(
+      id,
+      { registers: body.registers },
+      {
+        new: true,
+      },
+    );
   }
 }
