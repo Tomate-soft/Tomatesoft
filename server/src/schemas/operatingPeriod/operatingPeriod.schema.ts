@@ -4,7 +4,6 @@ import { Schema as MongooseSchema } from 'mongoose';
 import { CashierSession } from '../cashierSession/cashierSession';
 import { OperationalClousure } from './operationalClousure';
 import { User } from '../users.schema';
-import { CashWithdraw } from '../cashierSession/cashWithdraw';
 import { MoneyMovement } from '../moneyMovements/moneyMovement.schema';
 
 interface CashIn {
@@ -65,6 +64,15 @@ interface OperationalClousure {
 }
   */
 
+export interface CheckInRegister {
+  name: string;
+  diners: number;
+  initialTime: string;
+  finalTime: string;
+  resumeTime: string;
+  status: string;
+}
+
 @Schema({ timestamps: true })
 export class OperatingPeriod {
   @Prop({ default: true })
@@ -116,6 +124,9 @@ export class OperatingPeriod {
 
   @Prop()
   createdAt: Date;
+
+  @Prop({ default: [] })
+  registers?: CheckInRegister[];
 }
 
 export const OperatingPeriodSchema =

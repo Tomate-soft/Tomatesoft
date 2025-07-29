@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { OperatingPeriodService } from './operating-period.service';
 import { ProcessService } from 'src/process/process.service';
+import { updateOperatingPeriodDto } from 'src/dto/operatingPeriod/updateOperatingPerior.Dto';
 
 @Controller('operating-period')
 export class OperatingPeriodController {
@@ -63,6 +64,25 @@ export class OperatingPeriodController {
       throw new NotFoundException(
         `Ha ocurrido algo inesperado. Mas informacion: ${error}`,
       );
+    }
+  }
+
+  @Put(':id')
+  async updatePeriodControler(
+    @Param('id') id: string,
+    @Body() body: updateOperatingPeriodDto,
+  ) {
+    try {
+      const response = await this.operatingPeriodService.updateRegistersService(
+        id,
+        body,
+      );
+      if (!response) {
+        throw new NotFoundException('No se pudo actualizar el periodo');
+      }
+      return response;
+    } catch (error) {
+      throw new NotFoundException('No se pudo actualizar el periodo');
     }
   }
 

@@ -579,4 +579,10 @@ export class OperatingPeriodService {
       session.endSession();
     }
   }
+
+  async updateRegistersService(id, body) {
+    return await this.operatingPeriodModel.findByIdAndUpdate(id, body, {
+      new: true,
+    });
+  }
 }

@@ -1,12 +1,12 @@
 import CloseButton from '@/components/customElements/CloseButton';
 import styles from './PrintersConfig.module.css';
-import RequestButton from '@/components/customElements/saveButton/savebutton';
 import { useEffect, useState } from 'react';
 import { usePrintersStore } from '@/zstore/printers.store';
 import PrinterCard from './PrinterCard/PrinterCard';
 import EditPrinter from './EditPrinter/EditPrinter';
 import CreatePrinter from './CreatePrinter/CreatePrinter';
 import PrinterPreferentes from './preferences/PrinterPreferentes';
+
 interface Props {
     isOpen: boolean;
   onClose: any;
