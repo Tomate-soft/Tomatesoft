@@ -21,7 +21,7 @@ interface PricesList {
 @Schema({ timestamps: true })
 export class Dishes {
   @Prop({
-    unique: true,
+    // unique: true,
     required: true,
     trim: true,
   })

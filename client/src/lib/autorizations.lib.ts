@@ -32,6 +32,7 @@ export const CANCEL_NOTE_AUTH: ActionValue = 'CANCEL_NOTE_AUTH';
 export const CANCEL_PRODUCT_AUTH: ActionValue = 'CANCEL_PRODUCT_AUTH';
 export const CANCEL_BILL_AUTH: ActionValue = 'CANCEL_BILL_AUTH';
 export const TABLE_ASSIGNMENT: ActionValue = 'TABLE_ASSIGNMENT';
+export const INFERRED_SALE: ActionValue = 'INFERRED_SALE';
 
 // SellTypes
 export const RESTAURANT = 'RESTAURANT';
@@ -184,6 +185,11 @@ export const actionsAuthsRestaurant: AuthAction[] = [
   {
     name: 'Asignacion de mesas',
     value: TABLE_ASSIGNMENT,
+    secure: false,
+  },
+   {
+    name: 'Venta inferida',
+    value: INFERRED_SALE,
     secure: false,
   },
 ];

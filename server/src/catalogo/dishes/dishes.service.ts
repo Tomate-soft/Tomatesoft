@@ -14,7 +14,7 @@ export class DishesService {
 
   private generateNextCode(): string {
     const prefix = this.currentCode[0];
-    const numericPart = parseInt(this.currentCode.slice(3));
+    const numericPart = parseInt(this.currentCode.slice(1));
 
     if (numericPart < 99) {
       this.currentCode = `${prefix}${String(numericPart + 1).padStart(2, '0')}`;
@@ -22,8 +22,22 @@ export class DishesService {
       const nextPrefix = String.fromCharCode(prefix.charCodeAt(0) + 1);
       this.currentCode = `${nextPrefix}00`;
     }
+
     return this.currentCode;
   }
+
+  // private generateNextCode(): string {
+  //   const prefix = this.currentCode[0];
+  //   const numericPart = parseInt(this.currentCode.slice(3));
+
+  //   if (numericPart < 99) {
+  //     this.currentCode = `${prefix}${String(numericPart + 1).padStart(2, '0')}`;
+  //   } else {
+  //     const nextPrefix = String.fromCharCode(prefix.charCodeAt(0) + 1);
+  //     this.currentCode = `${nextPrefix}00`;
+  //   }
+  //   return this.currentCode;
+  // }
 
   async findAll(skip: number) {
     const skipValue = skip ? skip : 0;

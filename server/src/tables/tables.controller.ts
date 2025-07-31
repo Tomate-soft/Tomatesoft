@@ -137,6 +137,7 @@ export class TablesController {
       throw new NotFoundException('Ha ocurrido un error inesperado');
     }
   }
+
   @Patch('enable/host/:id')
   async enableTableHost(@Param('id') id: string, @Body() body: UpdateTableDto) {
     try {
