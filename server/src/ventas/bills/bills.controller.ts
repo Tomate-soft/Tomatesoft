@@ -57,7 +57,7 @@ export class BillsController {
     }
   }
 
-  @Get('current')
+  @Get('togo/current')
   async findTogoCurrent() {
     try {
       const BillsArray =
