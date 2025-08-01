@@ -53,7 +53,7 @@ export class BillsController {
       }
       return BillsArray;
     } catch (error) {
-      throw new NotFoundException('Ha ocurrido algo inesperado');
+      throw new NotFoundException(`Ha ocurrido algo inesperado: ${error}}`);
     }
   }
 

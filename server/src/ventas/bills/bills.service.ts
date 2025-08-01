@@ -517,7 +517,7 @@ export class BillsService {
     return results;
   }
 
-  async findCurrenTogoService(id?: string) {
+  async findCurrenTogoService(type: string, id?: string) {
     try {
       const currentPeriod = id
         ? await this.operatingPeriodService.getCurrent(id)
@@ -525,7 +525,7 @@ export class BillsService {
 
       const ordersArray = await this.findCurrentBySellType(
         currentPeriod[0]._id.toString(),
-        'TOGO_ORDER',
+        type,
       );
       return ordersArray;
     } catch (error) {
