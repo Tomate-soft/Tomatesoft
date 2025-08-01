@@ -517,6 +517,22 @@ export class BillsService {
     return results;
   }
 
+  async findCurrenTogoService(id?: string) {
+    try {
+      const currentPeriod = id
+        ? await this.operatingPeriodService.getCurrent(id)
+        : await this.operatingPeriodService.getCurrent();
+
+      const ordersArray = await this.findCurrentBySellType(
+        currentPeriod[0]._id.toString(),
+        'TOGO_ORDER',
+      );
+      return ordersArray;
+    } catch (error) {
+      throw new NotFoundException('No se pudieron encontrar las cuentas');
+    }
+  }
+
   private formatCode(code: string): string {
     // todo
     // formatear correctamente el codigo de la factura
