@@ -81,40 +81,13 @@ export class TablesService {
   }
 
   async cleanTables() {
-    // Limpia los usuarios (vacía el array de mesas)
-    const updatedUsers = await this.userModel.updateMany(
-      {},
-      { $set: { tables: [] } },
-    );
-
-    // Limpia las mesas (las desasigna de usuarios)
-    const updatedTables = await this.tableModel.updateMany(
+    await this.userModel.updateMany({}, { $set: { tables: [] } });
+    const updatedTable = await this.tableModel.updateMany(
       {},
       { $set: { assigned: false, user: null } },
     );
-
-    // Revisa si quedó algún usuario con mesas asignadas
-    const usersWithTables = await this.userModel.find({ tables: { $ne: [] } });
-    console.log(
-      'Usuarios que aún tienen mesas asignadas:',
-      usersWithTables.length,
-    );
-
-    return {
-      usuariosModificados: updatedUsers.modifiedCount,
-      mesasModificadas: updatedTables.modifiedCount,
-      usuariosConMesasAun: usersWithTables.length,
-    };
+    return updatedTable;
   }
-
-  // async cleanTables() {
-  //   await this.userModel.updateMany({}, { $set: { tables: [] } });
-  //   const updatedTable = await this.tableModel.updateMany(
-  //     {},
-  //     { $set: { assigned: false, user: null } },
-  //   );
-  //   return updatedTable;
-  // }
 
   async joinTables(body: any) {
     console.log('body', body);

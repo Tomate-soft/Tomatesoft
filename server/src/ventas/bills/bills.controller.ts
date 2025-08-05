@@ -158,6 +158,19 @@ export class BillsController {
     }
   }
 
+  @Put('change-waiter/:id')
+  async changeWaiterController(@Param('id') id: string) {
+    try {
+      const res = await this.billService.changeWaiterService(id);
+      if (!res) {
+        throw new NotFoundException(`No se pudo realizar el cambio de mesero`);
+      }
+      return res;
+    } catch (error) {
+      throw new NotFoundException(`Ha ocurrido un error inesperado ${error}`);
+    }
+  }
+
   @Put('/t/products')
   async tansferproducts(@Body() body: {}) {
     try {
