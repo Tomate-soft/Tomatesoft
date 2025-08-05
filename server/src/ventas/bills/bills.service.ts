@@ -52,8 +52,9 @@ export class BillsService {
     }
   }
 
-  async changeWaiterService(id: string) {
+  async changeWaiterService(id: string, body) {
     const currentTable = await this.tableModel.findById(id);
+    console.log(body);
     return currentTable;
   }
 

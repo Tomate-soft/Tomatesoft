@@ -159,9 +159,9 @@ export class BillsController {
   }
 
   @Put('change-waiter/:id')
-  async changeWaiterController(@Param('id') id: string) {
+  async changeWaiterController(@Param('id') id: string, @Body() body: { userId: string }) {
     try {
-      const res = await this.billService.changeWaiterService(id);
+      const res = await this.billService.changeWaiterService(id, body);
       if (!res) {
         throw new NotFoundException(`No se pudo realizar el cambio de mesero`);
       }
