@@ -5,10 +5,14 @@ import { Model } from 'mongoose';
 import { CreateTableDto } from 'src/dto/tables/createTableDto';
 import { UpdateTableDto } from 'src/dto/tables/updateTableDto';
 import { Table } from 'src/schemas/tables/tableSchema';
+import { User } from 'src/schemas/users.schema';
 
 @Injectable()
 export class TablesService {
-  constructor(@InjectModel(Table.name) private tableModel: Model<Table>) {}
+  constructor(
+    @InjectModel(Table.name) private tableModel: Model<Table>,
+    @InjectModel(User.name) private userModel: Model<User>,
+  ) {}
   async findAll() {
     try {
       return await this.tableModel
@@ -77,10 +81,12 @@ export class TablesService {
   }
 
   async cleanTables() {
-    return await this.tableModel.updateMany(
+    await this.userModel.updateMany({}, { $set: { tables: [] } });
+    const updatedTable = await this.tableModel.updateMany(
       {},
       { $set: { assigned: false, user: null } },
     );
+    return updatedTable;
   }
 
   async joinTables(body: any) {
