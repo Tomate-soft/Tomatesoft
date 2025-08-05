@@ -185,7 +185,7 @@ export class ClousuresOfOperationsService {
       parseFloat(totalTransfer) - parseFloat(body.transference ?? 0);
 
     const summaryTargets =
-      totalDebit + totalCredit - (body.debit ?? 0 + body.credit ?? 0);
+      totalDebit + totalCredit - ((body.debit ?? 0) + (body.credit ?? 0));
 
     const summaryQr = parseFloat(totalQr) - parseFloat(body.qr ?? 0);
 
