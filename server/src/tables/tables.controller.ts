@@ -96,19 +96,6 @@ export class TablesController {
     }
   }
 
-  @Put('upt/:id')
-  async updateChars(@Param('id') id: string, @Body() body: UpdateTableDto) {
-    try {
-      const updatedTable = await this.tableService.update(id, body);
-      if (!updatedTable) {
-        new NotFoundException('No se encontro la mesa');
-      }
-      return updatedTable;
-    } catch (error) {
-      throw new NotFoundException('Ha ocurrido un error inesperado');
-    }
-  }
-
   @Patch('change-status')
   async changeStatus(body: { tablesArray: string[]; value: boolean }) {
     try {
@@ -149,6 +136,32 @@ export class TablesController {
         ...body,
         status: PENDING_STATUS,
       });
+      if (!updatedTable) {
+        new NotFoundException('No se encontro la mesa');
+      }
+      return updatedTable;
+    } catch (error) {
+      throw new NotFoundException('Ha ocurrido un error inesperado');
+    }
+  }
+
+  @Put('release/:id')
+  async releaseTable(@Param('id') id: string) {
+    try {
+      const updatedTable = await this.tableService.releaseTableService(id);
+      if (!updatedTable) {
+        new NotFoundException('No se encontro la mesa');
+      }
+      return updatedTable;
+    } catch (error) {
+      throw new NotFoundException('Ha ocurrido un error inesperado');
+    }
+  }
+
+  @Put('upt/:id')
+  async updateChars(@Param('id') id: string, @Body() body: UpdateTableDto) {
+    try {
+      const updatedTable = await this.tableService.update(id, body);
       if (!updatedTable) {
         new NotFoundException('No se encontro la mesa');
       }

@@ -76,6 +76,12 @@ export class TablesService {
     });
   }
 
+  async releaseTableService(id: string) {
+    // const currentTable;
+    // const currentUser;
+    return id;
+  }
+
   async replace(): Promise<DeleteResult> {
     return await this.tableModel.deleteMany({}).exec();
   }
