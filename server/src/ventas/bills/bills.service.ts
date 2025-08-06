@@ -54,8 +54,14 @@ export class BillsService {
 
   async changeWaiterService(id: string, body) {
     const currentTable = await this.tableModel.findById(id);
+    const currentUser = await this.userModel.findByIdAndUpdate(
+      currentTable.user,
+      { tables: { $push: currentTable._id } },
+    );
+    const reassignedUser = await this.userModel.findByIdAndUpdate();
+
     console.log(body);
-    return currentTable;
+    return currentUser;
   }
 
   /*
