@@ -54,14 +54,37 @@ export class BillsService {
 
   async changeWaiterService(id: string, body) {
     const currentTable = await this.tableModel.findById(id);
-    const currentUser = await this.userModel.findByIdAndUpdate(
-      currentTable.user,
-      { tables: { $push: currentTable._id } },
-    );
-    const reassignedUser = await this.userModel.findByIdAndUpdate();
 
-    console.log(body);
-    return currentUser;
+    // Informacion del usuario actual
+    await this.userModel.findByIdAndUpdate(currentTable.user, {
+      $pull: {
+        tables: currentTable._id,
+      },
+    });
+
+    // Informacion del usuario nuevo
+    const { name, lastName, employeeNumber, _id } =
+      await this.userModel.findByIdAndUpdate(body.userId, {
+        $push: {
+          tables: currentTable._id,
+        },
+      });
+
+    // Actualizamos la cuenta
+    const updatedBill = await this.billsModel.findByIdAndUpdate(
+      currentTable.bill[0],
+      {
+        user: `${name} ${lastName}`,
+        userCode: employeeNumber,
+        userId: _id,
+      },
+    );
+
+    await this.tableModel.findByIdAndUpdate(id, {
+      user: body.userId,
+    });
+
+    return updatedBill;
   }
 
   /*
