@@ -78,8 +78,18 @@ export class TablesService {
 
   async releaseTableService(id: string) {
     // const currentTable;
+    const currentTable = await this.tableModel.findByIdAndUpdate(id, {
+      assigned: false,
+      user: null,
+    });
+
     // const currentUser;
-    return id;
+    await this.userModel.findByIdAndUpdate(currentTable.user, {
+      $pull: {
+        tables: currentTable._id,
+      },
+    });
+    return currentTable;
   }
 
   async replace(): Promise<DeleteResult> {
