@@ -154,7 +154,7 @@ export class CronService {
 
         const UserUpdated = await this.userModel.updateMany(
           {},
-          { $set: { cashierSession: null, dailyRegister: null, tables: [] } },
+          { $set: { cashierSession: null, dailyRegister: null } },
         );
         if (!UserUpdated) {
           await session.abortTransaction();

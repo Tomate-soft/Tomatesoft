@@ -212,7 +212,6 @@ export class TablesService {
   }
 
   /*
-
   async joinTables(body: any) {
     console.log('body', body);
 
@@ -283,7 +282,6 @@ export class TablesService {
         }
     }
   }
-
   */
 
   async separateTables(id: string) {
