@@ -183,6 +183,10 @@ export class ClousuresOfOperationsService {
       parseFloat(totalCredit) - parseFloat(body.credit ?? 0);
     const summaryTransfer =
       parseFloat(totalTransfer) - parseFloat(body.transference ?? 0);
+    console.log(totalDebit);
+    console.log(totalCredit);
+    console.log(body.debit);
+    console.log(body.credit);
 
     const summaryTargets =
       totalDebit +
